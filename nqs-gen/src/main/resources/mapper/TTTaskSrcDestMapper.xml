@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eystar.gen.mapper.TTTaskSrcDestMapper">
+  <resultMap id="BaseResultMap" type="com.eystar.gen.entity.TTTaskSrcDest">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="probe_id" jdbcType="VARCHAR" property="probeId" />
+    <result column="probe_alias" jdbcType="VARCHAR" property="probeAlias" />
+    <result column="access_type_name" jdbcType="VARCHAR" property="accessTypeName" />
+    <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
+    <result column="province_name" jdbcType="VARCHAR" property="provinceName" />
+    <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="district_code" jdbcType="VARCHAR" property="districtCode" />
+    <result column="district_name" jdbcType="VARCHAR" property="districtName" />
+    <result column="probe_below" jdbcType="VARCHAR" property="probeBelow" />
+    <result column="probe_below_type" jdbcType="SMALLINT" property="probeBelowType" />
+    <result column="dest_id" jdbcType="VARCHAR" property="destId" />
+    <result column="dest_addr" jdbcType="VARCHAR" property="destAddr" />
+    <result column="dest_name" jdbcType="VARCHAR" property="destName" />
+    <result column="dest_group_id" jdbcType="VARCHAR" property="destGroupId" />
+    <result column="host_city" jdbcType="VARCHAR" property="hostCity" />
+    <result column="host_province" jdbcType="VARCHAR" property="hostProvince" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="task_from" jdbcType="SMALLINT" property="taskFrom" />
+    <result column="task_md5" jdbcType="VARCHAR" property="taskMd5" />
+    <result column="task_param_id" jdbcType="VARCHAR" property="taskParamId" />
+    <result column="template_id" jdbcType="VARCHAR" property="templateId" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+    <result column="delete_flag" jdbcType="SMALLINT" property="deleteFlag" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, probe_id, probe_alias, access_type_name, province_code, province_name, city_code, 
+    city_name, district_code, district_name, probe_below, probe_below_type, dest_id, 
+    dest_addr, dest_name, dest_group_id, host_city, host_province, operator, status, 
+    task_from, task_md5, task_param_id, template_id, create_user, update_user, create_time, 
+    update_time, delete_flag
+  </sql>
+  <select id="selectByExample" parameterType="com.eystar.gen.entity.TTTaskSrcDest" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_t_task_src_dest
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+ <select id="findById" parameterType="java.lang.String" resultMap="BaseResultMap">
+   select * from t_t_task_src_dest where  id=#{taskId,jdbcType=VARCHAR}
+ </select>
+
+  <insert id="insert" parameterType="com.eystar.gen.entity.TTTaskSrcDest">
+    insert into t_t_task_src_dest (id, probe_id, probe_alias, 
+      access_type_name, province_code, province_name, 
+      city_code, city_name, district_code, 
+      district_name, probe_below, probe_below_type, 
+      dest_id, dest_addr, dest_name, 
+      dest_group_id, host_city, host_province, 
+      operator, status, task_from, 
+      task_md5, task_param_id, template_id, 
+      create_user, update_user, create_time, 
+      update_time, delete_flag)
+    values (#{id,jdbcType=VARCHAR}, #{probeId,jdbcType=VARCHAR}, #{probeAlias,jdbcType=VARCHAR}, 
+      #{accessTypeName,jdbcType=VARCHAR}, #{provinceCode,jdbcType=VARCHAR}, #{provinceName,jdbcType=VARCHAR}, 
+      #{cityCode,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, #{districtCode,jdbcType=VARCHAR}, 
+      #{districtName,jdbcType=VARCHAR}, #{probeBelow,jdbcType=VARCHAR}, #{probeBelowType,jdbcType=SMALLINT}, 
+      #{destId,jdbcType=VARCHAR}, #{destAddr,jdbcType=VARCHAR}, #{destName,jdbcType=VARCHAR}, 
+      #{destGroupId,jdbcType=VARCHAR}, #{hostCity,jdbcType=VARCHAR}, #{hostProvince,jdbcType=VARCHAR}, 
+      #{operator,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, #{taskFrom,jdbcType=SMALLINT}, 
+      #{taskMd5,jdbcType=VARCHAR}, #{taskParamId,jdbcType=VARCHAR}, #{templateId,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT}, #{deleteFlag,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.eystar.gen.entity.TTTaskSrcDest">
+    insert into t_t_task_src_dest
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="probeId != null">
+        probe_id,
+      </if>
+      <if test="probeAlias != null">
+        probe_alias,
+      </if>
+      <if test="accessTypeName != null">
+        access_type_name,
+      </if>
+      <if test="provinceCode != null">
+        province_code,
+      </if>
+      <if test="provinceName != null">
+        province_name,
+      </if>
+      <if test="cityCode != null">
+        city_code,
+      </if>
+      <if test="cityName != null">
+        city_name,
+      </if>
+      <if test="districtCode != null">
+        district_code,
+      </if>
+      <if test="districtName != null">
+        district_name,
+      </if>
+      <if test="probeBelow != null">
+        probe_below,
+      </if>
+      <if test="probeBelowType != null">
+        probe_below_type,
+      </if>
+      <if test="destId != null">
+        dest_id,
+      </if>
+      <if test="destAddr != null">
+        dest_addr,
+      </if>
+      <if test="destName != null">
+        dest_name,
+      </if>
+      <if test="destGroupId != null">
+        dest_group_id,
+      </if>
+      <if test="hostCity != null">
+        host_city,
+      </if>
+      <if test="hostProvince != null">
+        host_province,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="taskFrom != null">
+        task_from,
+      </if>
+      <if test="taskMd5 != null">
+        task_md5,
+      </if>
+      <if test="taskParamId != null">
+        task_param_id,
+      </if>
+      <if test="templateId != null">
+        template_id,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="probeId != null">
+        #{probeId,jdbcType=VARCHAR},
+      </if>
+      <if test="probeAlias != null">
+        #{probeAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="accessTypeName != null">
+        #{accessTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceCode != null">
+        #{provinceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceName != null">
+        #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtCode != null">
+        #{districtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="districtName != null">
+        #{districtName,jdbcType=VARCHAR},
+      </if>
+      <if test="probeBelow != null">
+        #{probeBelow,jdbcType=VARCHAR},
+      </if>
+      <if test="probeBelowType != null">
+        #{probeBelowType,jdbcType=SMALLINT},
+      </if>
+      <if test="destId != null">
+        #{destId,jdbcType=VARCHAR},
+      </if>
+      <if test="destAddr != null">
+        #{destAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="destName != null">
+        #{destName,jdbcType=VARCHAR},
+      </if>
+      <if test="destGroupId != null">
+        #{destGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="hostCity != null">
+        #{hostCity,jdbcType=VARCHAR},
+      </if>
+      <if test="hostProvince != null">
+        #{hostProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="taskFrom != null">
+        #{taskFrom,jdbcType=SMALLINT},
+      </if>
+      <if test="taskMd5 != null">
+        #{taskMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="taskParamId != null">
+        #{taskParamId,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null">
+        #{templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>

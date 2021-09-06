@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.eystar</groupId>
+        <artifactId>nqs</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <artifactId>nqs-common</artifactId>
+
+
+<dependencies>
+
+    <dependency>
+        <groupId>com.eystar</groupId>
+        <artifactId>nqs-gen</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+
+    <dependency>
+        <groupId>redis.clients</groupId>
+        <artifactId>jedis</artifactId>
+        <version>2.9.3</version>
+    </dependency>
+    <!--        ===========================        通用工具类         ===========================       -->
+
+    <dependency>
+        <groupId>cn.hutool</groupId>
+        <artifactId>hutool-core</artifactId>
+        <version>5.5.8</version>
+    </dependency>
+    <dependency>
+        <groupId>io.swagger</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>${swagger-annotations.version}</version>
+    </dependency>
+
+    <dependency>
+        <groupId>net.ipip</groupId>
+        <artifactId>ipdb</artifactId>
+        <version>${version.ipdb}</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.jsoup</groupId>
+        <artifactId>jsoup</artifactId>
+        <version>${version.jsoup}</version>
+    </dependency>
+
+    <dependency>
+        <groupId>com.xuxueli</groupId>
+        <artifactId>xxl-conf-core</artifactId>
+        <version>${version.xxl-conf}</version>
+    </dependency>
+
+
+
+</dependencies>
+
+
+</project>
