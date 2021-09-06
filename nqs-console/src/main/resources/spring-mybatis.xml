@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+    <context:property-placeholder location="classpath:config.properties"/>
+
+    <bean id="mysqlDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${nqsdb.mysql.driver}"></property>
+        <property name="url"
+                  value="${nqsdb.mysql.jdbc}"></property>
+        <property name="username" value="${nqsdb.mysql.user}"></property>
+        <property name="password" value="${nqsdb.mysql.password}"></property>
+        <property name="initialSize" value="1"/>
+        <property name="minIdle" value="1"/>
+        <property name="maxActive" value="20"/>
+    </bean>
+
+    <bean id="bigDataSource" class="org.apache.ibatis.datasource.unpooled.UnpooledDataSource" >
+        <property name="username" value="${nqsdb.clickhouse.user}"></property>
+        <property name="password" value="${nqsdb.clickhouse.password}"></property>
+        <property name="url" value="${nqsdb.clickhouse.jdbc}"></property>
+        <property name="driver" value="${nqsdb.clickhouse.driver}"></property>
+    </bean>
+
+    <bean id="dataSource" class="com.eystar.gen.source.DynamicDataSource">
+        <property name="targetDataSources">
+            <map key-type="com.eystar.gen.source.DataSourceType">
+                <entry value-ref="mysqlDataSource" key="mysql"></entry>
+                <entry value-ref="bigDataSource" key="bigdata"></entry>
+            </map>
+        </property>
+        <property name="defaultTargetDataSource" ref="mysqlDataSource"></property>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="classpath*:mapper/*.xml" />
+        <property name="typeAliasesPackage" value="com.eystar.gen.mapper" ></property>
+        <property name="transactionFactory">
+            <bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
+        </property>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.eystar.gen.mapper"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.maxActive}"/>
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="maxWaitMillis" value="${redis.maxWaitMillis}"/>
+        <property name="testOnBorrow" value="true"/>
+    </bean>
+
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig" />
+        <constructor-arg name="host" value="${nqs-db.redis.host}" />
+        <constructor-arg name="port" value="${nqs-db.redis.port}" type="int" />
+        <constructor-arg name="timeout" value="200000000" type="int" />
+        <!--<constructor-arg name="password" value="${nqs-db.redis.password}" />-->
+    </bean>
+
+    <bean  id="redisUtils" class="com.eystar.common.cache.redis.util.RedisUtils">
+        <property name="pool" ref="jedisPool"></property>
+    </bean>
+
+</beans>

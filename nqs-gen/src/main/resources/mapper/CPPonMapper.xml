@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eystar.gen.mapper.CPPonMapper">
+  <resultMap id="BaseResultMap" type="com.eystar.gen.entity.CPPon">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="current" jdbcType="DOUBLE" property="current" />
+    <result column="probe_id" jdbcType="VARCHAR" property="probeId" />
+    <result column="rx_power" jdbcType="DOUBLE" property="rxPower" />
+    <result column="temperature" jdbcType="DOUBLE" property="temperature" />
+    <result column="tx_power" jdbcType="DOUBLE" property="txPower" />
+    <result column="voltage" jdbcType="DOUBLE" property="voltage" />
+    <result column="timesheet" jdbcType="BIGINT" property="timesheet" />
+    <result column="month_time" jdbcType="DATE" property="monthTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, create_time, current, probe_id, rx_power, temperature, tx_power, voltage, timesheet, 
+    month_time
+  </sql>
+
+
+  <insert id="insert" parameterType="com.eystar.gen.entity.CPPon">
+    insert into c_p_pon (id, create_time, current, 
+      probe_id, rx_power, temperature, 
+      tx_power, voltage, timesheet, 
+      month_time)
+    values (#{id,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{current,jdbcType=DOUBLE}, 
+      #{probeId,jdbcType=VARCHAR}, #{rxPower,jdbcType=DOUBLE}, #{temperature,jdbcType=DOUBLE}, 
+      #{txPower,jdbcType=DOUBLE}, #{voltage,jdbcType=DOUBLE}, #{timesheet,jdbcType=BIGINT}, 
+      #{monthTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.eystar.gen.entity.CPPon">
+    insert into c_p_pon
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="current != null">
+        current,
+      </if>
+      <if test="probeId != null">
+        probe_id,
+      </if>
+      <if test="rxPower != null">
+        rx_power,
+      </if>
+      <if test="temperature != null">
+        temperature,
+      </if>
+      <if test="txPower != null">
+        tx_power,
+      </if>
+      <if test="voltage != null">
+        voltage,
+      </if>
+      <if test="timesheet != null">
+        timesheet,
+      </if>
+      <if test="monthTime != null">
+        month_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="current != null">
+        #{current,jdbcType=DOUBLE},
+      </if>
+      <if test="probeId != null">
+        #{probeId,jdbcType=VARCHAR},
+      </if>
+      <if test="rxPower != null">
+        #{rxPower,jdbcType=DOUBLE},
+      </if>
+      <if test="temperature != null">
+        #{temperature,jdbcType=DOUBLE},
+      </if>
+      <if test="txPower != null">
+        #{txPower,jdbcType=DOUBLE},
+      </if>
+      <if test="voltage != null">
+        #{voltage,jdbcType=DOUBLE},
+      </if>
+      <if test="timesheet != null">
+        #{timesheet,jdbcType=BIGINT},
+      </if>
+      <if test="monthTime != null">
+        #{monthTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>

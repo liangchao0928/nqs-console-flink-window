@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eystar.gen.mapper.CPHeartbeatMapper">
+  <resultMap id="BaseResultMap" type="com.eystar.gen.entity.CPHeartbeat">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="probe_type" jdbcType="VARCHAR" property="probeType" />
+    <result column="probe_name" jdbcType="VARCHAR" property="probeName" />
+    <result column="task_size" jdbcType="INTEGER" property="taskSize" />
+    <result column="task_queue_size" jdbcType="INTEGER" property="taskQueueSize" />
+    <result column="soft_ver" jdbcType="VARCHAR" property="softVer" />
+    <result column="so_ver" jdbcType="VARCHAR" property="soVer" />
+    <result column="probe_id" jdbcType="VARCHAR" property="probeId" />
+    <result column="internet_ip" jdbcType="VARCHAR" property="internetIp" />
+    <result column="heartbeat_time" jdbcType="BIGINT" property="heartbeatTime" />
+    <result column="month_time" jdbcType="DATE" property="monthTime" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="create_hour" jdbcType="BIGINT" property="createHour" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.eystar.gen.entity.CPHeartbeat">
+    insert into c_p_heartbeat (id, type, probe_type,
+      probe_name, task_size, task_queue_size,
+      soft_ver, so_ver, probe_id,
+      internet_ip, heartbeat_time, month_time,
+      create_time, create_hour)
+    values (#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{probeType,jdbcType=VARCHAR},
+      #{probeName,jdbcType=VARCHAR}, #{taskSize,jdbcType=INTEGER}, #{taskQueueSize,jdbcType=INTEGER},
+      #{softVer,jdbcType=VARCHAR}, #{soVer,jdbcType=VARCHAR}, #{probeId,jdbcType=VARCHAR},
+      #{internetIp,jdbcType=VARCHAR}, #{heartbeatTime,jdbcType=BIGINT}, #{monthTime,jdbcType=DATE},
+      #{createTime,jdbcType=BIGINT}, #{createHour,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.eystar.gen.entity.CPHeartbeat">
+    insert into c_p_heartbeat
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="probeType != null">
+        probe_type,
+      </if>
+      <if test="probeName != null">
+        probe_name,
+      </if>
+      <if test="taskSize != null">
+        task_size,
+      </if>
+      <if test="taskQueueSize != null">
+        task_queue_size,
+      </if>
+      <if test="softVer != null">
+        soft_ver,
+      </if>
+      <if test="soVer != null">
+        so_ver,
+      </if>
+      <if test="probeId != null">
+        probe_id,
+      </if>
+      <if test="internetIp != null">
+        internet_ip,
+      </if>
+      <if test="heartbeatTime != null">
+        heartbeat_time,
+      </if>
+      <if test="monthTime != null">
+        month_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createHour != null">
+        create_hour,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="probeType != null">
+        #{probeType,jdbcType=VARCHAR},
+      </if>
+      <if test="probeName != null">
+        #{probeName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskSize != null">
+        #{taskSize,jdbcType=INTEGER},
+      </if>
+      <if test="taskQueueSize != null">
+        #{taskQueueSize,jdbcType=INTEGER},
+      </if>
+      <if test="softVer != null">
+        #{softVer,jdbcType=VARCHAR},
+      </if>
+      <if test="soVer != null">
+        #{soVer,jdbcType=VARCHAR},
+      </if>
+      <if test="probeId != null">
+        #{probeId,jdbcType=VARCHAR},
+      </if>
+      <if test="internetIp != null">
+        #{internetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="heartbeatTime != null">
+        #{heartbeatTime,jdbcType=BIGINT},
+      </if>
+      <if test="monthTime != null">
+        #{monthTime,jdbcType=DATE},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="createHour != null">
+        #{createHour,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eystar.gen.mapper.TPProbeAccessTypeMapper">
+  <resultMap id="BaseResultMap" type="com.eystar.gen.entity.TPProbeAccessType">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="probe_id" jdbcType="VARCHAR" property="probeId" />
+    <result column="access_type_name" jdbcType="VARCHAR" property="accessTypeName" />
+    <result column="is_default" jdbcType="SMALLINT" property="isDefault" />
+    <result column="mac" jdbcType="VARCHAR" property="mac" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="mask" jdbcType="VARCHAR" property="mask" />
+    <result column="dns" jdbcType="VARCHAR" property="dns" />
+    <result column="gateway" jdbcType="VARCHAR" property="gateway" />
+    <result column="link_type" jdbcType="VARCHAR" property="linkType" />
+    <result column="no" jdbcType="VARCHAR" property="no" />
+    <result column="connect_status" jdbcType="VARCHAR" property="connectStatus" />
+    <result column="speed" jdbcType="DOUBLE" property="speed" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, probe_id, access_type_name, is_default, mac, ip, mask, dns, gateway, link_type, 
+    no, connect_status, speed
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_p_probe_access_type
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByProbeId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_p_probe_access_type
+    where probe_id = #{probeId,jdbcType=VARCHAR}
+  </select>
+
+ <select id="findByAccessType" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_p_probe_access_type
+    where probe_id = #{probeId,jdbcType=VARCHAR} and access_type_name= #{accessTypeName,jdbcType=VARCHAR}
+  </select>
+
+
+  <delete id="deleteAccessTypeByName" parameterType="java.lang.String">
+  delete from t_p_probe_access_type
+   where probe_id = #{probeId,jdbcType=VARCHAR} and access_type_name= #{accessTypeName,jdbcType=VARCHAR}
+
+  </delete>
+
+
+
+  <insert id="insert" parameterType="com.eystar.gen.entity.TPProbeAccessType">
+    <selectKey resultType="java.lang.String" order="AFTER" keyProperty="productId">
+          select LAST_INSERT_ID()
+    </selectKey>
+        insert into t_p_probe_access_type (id, probe_id, access_type_name,
+      is_default, mac, ip, 
+      mask, dns, gateway, 
+      link_type, no, connect_status, 
+      speed)
+    values (#{id,jdbcType=VARCHAR}, #{probeId,jdbcType=VARCHAR}, #{accessTypeName,jdbcType=VARCHAR}, 
+      #{isDefault,jdbcType=SMALLINT}, #{mac,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{mask,jdbcType=VARCHAR}, #{dns,jdbcType=VARCHAR}, #{gateway,jdbcType=VARCHAR}, 
+      #{linkType,jdbcType=VARCHAR}, #{no,jdbcType=VARCHAR}, #{connectStatus,jdbcType=VARCHAR}, 
+      #{speed,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.eystar.gen.entity.TPProbeAccessType">
+    insert ignore into t_p_probe_access_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="probeId != null">
+        probe_id,
+      </if>
+      <if test="accessTypeName != null">
+        access_type_name,
+      </if>
+      <if test="isDefault != null">
+        is_default,
+      </if>
+      <if test="mac != null">
+        mac,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="mask != null">
+        mask,
+      </if>
+      <if test="dns != null">
+        dns,
+      </if>
+      <if test="gateway != null">
+        gateway,
+      </if>
+      <if test="linkType != null">
+        link_type,
+      </if>
+      <if test="no != null">
+        no,
+      </if>
+      <if test="connectStatus != null">
+        connect_status,
+      </if>
+      <if test="speed != null">
+        speed,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="probeId != null">
+        #{probeId,jdbcType=VARCHAR},
+      </if>
+      <if test="accessTypeName != null">
+        #{accessTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null">
+        #{isDefault,jdbcType=SMALLINT},
+      </if>
+      <if test="mac != null">
+        #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="mask != null">
+        #{mask,jdbcType=VARCHAR},
+      </if>
+      <if test="dns != null">
+        #{dns,jdbcType=VARCHAR},
+      </if>
+      <if test="gateway != null">
+        #{gateway,jdbcType=VARCHAR},
+      </if>
+      <if test="linkType != null">
+        #{linkType,jdbcType=VARCHAR},
+      </if>
+      <if test="no != null">
+        #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="connectStatus != null">
+        #{connectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="speed != null">
+        #{speed,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.eystar.gen.entity.TPProbeAccessType">
+    update t_p_probe_access_type
+    <set>
+      <if test="probeId != null">
+        probe_id = #{probeId,jdbcType=VARCHAR},
+      </if>
+      <if test="accessTypeName != null">
+        access_type_name = #{accessTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null">
+        is_default = #{isDefault,jdbcType=SMALLINT},
+      </if>
+      <if test="mac != null">
+        mac = #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="mask != null">
+        mask = #{mask,jdbcType=VARCHAR},
+      </if>
+      <if test="dns != null">
+        dns = #{dns,jdbcType=VARCHAR},
+      </if>
+      <if test="gateway != null">
+        gateway = #{gateway,jdbcType=VARCHAR},
+      </if>
+      <if test="linkType != null">
+        link_type = #{linkType,jdbcType=VARCHAR},
+      </if>
+      <if test="no != null">
+        no = #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="connectStatus != null">
+        connect_status = #{connectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="speed != null">
+        speed = #{speed,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.eystar.gen.entity.TPProbeAccessType">
+    update t_p_probe_access_type
+    set probe_id = #{probeId,jdbcType=VARCHAR},
+      access_type_name = #{accessTypeName,jdbcType=VARCHAR},
+      is_default = #{isDefault,jdbcType=SMALLINT},
+      mac = #{mac,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      mask = #{mask,jdbcType=VARCHAR},
+      dns = #{dns,jdbcType=VARCHAR},
+      gateway = #{gateway,jdbcType=VARCHAR},
+      link_type = #{linkType,jdbcType=VARCHAR},
+      no = #{no,jdbcType=VARCHAR},
+      connect_status = #{connectStatus,jdbcType=VARCHAR},
+      speed = #{speed,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

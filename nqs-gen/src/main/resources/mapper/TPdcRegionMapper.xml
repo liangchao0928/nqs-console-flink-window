@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eystar.gen.mapper.TPdcRegionMapper">
+  <resultMap id="BaseResultMap" type="com.eystar.gen.entity.TPdcRegion">
+    <id column="r_code" jdbcType="BIGINT" property="rCode" />
+    <result column="r_name" jdbcType="VARCHAR" property="rName" />
+    <result column="r_level" jdbcType="SMALLINT" property="rLevel" />
+    <result column="r_parent_code" jdbcType="BIGINT" property="rParentCode" />
+    <result column="r_tag" jdbcType="VARCHAR" property="rTag" />
+    <result column="region_path" jdbcType="VARCHAR" property="regionPath" />
+    <result column="region_name_path" jdbcType="VARCHAR" property="regionNamePath" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    r_code, r_name, r_level, r_parent_code, r_tag, region_path, region_name_path
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_pdc_region
+    where r_code = #{rCode,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_pdc_region
+    where r_code = #{rCode,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.eystar.gen.entity.TPdcRegion">
+    insert into t_pdc_region (r_code, r_name, r_level, 
+      r_parent_code, r_tag, region_path, 
+      region_name_path)
+    values (#{rCode,jdbcType=BIGINT}, #{rName,jdbcType=VARCHAR}, #{rLevel,jdbcType=SMALLINT}, 
+      #{rParentCode,jdbcType=BIGINT}, #{rTag,jdbcType=VARCHAR}, #{regionPath,jdbcType=VARCHAR}, 
+      #{regionNamePath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.eystar.gen.entity.TPdcRegion">
+    insert into t_pdc_region
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rCode != null">
+        r_code,
+      </if>
+      <if test="rName != null">
+        r_name,
+      </if>
+      <if test="rLevel != null">
+        r_level,
+      </if>
+      <if test="rParentCode != null">
+        r_parent_code,
+      </if>
+      <if test="rTag != null">
+        r_tag,
+      </if>
+      <if test="regionPath != null">
+        region_path,
+      </if>
+      <if test="regionNamePath != null">
+        region_name_path,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rCode != null">
+        #{rCode,jdbcType=BIGINT},
+      </if>
+      <if test="rName != null">
+        #{rName,jdbcType=VARCHAR},
+      </if>
+      <if test="rLevel != null">
+        #{rLevel,jdbcType=SMALLINT},
+      </if>
+      <if test="rParentCode != null">
+        #{rParentCode,jdbcType=BIGINT},
+      </if>
+      <if test="rTag != null">
+        #{rTag,jdbcType=VARCHAR},
+      </if>
+      <if test="regionPath != null">
+        #{regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="regionNamePath != null">
+        #{regionNamePath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eystar.gen.entity.TPdcRegion">
+    update t_pdc_region
+    <set>
+      <if test="rName != null">
+        r_name = #{rName,jdbcType=VARCHAR},
+      </if>
+      <if test="rLevel != null">
+        r_level = #{rLevel,jdbcType=SMALLINT},
+      </if>
+      <if test="rParentCode != null">
+        r_parent_code = #{rParentCode,jdbcType=BIGINT},
+      </if>
+      <if test="rTag != null">
+        r_tag = #{rTag,jdbcType=VARCHAR},
+      </if>
+      <if test="regionPath != null">
+        region_path = #{regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="regionNamePath != null">
+        region_name_path = #{regionNamePath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where r_code = #{rCode,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eystar.gen.entity.TPdcRegion">
+    update t_pdc_region
+    set r_name = #{rName,jdbcType=VARCHAR},
+      r_level = #{rLevel,jdbcType=SMALLINT},
+      r_parent_code = #{rParentCode,jdbcType=BIGINT},
+      r_tag = #{rTag,jdbcType=VARCHAR},
+      region_path = #{regionPath,jdbcType=VARCHAR},
+      region_name_path = #{regionNamePath,jdbcType=VARCHAR}
+    where r_code = #{rCode,jdbcType=BIGINT}
+  </update>
+
+
+  <update id="updateRname" parameterType="java.lang.String">
+    update t_pdc_region
+    set r_name = #{rName,jdbcType=VARCHAR},
+      r_level =#{levle,jdbcType=SMALLINT}
+    where r_name = #{rNameDb,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateRnameLike" parameterType="java.lang.String">
+    update t_pdc_region
+    set region_name_path = replace(region_name_path,''+ #{rNameDb,jdbcType=VARCHAR} + '/','' +  #{rName,jdbcType=VARCHAR} + '/')
+    where region_name_path like '' + #{rNameDb,jdbcType=VARCHAR} + '/%'
+  </update>
+
+
+  <select id="selectByPathNameLike" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_pdc_region
+    where region_name_path like ''+#{pathName,jdbcType=VARCHAR} + '/%'
+  </select>
+
+</mapper>

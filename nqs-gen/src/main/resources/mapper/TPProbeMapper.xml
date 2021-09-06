@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eystar.gen.mapper.TPProbeMapper">
+  <resultMap id="BaseResultMap" type="com.eystar.gen.entity.TPProbe">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="probe_name" jdbcType="VARCHAR" property="probeName" />
+    <result column="probe_alias" jdbcType="VARCHAR" property="probeAlias" />
+    <result column="type" jdbcType="SMALLINT" property="type" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="internet_ip" jdbcType="VARCHAR" property="internetIp" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="operator" jdbcType="SMALLINT" property="operator" />
+    <result column="soft_ver" jdbcType="VARCHAR" property="softVer" />
+    <result column="hb_interval" jdbcType="INTEGER" property="hbInterval" />
+    <result column="log_interval" jdbcType="INTEGER" property="logInterval" />
+    <result column="data_interval" jdbcType="INTEGER" property="dataInterval" />
+    <result column="flow_interval" jdbcType="INTEGER" property="flowInterval" />
+    <result column="info_interval" jdbcType="INTEGER" property="infoInterval" />
+    <result column="last_regist_time" jdbcType="BIGINT" property="lastRegistTime" />
+    <result column="last_heartbeat_time" jdbcType="BIGINT" property="lastHeartbeatTime" />
+    <result column="mq_url" jdbcType="VARCHAR" property="mqUrl" />
+    <result column="communicate_url" jdbcType="VARCHAR" property="communicateUrl" />
+    <result column="flash_server_url" jdbcType="VARCHAR" property="flashServerUrl" />
+    <result column="auth_url" jdbcType="VARCHAR" property="authUrl" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="task_num" jdbcType="INTEGER" property="taskNum" />
+    <result column="loid" jdbcType="VARCHAR" property="loid" />
+    <result column="vendor" jdbcType="VARCHAR" property="vendor" />
+    <result column="sn" jdbcType="VARCHAR" property="sn" />
+    <result column="pc" jdbcType="VARCHAR" property="pc" />
+    <result column="ram_size" jdbcType="REAL" property="ramSize" />
+    <result column="flash_size" jdbcType="REAL" property="flashSize" />
+    <result column="mac" jdbcType="VARCHAR" property="mac" />
+    <result column="firm_ver" jdbcType="VARCHAR" property="firmVer" />
+    <result column="hard_ver" jdbcType="VARCHAR" property="hardVer" />
+    <result column="cpu" jdbcType="VARCHAR" property="cpu" />
+    <result column="province_code" jdbcType="BIGINT" property="provinceCode" />
+    <result column="province_name" jdbcType="VARCHAR" property="provinceName" />
+    <result column="city_code" jdbcType="BIGINT" property="cityCode" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="district_code" jdbcType="BIGINT" property="districtCode" />
+    <result column="district_name" jdbcType="VARCHAR" property="districtName" />
+    <result column="town_code" jdbcType="BIGINT" property="townCode" />
+    <result column="town_name" jdbcType="VARCHAR" property="townName" />
+    <result column="region_path" jdbcType="VARCHAR" property="regionPath" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="lat" jdbcType="REAL" property="lat" />
+    <result column="lng" jdbcType="REAL" property="lng" />
+    <result column="bras_ip" jdbcType="VARCHAR" property="brasIp" />
+    <result column="cr_ip" jdbcType="VARCHAR" property="crIp" />
+    <result column="nat_ip" jdbcType="VARCHAR" property="natIp" />
+    <result column="olt_ip" jdbcType="VARCHAR" property="oltIp" />
+    <result column="so_ver" jdbcType="VARCHAR" property="soVer" />
+    <result column="task_queue_size" jdbcType="INTEGER" property="taskQueueSize" />
+    <result column="task_size" jdbcType="INTEGER" property="taskSize" />
+    <result column="cpu_rate" jdbcType="REAL" property="cpuRate" />
+    <result column="ram_rate" jdbcType="REAL" property="ramRate" />
+    <result column="pppoe_username" jdbcType="VARCHAR" property="pppoeUsername" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+    <result column="delete_flag" jdbcType="SMALLINT" property="deleteFlag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, probe_name, probe_alias, type, ip, internet_ip, status, operator, soft_ver, hb_interval, 
+    log_interval, data_interval, flow_interval, info_interval, last_regist_time, last_heartbeat_time, 
+    mq_url, communicate_url, flash_server_url, auth_url, memo, task_num, loid, vendor, 
+    sn, pc, ram_size, flash_size, mac, firm_ver, hard_ver, cpu, province_code, province_name, 
+    city_code, city_name, district_code, district_name, town_code, town_name, region_path, 
+    address, lat, lng, bras_ip, cr_ip, nat_ip, olt_ip, so_ver, task_queue_size, task_size, 
+    cpu_rate, ram_rate, pppoe_username, create_user, update_user, create_time, update_time, 
+    delete_flag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_p_probe
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_p_probe
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eystar.gen.entity.TPProbe">
+    insert into t_p_probe (id,probe_name, probe_alias, type,
+      ip, internet_ip, status, 
+      operator, soft_ver, hb_interval, 
+      log_interval, data_interval, flow_interval, 
+      info_interval, last_regist_time, last_heartbeat_time, 
+      mq_url, communicate_url, flash_server_url, 
+      auth_url, memo, task_num, 
+      loid, vendor, sn, pc, 
+      ram_size, flash_size, mac, 
+      firm_ver, hard_ver, cpu, 
+      province_code, province_name, city_code, 
+      city_name, district_code, district_name, 
+      town_code, town_name, region_path, 
+      address, lat, lng, bras_ip, 
+      cr_ip, nat_ip, olt_ip, 
+      so_ver, task_queue_size, task_size, 
+      cpu_rate, ram_rate, pppoe_username, 
+      create_user, update_user, create_time, 
+      update_time, delete_flag)
+    values (#{id,jdbcType=VARCHAR},#{probeName,jdbcType=VARCHAR}, #{probeAlias,jdbcType=VARCHAR}, #{type,jdbcType=SMALLINT},
+      #{ip,jdbcType=VARCHAR}, #{internetIp,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, 
+      #{operator,jdbcType=SMALLINT}, #{softVer,jdbcType=VARCHAR}, #{hbInterval,jdbcType=INTEGER}, 
+      #{logInterval,jdbcType=INTEGER}, #{dataInterval,jdbcType=INTEGER}, #{flowInterval,jdbcType=INTEGER}, 
+      #{infoInterval,jdbcType=INTEGER}, #{lastRegistTime,jdbcType=BIGINT}, #{lastHeartbeatTime,jdbcType=BIGINT}, 
+      #{mqUrl,jdbcType=VARCHAR}, #{communicateUrl,jdbcType=VARCHAR}, #{flashServerUrl,jdbcType=VARCHAR}, 
+      #{authUrl,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{taskNum,jdbcType=INTEGER}, 
+      #{loid,jdbcType=VARCHAR}, #{vendor,jdbcType=VARCHAR}, #{sn,jdbcType=VARCHAR}, #{pc,jdbcType=VARCHAR}, 
+      #{ramSize,jdbcType=REAL}, #{flashSize,jdbcType=REAL}, #{mac,jdbcType=VARCHAR}, 
+      #{firmVer,jdbcType=VARCHAR}, #{hardVer,jdbcType=VARCHAR}, #{cpu,jdbcType=VARCHAR}, 
+      #{provinceCode,jdbcType=BIGINT}, #{provinceName,jdbcType=VARCHAR}, #{cityCode,jdbcType=BIGINT}, 
+      #{cityName,jdbcType=VARCHAR}, #{districtCode,jdbcType=BIGINT}, #{districtName,jdbcType=VARCHAR}, 
+      #{townCode,jdbcType=BIGINT}, #{townName,jdbcType=VARCHAR}, #{regionPath,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{lat,jdbcType=REAL}, #{lng,jdbcType=REAL}, #{brasIp,jdbcType=VARCHAR}, 
+      #{crIp,jdbcType=VARCHAR}, #{natIp,jdbcType=VARCHAR}, #{oltIp,jdbcType=VARCHAR}, 
+      #{soVer,jdbcType=VARCHAR}, #{taskQueueSize,jdbcType=INTEGER}, #{taskSize,jdbcType=INTEGER}, 
+      #{cpuRate,jdbcType=REAL}, #{ramRate,jdbcType=REAL}, #{pppoeUsername,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT}, #{deleteFlag,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.eystar.gen.entity.TPProbe">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_p_probe
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="probeName != null">
+        probe_name,
+      </if>
+      <if test="probeAlias != null">
+        probe_alias,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="internetIp != null">
+        internet_ip,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="softVer != null">
+        soft_ver,
+      </if>
+      <if test="hbInterval != null">
+        hb_interval,
+      </if>
+      <if test="logInterval != null">
+        log_interval,
+      </if>
+      <if test="dataInterval != null">
+        data_interval,
+      </if>
+      <if test="flowInterval != null">
+        flow_interval,
+      </if>
+      <if test="infoInterval != null">
+        info_interval,
+      </if>
+      <if test="lastRegistTime != null">
+        last_regist_time,
+      </if>
+      <if test="lastHeartbeatTime != null">
+        last_heartbeat_time,
+      </if>
+      <if test="mqUrl != null">
+        mq_url,
+      </if>
+      <if test="communicateUrl != null">
+        communicate_url,
+      </if>
+      <if test="flashServerUrl != null">
+        flash_server_url,
+      </if>
+      <if test="authUrl != null">
+        auth_url,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="taskNum != null">
+        task_num,
+      </if>
+      <if test="loid != null">
+        loid,
+      </if>
+      <if test="vendor != null">
+        vendor,
+      </if>
+      <if test="sn != null">
+        sn,
+      </if>
+      <if test="pc != null">
+        pc,
+      </if>
+      <if test="ramSize != null">
+        ram_size,
+      </if>
+      <if test="flashSize != null">
+        flash_size,
+      </if>
+      <if test="mac != null">
+        mac,
+      </if>
+      <if test="firmVer != null">
+        firm_ver,
+      </if>
+      <if test="hardVer != null">
+        hard_ver,
+      </if>
+      <if test="cpu != null">
+        cpu,
+      </if>
+      <if test="provinceCode != null">
+        province_code,
+      </if>
+      <if test="provinceName != null">
+        province_name,
+      </if>
+      <if test="cityCode != null">
+        city_code,
+      </if>
+      <if test="cityName != null">
+        city_name,
+      </if>
+      <if test="districtCode != null">
+        district_code,
+      </if>
+      <if test="districtName != null">
+        district_name,
+      </if>
+      <if test="townCode != null">
+        town_code,
+      </if>
+      <if test="townName != null">
+        town_name,
+      </if>
+      <if test="regionPath != null">
+        region_path,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="lat != null">
+        lat,
+      </if>
+      <if test="lng != null">
+        lng,
+      </if>
+      <if test="brasIp != null">
+        bras_ip,
+      </if>
+      <if test="crIp != null">
+        cr_ip,
+      </if>
+      <if test="natIp != null">
+        nat_ip,
+      </if>
+      <if test="oltIp != null">
+        olt_ip,
+      </if>
+      <if test="soVer != null">
+        so_ver,
+      </if>
+      <if test="taskQueueSize != null">
+        task_queue_size,
+      </if>
+      <if test="taskSize != null">
+        task_size,
+      </if>
+      <if test="cpuRate != null">
+        cpu_rate,
+      </if>
+      <if test="ramRate != null">
+        ram_rate,
+      </if>
+      <if test="pppoeUsername != null">
+        pppoe_username,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag,
+      </if>
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="probeName != null">
+        #{probeName,jdbcType=VARCHAR},
+      </if>
+      <if test="probeAlias != null">
+        #{probeAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="internetIp != null">
+        #{internetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=SMALLINT},
+      </if>
+      <if test="softVer != null">
+        #{softVer,jdbcType=VARCHAR},
+      </if>
+      <if test="hbInterval != null">
+        #{hbInterval,jdbcType=INTEGER},
+      </if>
+      <if test="logInterval != null">
+        #{logInterval,jdbcType=INTEGER},
+      </if>
+      <if test="dataInterval != null">
+        #{dataInterval,jdbcType=INTEGER},
+      </if>
+      <if test="flowInterval != null">
+        #{flowInterval,jdbcType=INTEGER},
+      </if>
+      <if test="infoInterval != null">
+        #{infoInterval,jdbcType=INTEGER},
+      </if>
+      <if test="lastRegistTime != null">
+        #{lastRegistTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastHeartbeatTime != null">
+        #{lastHeartbeatTime,jdbcType=BIGINT},
+      </if>
+      <if test="mqUrl != null">
+        #{mqUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="communicateUrl != null">
+        #{communicateUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="flashServerUrl != null">
+        #{flashServerUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="authUrl != null">
+        #{authUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="taskNum != null">
+        #{taskNum,jdbcType=INTEGER},
+      </if>
+      <if test="loid != null">
+        #{loid,jdbcType=VARCHAR},
+      </if>
+      <if test="vendor != null">
+        #{vendor,jdbcType=VARCHAR},
+      </if>
+      <if test="sn != null">
+        #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="pc != null">
+        #{pc,jdbcType=VARCHAR},
+      </if>
+      <if test="ramSize != null">
+        #{ramSize,jdbcType=REAL},
+      </if>
+      <if test="flashSize != null">
+        #{flashSize,jdbcType=REAL},
+      </if>
+      <if test="mac != null">
+        #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="firmVer != null">
+        #{firmVer,jdbcType=VARCHAR},
+      </if>
+      <if test="hardVer != null">
+        #{hardVer,jdbcType=VARCHAR},
+      </if>
+      <if test="cpu != null">
+        #{cpu,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceCode != null">
+        #{provinceCode,jdbcType=BIGINT},
+      </if>
+      <if test="provinceName != null">
+        #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        #{cityCode,jdbcType=BIGINT},
+      </if>
+      <if test="cityName != null">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtCode != null">
+        #{districtCode,jdbcType=BIGINT},
+      </if>
+      <if test="districtName != null">
+        #{districtName,jdbcType=VARCHAR},
+      </if>
+      <if test="townCode != null">
+        #{townCode,jdbcType=BIGINT},
+      </if>
+      <if test="townName != null">
+        #{townName,jdbcType=VARCHAR},
+      </if>
+      <if test="regionPath != null">
+        #{regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null">
+        #{lat,jdbcType=REAL},
+      </if>
+      <if test="lng != null">
+        #{lng,jdbcType=REAL},
+      </if>
+      <if test="brasIp != null">
+        #{brasIp,jdbcType=VARCHAR},
+      </if>
+      <if test="crIp != null">
+        #{crIp,jdbcType=VARCHAR},
+      </if>
+      <if test="natIp != null">
+        #{natIp,jdbcType=VARCHAR},
+      </if>
+      <if test="oltIp != null">
+        #{oltIp,jdbcType=VARCHAR},
+      </if>
+      <if test="soVer != null">
+        #{soVer,jdbcType=VARCHAR},
+      </if>
+      <if test="taskQueueSize != null">
+        #{taskQueueSize,jdbcType=INTEGER},
+      </if>
+      <if test="taskSize != null">
+        #{taskSize,jdbcType=INTEGER},
+      </if>
+      <if test="cpuRate != null">
+        #{cpuRate,jdbcType=REAL},
+      </if>
+      <if test="ramRate != null">
+        #{ramRate,jdbcType=REAL},
+      </if>
+      <if test="pppoeUsername != null">
+        #{pppoeUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=SMALLINT},
+      </if>
+      #{id,jdbcType=VARCHAR},
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eystar.gen.entity.TPProbe">
+    update t_p_probe
+    <set>
+      <if test="probeName != null">
+        probe_name = #{probeName,jdbcType=VARCHAR},
+      </if>
+      <if test="probeAlias != null">
+        probe_alias = #{probeAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=SMALLINT},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="internetIp != null">
+        internet_ip = #{internetIp,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=SMALLINT},
+      </if>
+      <if test="softVer != null">
+        soft_ver = #{softVer,jdbcType=VARCHAR},
+      </if>
+      <if test="hbInterval != null">
+        hb_interval = #{hbInterval,jdbcType=INTEGER},
+      </if>
+      <if test="logInterval != null">
+        log_interval = #{logInterval,jdbcType=INTEGER},
+      </if>
+      <if test="dataInterval != null">
+        data_interval = #{dataInterval,jdbcType=INTEGER},
+      </if>
+      <if test="flowInterval != null">
+        flow_interval = #{flowInterval,jdbcType=INTEGER},
+      </if>
+      <if test="infoInterval != null">
+        info_interval = #{infoInterval,jdbcType=INTEGER},
+      </if>
+      <if test="lastRegistTime != null">
+        last_regist_time = #{lastRegistTime,jdbcType=BIGINT},
+      </if>
+      <if test="lastHeartbeatTime != null">
+        last_heartbeat_time = #{lastHeartbeatTime,jdbcType=BIGINT},
+      </if>
+      <if test="mqUrl != null">
+        mq_url = #{mqUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="communicateUrl != null">
+        communicate_url = #{communicateUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="flashServerUrl != null">
+        flash_server_url = #{flashServerUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="authUrl != null">
+        auth_url = #{authUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="taskNum != null">
+        task_num = #{taskNum,jdbcType=INTEGER},
+      </if>
+      <if test="loid != null">
+        loid = #{loid,jdbcType=VARCHAR},
+      </if>
+      <if test="vendor != null">
+        vendor = #{vendor,jdbcType=VARCHAR},
+      </if>
+      <if test="sn != null">
+        sn = #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="pc != null">
+        pc = #{pc,jdbcType=VARCHAR},
+      </if>
+      <if test="ramSize != null">
+        ram_size = #{ramSize,jdbcType=REAL},
+      </if>
+      <if test="flashSize != null">
+        flash_size = #{flashSize,jdbcType=REAL},
+      </if>
+      <if test="mac != null">
+        mac = #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="firmVer != null">
+        firm_ver = #{firmVer,jdbcType=VARCHAR},
+      </if>
+      <if test="hardVer != null">
+        hard_ver = #{hardVer,jdbcType=VARCHAR},
+      </if>
+      <if test="cpu != null">
+        cpu = #{cpu,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceCode != null">
+        province_code = #{provinceCode,jdbcType=BIGINT},
+      </if>
+      <if test="provinceName != null">
+        province_name = #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        city_code = #{cityCode,jdbcType=BIGINT},
+      </if>
+      <if test="cityName != null">
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtCode != null">
+        district_code = #{districtCode,jdbcType=BIGINT},
+      </if>
+      <if test="districtName != null">
+        district_name = #{districtName,jdbcType=VARCHAR},
+      </if>
+      <if test="townCode != null">
+        town_code = #{townCode,jdbcType=BIGINT},
+      </if>
+      <if test="townName != null">
+        town_name = #{townName,jdbcType=VARCHAR},
+      </if>
+      <if test="regionPath != null">
+        region_path = #{regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null">
+        lat = #{lat,jdbcType=REAL},
+      </if>
+      <if test="lng != null">
+        lng = #{lng,jdbcType=REAL},
+      </if>
+      <if test="brasIp != null">
+        bras_ip = #{brasIp,jdbcType=VARCHAR},
+      </if>
+      <if test="crIp != null">
+        cr_ip = #{crIp,jdbcType=VARCHAR},
+      </if>
+      <if test="natIp != null">
+        nat_ip = #{natIp,jdbcType=VARCHAR},
+      </if>
+      <if test="oltIp != null">
+        olt_ip = #{oltIp,jdbcType=VARCHAR},
+      </if>
+      <if test="soVer != null">
+        so_ver = #{soVer,jdbcType=VARCHAR},
+      </if>
+      <if test="taskQueueSize != null">
+        task_queue_size = #{taskQueueSize,jdbcType=INTEGER},
+      </if>
+      <if test="taskSize != null">
+        task_size = #{taskSize,jdbcType=INTEGER},
+      </if>
+      <if test="cpuRate != null">
+        cpu_rate = #{cpuRate,jdbcType=REAL},
+      </if>
+      <if test="ramRate != null">
+        ram_rate = #{ramRate,jdbcType=REAL},
+      </if>
+      <if test="pppoeUsername != null">
+        pppoe_username = #{pppoeUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag = #{deleteFlag,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eystar.gen.entity.TPProbe">
+    update t_p_probe
+    set probe_name = #{probeName,jdbcType=VARCHAR},
+      probe_alias = #{probeAlias,jdbcType=VARCHAR},
+      type = #{type,jdbcType=SMALLINT},
+      ip = #{ip,jdbcType=VARCHAR},
+      internet_ip = #{internetIp,jdbcType=VARCHAR},
+      status = #{status,jdbcType=SMALLINT},
+      operator = #{operator,jdbcType=SMALLINT},
+      soft_ver = #{softVer,jdbcType=VARCHAR},
+      hb_interval = #{hbInterval,jdbcType=INTEGER},
+      log_interval = #{logInterval,jdbcType=INTEGER},
+      data_interval = #{dataInterval,jdbcType=INTEGER},
+      flow_interval = #{flowInterval,jdbcType=INTEGER},
+      info_interval = #{infoInterval,jdbcType=INTEGER},
+      last_regist_time = #{lastRegistTime,jdbcType=BIGINT},
+      last_heartbeat_time = #{lastHeartbeatTime,jdbcType=BIGINT},
+      mq_url = #{mqUrl,jdbcType=VARCHAR},
+      communicate_url = #{communicateUrl,jdbcType=VARCHAR},
+      flash_server_url = #{flashServerUrl,jdbcType=VARCHAR},
+      auth_url = #{authUrl,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      task_num = #{taskNum,jdbcType=INTEGER},
+      loid = #{loid,jdbcType=VARCHAR},
+      vendor = #{vendor,jdbcType=VARCHAR},
+      sn = #{sn,jdbcType=VARCHAR},
+      pc = #{pc,jdbcType=VARCHAR},
+      ram_size = #{ramSize,jdbcType=REAL},
+      flash_size = #{flashSize,jdbcType=REAL},
+      mac = #{mac,jdbcType=VARCHAR},
+      firm_ver = #{firmVer,jdbcType=VARCHAR},
+      hard_ver = #{hardVer,jdbcType=VARCHAR},
+      cpu = #{cpu,jdbcType=VARCHAR},
+      province_code = #{provinceCode,jdbcType=BIGINT},
+      province_name = #{provinceName,jdbcType=VARCHAR},
+      city_code = #{cityCode,jdbcType=BIGINT},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      district_code = #{districtCode,jdbcType=BIGINT},
+      district_name = #{districtName,jdbcType=VARCHAR},
+      town_code = #{townCode,jdbcType=BIGINT},
+      town_name = #{townName,jdbcType=VARCHAR},
+      region_path = #{regionPath,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=REAL},
+      lng = #{lng,jdbcType=REAL},
+      bras_ip = #{brasIp,jdbcType=VARCHAR},
+      cr_ip = #{crIp,jdbcType=VARCHAR},
+      nat_ip = #{natIp,jdbcType=VARCHAR},
+      olt_ip = #{oltIp,jdbcType=VARCHAR},
+      so_ver = #{soVer,jdbcType=VARCHAR},
+      task_queue_size = #{taskQueueSize,jdbcType=INTEGER},
+      task_size = #{taskSize,jdbcType=INTEGER},
+      cpu_rate = #{cpuRate,jdbcType=REAL},
+      ram_rate = #{ramRate,jdbcType=REAL},
+      pppoe_username = #{pppoeUsername,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      delete_flag = #{deleteFlag,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+</mapper>

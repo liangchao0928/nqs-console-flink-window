@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eystar.gen.mapper.TTTaskParamMapper">
+  <resultMap id="BaseResultMap" type="com.eystar.gen.entity.TTTaskParam">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="task_param_name" jdbcType="VARCHAR" property="taskParamName" />
+    <result column="task_param_type" jdbcType="SMALLINT" property="taskParamType" />
+    <result column="task_type_name" jdbcType="VARCHAR" property="taskTypeName" />
+    <result column="task_from" jdbcType="SMALLINT" property="taskFrom" />
+    <result column="template_id" jdbcType="VARCHAR" property="templateId" />
+    <result column="run_status" jdbcType="SMALLINT" property="runStatus" />
+    <result column="modify_type" jdbcType="VARCHAR" property="modifyType" />
+    <result column="test_date" jdbcType="SMALLINT" property="testDate" />
+    <result column="start_date" jdbcType="VARCHAR" property="startDate" />
+    <result column="end_date" jdbcType="VARCHAR" property="endDate" />
+    <result column="test_time" jdbcType="SMALLINT" property="testTime" />
+    <result column="start_time" jdbcType="VARCHAR" property="startTime" />
+    <result column="end_time" jdbcType="VARCHAR" property="endTime" />
+    <result column="interval" jdbcType="INTEGER" property="interval" />
+    <result column="priority" jdbcType="SMALLINT" property="priority" />
+    <result column="exec_times" jdbcType="SMALLINT" property="execTimes" />
+    <result column="region_for" jdbcType="SMALLINT" property="regionFor" />
+    <result column="region_num" jdbcType="INTEGER" property="regionNum" />
+    <result column="user_region" jdbcType="BIGINT" property="userRegion" />
+    <result column="region_path" jdbcType="VARCHAR" property="regionPath" />
+    <result column="task_num" jdbcType="INTEGER" property="taskNum" />
+    <result column="is_alarm" jdbcType="SMALLINT" property="isAlarm" />
+    <result column="alarm_template_id" jdbcType="VARCHAR" property="alarmTemplateId" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+    <result column="delete_flag" jdbcType="SMALLINT" property="deleteFlag" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.eystar.gen.entity.TTTaskParam">
+    <result column="param_json" jdbcType="LONGVARCHAR" property="paramJson" />
+    <result column="template_json" jdbcType="LONGVARCHAR" property="templateJson" />
+    <result column="topo_json" jdbcType="LONGVARCHAR" property="topoJson" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, task_param_name, task_param_type, task_type_name, task_from, template_id, run_status, 
+    modify_type, test_date, start_date, end_date, test_time, start_time, end_time, interval, 
+    priority, exec_times, region_for, region_num, user_region, region_path, task_num, 
+    is_alarm, alarm_template_id, memo, create_user, update_user, create_time, update_time, 
+    delete_flag
+  </sql>
+  <sql id="Blob_Column_List">
+    param_json, template_json, topo_json
+  </sql>
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select  * from t_t_task_param
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_t_task_param
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.eystar.gen.entity.TTTaskParam">
+    insert into t_t_task_param (id, task_param_name, task_param_type, 
+      task_type_name, task_from, template_id, 
+      run_status, modify_type, test_date, 
+      start_date, end_date, test_time, 
+      start_time, end_time, interval, 
+      priority, exec_times, region_for, 
+      region_num, user_region, region_path, 
+      task_num, is_alarm, alarm_template_id, 
+      memo, create_user, update_user, 
+      create_time, update_time, delete_flag, 
+      param_json, template_json, topo_json
+      )
+    values (#{id,jdbcType=VARCHAR}, #{taskParamName,jdbcType=VARCHAR}, #{taskParamType,jdbcType=SMALLINT}, 
+      #{taskTypeName,jdbcType=VARCHAR}, #{taskFrom,jdbcType=SMALLINT}, #{templateId,jdbcType=VARCHAR}, 
+      #{runStatus,jdbcType=SMALLINT}, #{modifyType,jdbcType=VARCHAR}, #{testDate,jdbcType=SMALLINT}, 
+      #{startDate,jdbcType=VARCHAR}, #{endDate,jdbcType=VARCHAR}, #{testTime,jdbcType=SMALLINT}, 
+      #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{interval,jdbcType=INTEGER}, 
+      #{priority,jdbcType=SMALLINT}, #{execTimes,jdbcType=SMALLINT}, #{regionFor,jdbcType=SMALLINT}, 
+      #{regionNum,jdbcType=INTEGER}, #{userRegion,jdbcType=BIGINT}, #{regionPath,jdbcType=VARCHAR}, 
+      #{taskNum,jdbcType=INTEGER}, #{isAlarm,jdbcType=SMALLINT}, #{alarmTemplateId,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{deleteFlag,jdbcType=SMALLINT}, 
+      #{paramJson,jdbcType=LONGVARCHAR}, #{templateJson,jdbcType=LONGVARCHAR}, #{topoJson,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.eystar.gen.entity.TTTaskParam">
+    insert into t_t_task_param
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="taskParamName != null">
+        task_param_name,
+      </if>
+      <if test="taskParamType != null">
+        task_param_type,
+      </if>
+      <if test="taskTypeName != null">
+        task_type_name,
+      </if>
+      <if test="taskFrom != null">
+        task_from,
+      </if>
+      <if test="templateId != null">
+        template_id,
+      </if>
+      <if test="runStatus != null">
+        run_status,
+      </if>
+      <if test="modifyType != null">
+        modify_type,
+      </if>
+      <if test="testDate != null">
+        test_date,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="endDate != null">
+        end_date,
+      </if>
+      <if test="testTime != null">
+        test_time,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="interval != null">
+        interval,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="execTimes != null">
+        exec_times,
+      </if>
+      <if test="regionFor != null">
+        region_for,
+      </if>
+      <if test="regionNum != null">
+        region_num,
+      </if>
+      <if test="userRegion != null">
+        user_region,
+      </if>
+      <if test="regionPath != null">
+        region_path,
+      </if>
+      <if test="taskNum != null">
+        task_num,
+      </if>
+      <if test="isAlarm != null">
+        is_alarm,
+      </if>
+      <if test="alarmTemplateId != null">
+        alarm_template_id,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag,
+      </if>
+      <if test="paramJson != null">
+        param_json,
+      </if>
+      <if test="templateJson != null">
+        template_json,
+      </if>
+      <if test="topoJson != null">
+        topo_json,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="taskParamName != null">
+        #{taskParamName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskParamType != null">
+        #{taskParamType,jdbcType=SMALLINT},
+      </if>
+      <if test="taskTypeName != null">
+        #{taskTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskFrom != null">
+        #{taskFrom,jdbcType=SMALLINT},
+      </if>
+      <if test="templateId != null">
+        #{templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="runStatus != null">
+        #{runStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="modifyType != null">
+        #{modifyType,jdbcType=VARCHAR},
+      </if>
+      <if test="testDate != null">
+        #{testDate,jdbcType=SMALLINT},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="testTime != null">
+        #{testTime,jdbcType=SMALLINT},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="interval != null">
+        #{interval,jdbcType=INTEGER},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=SMALLINT},
+      </if>
+      <if test="execTimes != null">
+        #{execTimes,jdbcType=SMALLINT},
+      </if>
+      <if test="regionFor != null">
+        #{regionFor,jdbcType=SMALLINT},
+      </if>
+      <if test="regionNum != null">
+        #{regionNum,jdbcType=INTEGER},
+      </if>
+      <if test="userRegion != null">
+        #{userRegion,jdbcType=BIGINT},
+      </if>
+      <if test="regionPath != null">
+        #{regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="taskNum != null">
+        #{taskNum,jdbcType=INTEGER},
+      </if>
+      <if test="isAlarm != null">
+        #{isAlarm,jdbcType=SMALLINT},
+      </if>
+      <if test="alarmTemplateId != null">
+        #{alarmTemplateId,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="paramJson != null">
+        #{paramJson,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="templateJson != null">
+        #{templateJson,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="topoJson != null">
+        #{topoJson,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.eystar.gen.entity.TTTaskParam">
+    update t_t_task_param
+    <set>
+      <if test="taskParamName != null">
+        task_param_name = #{taskParamName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskParamType != null">
+        task_param_type = #{taskParamType,jdbcType=SMALLINT},
+      </if>
+      <if test="taskTypeName != null">
+        task_type_name = #{taskTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskFrom != null">
+        task_from = #{taskFrom,jdbcType=SMALLINT},
+      </if>
+      <if test="templateId != null">
+        template_id = #{templateId,jdbcType=VARCHAR},
+      </if>
+      <if test="runStatus != null">
+        run_status = #{runStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="modifyType != null">
+        modify_type = #{modifyType,jdbcType=VARCHAR},
+      </if>
+      <if test="testDate != null">
+        test_date = #{testDate,jdbcType=SMALLINT},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null">
+        end_date = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="testTime != null">
+        test_time = #{testTime,jdbcType=SMALLINT},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="interval != null">
+        interval = #{interval,jdbcType=INTEGER},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=SMALLINT},
+      </if>
+      <if test="execTimes != null">
+        exec_times = #{execTimes,jdbcType=SMALLINT},
+      </if>
+      <if test="regionFor != null">
+        region_for = #{regionFor,jdbcType=SMALLINT},
+      </if>
+      <if test="regionNum != null">
+        region_num = #{regionNum,jdbcType=INTEGER},
+      </if>
+      <if test="userRegion != null">
+        user_region = #{userRegion,jdbcType=BIGINT},
+      </if>
+      <if test="regionPath != null">
+        region_path = #{regionPath,jdbcType=VARCHAR},
+      </if>
+      <if test="taskNum != null">
+        task_num = #{taskNum,jdbcType=INTEGER},
+      </if>
+      <if test="isAlarm != null">
+        is_alarm = #{isAlarm,jdbcType=SMALLINT},
+      </if>
+      <if test="alarmTemplateId != null">
+        alarm_template_id = #{alarmTemplateId,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag = #{deleteFlag,jdbcType=SMALLINT},
+      </if>
+      <if test="paramJson != null">
+        param_json = #{paramJson,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="templateJson != null">
+        template_json = #{templateJson,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="topoJson != null">
+        topo_json = #{topoJson,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.eystar.gen.entity.TTTaskParam">
+    update t_t_task_param
+    set task_param_name = #{taskParamName,jdbcType=VARCHAR},
+      task_param_type = #{taskParamType,jdbcType=SMALLINT},
+      task_type_name = #{taskTypeName,jdbcType=VARCHAR},
+      task_from = #{taskFrom,jdbcType=SMALLINT},
+      template_id = #{templateId,jdbcType=VARCHAR},
+      run_status = #{runStatus,jdbcType=SMALLINT},
+      modify_type = #{modifyType,jdbcType=VARCHAR},
+      test_date = #{testDate,jdbcType=SMALLINT},
+      start_date = #{startDate,jdbcType=VARCHAR},
+      end_date = #{endDate,jdbcType=VARCHAR},
+      test_time = #{testTime,jdbcType=SMALLINT},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      interval = #{interval,jdbcType=INTEGER},
+      priority = #{priority,jdbcType=SMALLINT},
+      exec_times = #{execTimes,jdbcType=SMALLINT},
+      region_for = #{regionFor,jdbcType=SMALLINT},
+      region_num = #{regionNum,jdbcType=INTEGER},
+      user_region = #{userRegion,jdbcType=BIGINT},
+      region_path = #{regionPath,jdbcType=VARCHAR},
+      task_num = #{taskNum,jdbcType=INTEGER},
+      is_alarm = #{isAlarm,jdbcType=SMALLINT},
+      alarm_template_id = #{alarmTemplateId,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      delete_flag = #{deleteFlag,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

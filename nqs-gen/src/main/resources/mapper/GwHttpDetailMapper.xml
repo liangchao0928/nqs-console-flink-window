@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eystar.gen.mapper.GwHttpDetailMapper">
+  <resultMap id="BaseResultMap" type="com.eystar.gen.entity.gwdata.GwHttpDetailData">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="probe_id" jdbcType="VARCHAR" property="probeId" />
+    <result column="probe_name" jdbcType="VARCHAR" property="probeName" />
+    <result column="probe_ip" jdbcType="VARCHAR" property="probeIp" />
+    <result column="probe_alias" jdbcType="VARCHAR" property="probeAlias" />
+    <result column="pppoe_username" jdbcType="VARCHAR" property="pppoeUsername" />
+    <result column="vendor" jdbcType="VARCHAR" property="vendor" />
+    <result column="pc" jdbcType="VARCHAR" property="pc" />
+    <result column="loid" jdbcType="VARCHAR" property="loid" />
+    <result column="serial_num" jdbcType="VARCHAR" property="serialNum" />
+    <result column="task_param_id" jdbcType="VARCHAR" property="taskParamId" />
+    <result column="task_param_name" jdbcType="VARCHAR" property="taskParamName" />
+    <result column="task_type_name" jdbcType="VARCHAR" property="taskTypeName" />
+    <result column="task_id" jdbcType="VARCHAR" property="taskId" />
+    <result column="task_md5" jdbcType="VARCHAR" property="taskMd5" />
+    <result column="access_type_name" jdbcType="VARCHAR" property="accessTypeName" />
+    <result column="test_time" jdbcType="INTEGER" property="testTime" />
+    <result column="test_time_d" jdbcType="INTEGER" property="testTimeD" />
+    <result column="test_time_h" jdbcType="INTEGER" property="testTimeH" />
+    <result column="test_time_m" jdbcType="INTEGER" property="testTimeM" />
+    <result column="test_time_w" jdbcType="INTEGER" property="testTimeW" />
+    <result column="dest_id" jdbcType="VARCHAR" property="destId" />
+    <result column="dest_name" jdbcType="VARCHAR" property="destName" />
+    <result column="dest_addr" jdbcType="VARCHAR" property="destAddr" />
+    <result column="province_code" jdbcType="INTEGER" property="provinceCode" />
+    <result column="province_name" jdbcType="VARCHAR" property="provinceName" />
+    <result column="city_code" jdbcType="INTEGER" property="cityCode" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="district_code" jdbcType="INTEGER" property="districtCode" />
+    <result column="district_name" jdbcType="VARCHAR" property="districtName" />
+    <result column="town_code" jdbcType="INTEGER" property="townCode" />
+    <result column="town_name" jdbcType="VARCHAR" property="townName" />
+    <result column="task_from" jdbcType="INTEGER" property="taskFrom" />
+    <result column="host_province" jdbcType="VARCHAR" property="hostProvince" />
+    <result column="host_city" jdbcType="VARCHAR" property="hostCity" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="net_type" jdbcType="INTEGER" property="netType" />
+    <result column="is_alarm" jdbcType="INTEGER" property="isAlarm" />
+    <result column="alarm_info" jdbcType="VARCHAR" property="alarmInfo" />
+    <result column="score" jdbcType="DOUBLE" property="score" />
+    <result column="host_ip" jdbcType="VARCHAR" property="hostIp" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="element_name" jdbcType="VARCHAR" property="elementName" />
+    <result column="element_num" jdbcType="INTEGER" property="elementNum" />
+    <result column="element_url" jdbcType="VARCHAR" property="elementUrl" />
+    <result column="dns_cost" jdbcType="DOUBLE" property="dnsCost" />
+    <result column="conn_cost" jdbcType="DOUBLE" property="connCost" />
+    <result column="element_download_cost" jdbcType="DOUBLE" property="elementDownloadCost" />
+    <result column="first_byte_cost" jdbcType="DOUBLE" property="firstByteCost" />
+    <result column="element_total_cost" jdbcType="DOUBLE" property="elementTotalCost" />
+    <result column="thread_num" jdbcType="INTEGER" property="threadNum" />
+    <result column="element_status" jdbcType="INTEGER" property="elementStatus" />
+    <result column="element_size" jdbcType="DOUBLE" property="elementSize" />
+    <result column="avg_speed" jdbcType="DOUBLE" property="avgSpeed" />
+    <result column="element_http_code" jdbcType="INTEGER" property="elementHttpCode" />
+    <result column="is_localnet" jdbcType="INTEGER" property="isLocalnet" />
+    <result column="tcp_cost" jdbcType="DOUBLE" property="tcpCost" />
+    <result column="ssl_cost" jdbcType="DOUBLE" property="sslCost" />
+    <result column="error_code" jdbcType="INTEGER" property="errorCode" />
+    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="month_time" jdbcType="DATE" property="monthTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, probe_id, probe_name, probe_ip, probe_alias, pppoe_username, vendor, pc, loid, 
+    serial_num, task_param_id, task_param_name, task_type_name, task_id, task_md5, access_type_name, 
+    test_time, test_time_d, test_time_h, test_time_m, test_time_w, dest_id, dest_name, 
+    dest_addr, province_code, province_name, city_code, city_name, district_code, district_name, 
+    town_code, town_name, task_from, host_province, host_city, operator, net_type, is_alarm, 
+    alarm_info, score, host_ip, parent_id, element_name, element_num, element_url, dns_cost, 
+    conn_cost, element_download_cost, first_byte_cost, element_total_cost, thread_num, 
+    element_status, element_size, avg_speed, element_http_code, is_localnet, tcp_cost, 
+    ssl_cost, error_code, create_time, month_time
+  </sql>
+
+  <insert id="insert" parameterType="com.eystar.gen.entity.gwdata.GwHttpDetailData">
+    insert into gw_http_detail (id, probe_id, probe_name, 
+      probe_ip, probe_alias, pppoe_username, 
+      vendor, pc, loid, serial_num, 
+      task_param_id, task_param_name, task_type_name, 
+      task_id, task_md5, access_type_name, 
+      test_time, test_time_d, test_time_h, 
+      test_time_m, test_time_w, dest_id, 
+      dest_name, dest_addr, province_code, 
+      province_name, city_code, city_name, 
+      district_code, district_name, town_code, 
+      town_name, task_from, host_province, 
+      host_city, operator, net_type, 
+      is_alarm, alarm_info, score, 
+      host_ip, parent_id, element_name, 
+      element_num, element_url, dns_cost, 
+      conn_cost, element_download_cost, first_byte_cost, 
+      element_total_cost, thread_num, element_status, 
+      element_size, avg_speed, element_http_code, 
+      is_localnet, tcp_cost, ssl_cost, 
+      error_code, create_time, month_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{probeId,jdbcType=VARCHAR}, #{probeName,jdbcType=VARCHAR}, 
+      #{probeIp,jdbcType=VARCHAR}, #{probeAlias,jdbcType=VARCHAR}, #{pppoeUsername,jdbcType=VARCHAR}, 
+      #{vendor,jdbcType=VARCHAR}, #{pc,jdbcType=VARCHAR}, #{loid,jdbcType=VARCHAR}, #{serialNum,jdbcType=VARCHAR}, 
+      #{taskParamId,jdbcType=VARCHAR}, #{taskParamName,jdbcType=VARCHAR}, #{taskTypeName,jdbcType=VARCHAR}, 
+      #{taskId,jdbcType=VARCHAR}, #{taskMd5,jdbcType=VARCHAR}, #{accessTypeName,jdbcType=VARCHAR}, 
+      #{testTime,jdbcType=INTEGER}, #{testTimeD,jdbcType=INTEGER}, #{testTimeH,jdbcType=INTEGER}, 
+      #{testTimeM,jdbcType=INTEGER}, #{testTimeW,jdbcType=INTEGER}, #{destId,jdbcType=VARCHAR}, 
+      #{destName,jdbcType=VARCHAR}, #{destAddr,jdbcType=VARCHAR}, #{provinceCode,jdbcType=INTEGER}, 
+      #{provinceName,jdbcType=VARCHAR}, #{cityCode,jdbcType=INTEGER}, #{cityName,jdbcType=VARCHAR}, 
+      #{districtCode,jdbcType=INTEGER}, #{districtName,jdbcType=VARCHAR}, #{townCode,jdbcType=INTEGER}, 
+      #{townName,jdbcType=VARCHAR}, #{taskFrom,jdbcType=INTEGER}, #{hostProvince,jdbcType=VARCHAR}, 
+      #{hostCity,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{netType,jdbcType=INTEGER}, 
+      #{isAlarm,jdbcType=INTEGER}, #{alarmInfo,jdbcType=VARCHAR}, #{score,jdbcType=DOUBLE}, 
+      #{hostIp,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{elementName,jdbcType=VARCHAR}, 
+      #{elementNum,jdbcType=INTEGER}, #{elementUrl,jdbcType=VARCHAR}, #{dnsCost,jdbcType=DOUBLE}, 
+      #{connCost,jdbcType=DOUBLE}, #{elementDownloadCost,jdbcType=DOUBLE}, #{firstByteCost,jdbcType=DOUBLE}, 
+      #{elementTotalCost,jdbcType=DOUBLE}, #{threadNum,jdbcType=INTEGER}, #{elementStatus,jdbcType=INTEGER}, 
+      #{elementSize,jdbcType=DOUBLE}, #{avgSpeed,jdbcType=DOUBLE}, #{elementHttpCode,jdbcType=INTEGER}, 
+      #{isLocalnet,jdbcType=INTEGER}, #{tcpCost,jdbcType=DOUBLE}, #{sslCost,jdbcType=DOUBLE}, 
+      #{errorCode,jdbcType=INTEGER}, #{createTime,jdbcType=INTEGER}, #{monthTime,jdbcType=DATE}
+      )
+  </insert>
+
+
+
+
+  <insert id="insertList" parameterType="com.eystar.gen.entity.gwdata.GwHttpDetailData">
+     insert into gw_http_detail (id, probe_id, probe_name,
+      probe_ip, probe_alias, pppoe_username,
+      vendor, pc, loid, serial_num,
+      task_param_id, task_param_name, task_type_name,
+      task_id, task_md5, access_type_name,
+      test_time, test_time_d, test_time_h,
+      test_time_m, test_time_w, dest_id,
+      dest_name, dest_addr, province_code,
+      province_name, city_code, city_name,
+      district_code, district_name, town_code,
+      town_name, task_from, host_province,
+      host_city, operator, net_type,
+      is_alarm, alarm_info, score,
+      host_ip, parent_id, element_name,
+      element_num, element_url, dns_cost,
+      conn_cost, element_download_cost, first_byte_cost,
+      element_total_cost, thread_num, element_status,
+      element_size, avg_speed, element_http_code,
+      is_localnet, tcp_cost, ssl_cost,
+      error_code, create_time, month_time
+      )
+      values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id,jdbcType=VARCHAR}, #{item.probeId,jdbcType=VARCHAR}, #{item.probeName,jdbcType=VARCHAR},
+      #{item.probeIp,jdbcType=VARCHAR}, #{item.probeAlias,jdbcType=VARCHAR}, #{item.pppoeUsername,jdbcType=VARCHAR},
+      #{item.vendor,jdbcType=VARCHAR}, #{item.pc,jdbcType=VARCHAR}, #{item.loid,jdbcType=VARCHAR}, #{item.serialNum,jdbcType=VARCHAR},
+      #{item.taskParamId,jdbcType=VARCHAR}, #{item.taskParamName,jdbcType=VARCHAR}, #{item.taskTypeName,jdbcType=VARCHAR},
+      #{item.taskId,jdbcType=VARCHAR}, #{item.taskMd5,jdbcType=VARCHAR}, #{item.accessTypeName,jdbcType=VARCHAR},
+      #{item.testTime,jdbcType=INTEGER}, #{item.testTimeD,jdbcType=INTEGER}, #{item.testTimeH,jdbcType=INTEGER},
+      #{item.testTimeM,jdbcType=INTEGER}, #{item.testTimeW,jdbcType=INTEGER}, #{item.destId,jdbcType=VARCHAR},
+      #{item.destName,jdbcType=VARCHAR}, #{item.destAddr,jdbcType=VARCHAR}, #{item.provinceCode,jdbcType=INTEGER},
+      #{item.provinceName,jdbcType=VARCHAR}, #{item.cityCode,jdbcType=INTEGER}, #{item.cityName,jdbcType=VARCHAR},
+      #{item.districtCode,jdbcType=INTEGER}, #{item.districtName,jdbcType=VARCHAR}, #{item.townCode,jdbcType=INTEGER},
+      #{item.townName,jdbcType=VARCHAR}, #{item.taskFrom,jdbcType=INTEGER}, #{item.hostProvince,jdbcType=VARCHAR},
+      #{item.hostCity,jdbcType=VARCHAR}, #{item.operator,jdbcType=VARCHAR}, #{item.netType,jdbcType=INTEGER},
+      #{item.isAlarm,jdbcType=INTEGER}, #{item.alarmInfo,jdbcType=VARCHAR}, #{item.score,jdbcType=DOUBLE},
+      #{item.hostIp,jdbcType=VARCHAR}, #{item.parentId,jdbcType=VARCHAR}, #{item.elementName,jdbcType=VARCHAR},
+      #{item.elementNum,jdbcType=INTEGER}, #{item.elementUrl,jdbcType=VARCHAR}, #{item.dnsCost,jdbcType=DOUBLE},
+      #{item.connCost,jdbcType=DOUBLE}, #{item.elementDownloadCost,jdbcType=DOUBLE}, #{item.firstByteCost,jdbcType=DOUBLE},
+      #{item.elementTotalCost,jdbcType=DOUBLE}, #{item.threadNum,jdbcType=INTEGER}, #{item.elementStatus,jdbcType=INTEGER},
+      #{item.elementSize,jdbcType=DOUBLE}, #{item.avgSpeed,jdbcType=DOUBLE}, #{item.elementHttpCode,jdbcType=INTEGER},
+      #{item.isLocalnet,jdbcType=INTEGER}, #{item.tcpCost,jdbcType=DOUBLE}, #{item.sslCost,jdbcType=DOUBLE},
+      #{item.errorCode,jdbcType=INTEGER}, #{item.createTime,jdbcType=INTEGER}, #{item.monthTime,jdbcType=DATE}
+      )
+    </foreach>
+
+  </insert>
+
+
+
+
+
+
+  <insert id="insertSelective" parameterType="com.eystar.gen.entity.gwdata.GwHttpDetailData">
+    insert into gw_http_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="probeId != null">
+        probe_id,
+      </if>
+      <if test="probeName != null">
+        probe_name,
+      </if>
+      <if test="probeIp != null">
+        probe_ip,
+      </if>
+      <if test="probeAlias != null">
+        probe_alias,
+      </if>
+      <if test="pppoeUsername != null">
+        pppoe_username,
+      </if>
+      <if test="vendor != null">
+        vendor,
+      </if>
+      <if test="pc != null">
+        pc,
+      </if>
+      <if test="loid != null">
+        loid,
+      </if>
+      <if test="serialNum != null">
+        serial_num,
+      </if>
+      <if test="taskParamId != null">
+        task_param_id,
+      </if>
+      <if test="taskParamName != null">
+        task_param_name,
+      </if>
+      <if test="taskTypeName != null">
+        task_type_name,
+      </if>
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="taskMd5 != null">
+        task_md5,
+      </if>
+      <if test="accessTypeName != null">
+        access_type_name,
+      </if>
+      <if test="testTime != null">
+        test_time,
+      </if>
+      <if test="testTimeD != null">
+        test_time_d,
+      </if>
+      <if test="testTimeH != null">
+        test_time_h,
+      </if>
+      <if test="testTimeM != null">
+        test_time_m,
+      </if>
+      <if test="testTimeW != null">
+        test_time_w,
+      </if>
+      <if test="destId != null">
+        dest_id,
+      </if>
+      <if test="destName != null">
+        dest_name,
+      </if>
+      <if test="destAddr != null">
+        dest_addr,
+      </if>
+      <if test="provinceCode != null">
+        province_code,
+      </if>
+      <if test="provinceName != null">
+        province_name,
+      </if>
+      <if test="cityCode != null">
+        city_code,
+      </if>
+      <if test="cityName != null">
+        city_name,
+      </if>
+      <if test="districtCode != null">
+        district_code,
+      </if>
+      <if test="districtName != null">
+        district_name,
+      </if>
+      <if test="townCode != null">
+        town_code,
+      </if>
+      <if test="townName != null">
+        town_name,
+      </if>
+      <if test="taskFrom != null">
+        task_from,
+      </if>
+      <if test="hostProvince != null">
+        host_province,
+      </if>
+      <if test="hostCity != null">
+        host_city,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="netType != null">
+        net_type,
+      </if>
+      <if test="isAlarm != null">
+        is_alarm,
+      </if>
+      <if test="alarmInfo != null">
+        alarm_info,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="hostIp != null">
+        host_ip,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="elementName != null">
+        element_name,
+      </if>
+      <if test="elementNum != null">
+        element_num,
+      </if>
+      <if test="elementUrl != null">
+        element_url,
+      </if>
+      <if test="dnsCost != null">
+        dns_cost,
+      </if>
+      <if test="connCost != null">
+        conn_cost,
+      </if>
+      <if test="elementDownloadCost != null">
+        element_download_cost,
+      </if>
+      <if test="firstByteCost != null">
+        first_byte_cost,
+      </if>
+      <if test="elementTotalCost != null">
+        element_total_cost,
+      </if>
+      <if test="threadNum != null">
+        thread_num,
+      </if>
+      <if test="elementStatus != null">
+        element_status,
+      </if>
+      <if test="elementSize != null">
+        element_size,
+      </if>
+      <if test="avgSpeed != null">
+        avg_speed,
+      </if>
+      <if test="elementHttpCode != null">
+        element_http_code,
+      </if>
+      <if test="isLocalnet != null">
+        is_localnet,
+      </if>
+      <if test="tcpCost != null">
+        tcp_cost,
+      </if>
+      <if test="sslCost != null">
+        ssl_cost,
+      </if>
+      <if test="errorCode != null">
+        error_code,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="monthTime != null">
+        month_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="probeId != null">
+        #{probeId,jdbcType=VARCHAR},
+      </if>
+      <if test="probeName != null">
+        #{probeName,jdbcType=VARCHAR},
+      </if>
+      <if test="probeIp != null">
+        #{probeIp,jdbcType=VARCHAR},
+      </if>
+      <if test="probeAlias != null">
+        #{probeAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="pppoeUsername != null">
+        #{pppoeUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="vendor != null">
+        #{vendor,jdbcType=VARCHAR},
+      </if>
+      <if test="pc != null">
+        #{pc,jdbcType=VARCHAR},
+      </if>
+      <if test="loid != null">
+        #{loid,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNum != null">
+        #{serialNum,jdbcType=VARCHAR},
+      </if>
+      <if test="taskParamId != null">
+        #{taskParamId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskParamName != null">
+        #{taskParamName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskTypeName != null">
+        #{taskTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskMd5 != null">
+        #{taskMd5,jdbcType=VARCHAR},
+      </if>
+      <if test="accessTypeName != null">
+        #{accessTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="testTime != null">
+        #{testTime,jdbcType=INTEGER},
+      </if>
+      <if test="testTimeD != null">
+        #{testTimeD,jdbcType=INTEGER},
+      </if>
+      <if test="testTimeH != null">
+        #{testTimeH,jdbcType=INTEGER},
+      </if>
+      <if test="testTimeM != null">
+        #{testTimeM,jdbcType=INTEGER},
+      </if>
+      <if test="testTimeW != null">
+        #{testTimeW,jdbcType=INTEGER},
+      </if>
+      <if test="destId != null">
+        #{destId,jdbcType=VARCHAR},
+      </if>
+      <if test="destName != null">
+        #{destName,jdbcType=VARCHAR},
+      </if>
+      <if test="destAddr != null">
+        #{destAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceCode != null">
+        #{provinceCode,jdbcType=INTEGER},
+      </if>
+      <if test="provinceName != null">
+        #{provinceName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null">
+        #{cityCode,jdbcType=INTEGER},
+      </if>
+      <if test="cityName != null">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtCode != null">
+        #{districtCode,jdbcType=INTEGER},
+      </if>
+      <if test="districtName != null">
+        #{districtName,jdbcType=VARCHAR},
+      </if>
+      <if test="townCode != null">
+        #{townCode,jdbcType=INTEGER},
+      </if>
+      <if test="townName != null">
+        #{townName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskFrom != null">
+        #{taskFrom,jdbcType=INTEGER},
+      </if>
+      <if test="hostProvince != null">
+        #{hostProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="hostCity != null">
+        #{hostCity,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="netType != null">
+        #{netType,jdbcType=INTEGER},
+      </if>
+      <if test="isAlarm != null">
+        #{isAlarm,jdbcType=INTEGER},
+      </if>
+      <if test="alarmInfo != null">
+        #{alarmInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=DOUBLE},
+      </if>
+      <if test="hostIp != null">
+        #{hostIp,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="elementName != null">
+        #{elementName,jdbcType=VARCHAR},
+      </if>
+      <if test="elementNum != null">
+        #{elementNum,jdbcType=INTEGER},
+      </if>
+      <if test="elementUrl != null">
+        #{elementUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="dnsCost != null">
+        #{dnsCost,jdbcType=DOUBLE},
+      </if>
+      <if test="connCost != null">
+        #{connCost,jdbcType=DOUBLE},
+      </if>
+      <if test="elementDownloadCost != null">
+        #{elementDownloadCost,jdbcType=DOUBLE},
+      </if>
+      <if test="firstByteCost != null">
+        #{firstByteCost,jdbcType=DOUBLE},
+      </if>
+      <if test="elementTotalCost != null">
+        #{elementTotalCost,jdbcType=DOUBLE},
+      </if>
+      <if test="threadNum != null">
+        #{threadNum,jdbcType=INTEGER},
+      </if>
+      <if test="elementStatus != null">
+        #{elementStatus,jdbcType=INTEGER},
+      </if>
+      <if test="elementSize != null">
+        #{elementSize,jdbcType=DOUBLE},
+      </if>
+      <if test="avgSpeed != null">
+        #{avgSpeed,jdbcType=DOUBLE},
+      </if>
+      <if test="elementHttpCode != null">
+        #{elementHttpCode,jdbcType=INTEGER},
+      </if>
+      <if test="isLocalnet != null">
+        #{isLocalnet,jdbcType=INTEGER},
+      </if>
+      <if test="tcpCost != null">
+        #{tcpCost,jdbcType=DOUBLE},
+      </if>
+      <if test="sslCost != null">
+        #{sslCost,jdbcType=DOUBLE},
+      </if>
+      <if test="errorCode != null">
+        #{errorCode,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="monthTime != null">
+        #{monthTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>

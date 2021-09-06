@@ -1,0 +1,302 @@
+<!-- 感知评价
+	criteria
+		outlier 指标异常值,如果出现了异常值，得分直接是0分，格式为 符号:数值
+		unit 表示某指标默认使用单位
+	score
+		属性
+			old_upper_unit 定义的高值使用单位，配置中进行了转换为unit值一致， 不标记表示与默认使用单位unit一致
+			old_lower_unit 定义的低值使用单位 ，配置中进行了转换为unit值一致，不标记表示与默认使用单位unit一致
+		score范围中值
+			前符号
+				(表示大于  
+				[表示大于等于
+			后符号
+				)表示小于 
+				]表示小于等于
+			值为+表示无最高，或者最低条件值，无需判断
+			
+			前符号3,4后符号
+			例如	(3,4) 表达式：3<x<4
+				(3,4] 表达式：3<x<=4
+				(3,+) 表达式：3<x
+			    [3,+) 表达式：3<=x
+				(+,4) 表达式：x<4
+ -->
+<perceived_quality>
+	<criteria_set>
+		<criteria id="1" protocol="PING" protocol_alias="PING测试" table="gw_ping">
+			<metric name="rtt" direction="up" weight="0.5" unit="ms" metric_alias="双向时延" outlier="<=:0,>=:5000">
+				<score level="优" upper="100" lower="90">(0,30]</score>
+				<score level="良" upper="90" lower="80">(30,100]</score>
+				<score level="中" upper="80" lower="70">(100,500]</score>
+				<score level="差" upper="70" lower="50">(500,2000]</score>
+				<score level="很差" upper="50" lower="0">(2000,+)</score>
+			</metric>
+			<metric name="lost_rate" direction="up" weight="0.5" unit="%" metric_alias="双向丢包率" outlier=">=:100,<=:-1">
+				<score level="优" upper="100" lower="90">[0,0.01]</score>
+				<score level="良" upper="90" lower="80">(0.01,0.1]</score>
+				<score level="中" upper="80" lower="70">(0.1,0.3]</score>
+				<score level="差" upper="70" lower="50">(0.3,0.7]</score>
+				<score level="很差" upper="50" lower="0">(0.7,100]</score>
+			</metric>			
+		</criteria>
+		
+		<criteria id="2" protocol="HTTP" protocol_alias="网页浏览" table="gw_http">
+			<metric name="dns_cost" direction="up" weight="0.2" unit="ms" metric_alias="DNS解析时延" outlier="<=:0,>=:1000">
+				<score level="优" upper="100" lower="90">(0,40]</score>
+				<score level="良" upper="90" lower="80">(40,60]</score>
+				<score level="中" upper="80" lower="70">(60,100]</score>
+				<score level="差" upper="70" lower="50">(100,200]</score>
+				<score level="很差" upper="50" lower="0">(200,+)</score>
+			</metric>
+			<metric name="conn_cost" direction="up" weight="0.2" unit="ms" metric_alias="连接时延" outlier="<=:0,>=:5000">
+				<score level="优" upper="100" lower="90">(0,60]</score>
+				<score level="良" upper="90" lower="80">(60,150]</score>
+				<score level="中" upper="80" lower="70">(150,250]</score>
+				<score level="差" upper="70" lower="50">(250,400]</score>
+				<score level="很差" upper="50" lower="0">(400,+)</score>
+			</metric>	
+			<metric name="text_cost" direction="up" weight="0.3" unit="ms" metric_alias="文本时延" outlier="<=:0,>=:20000">
+				<score level="优" upper="100" lower="90">(0,800]</score>
+				<score level="良" upper="90" lower="80">(800,1500]</score>
+				<score level="中" upper="80" lower="70">(1500,2500]</score>
+				<score level="差" upper="70" lower="50">(2500,5000]</score>
+				<score level="很差" upper="50" lower="0">(5000,+)</score>
+			</metric>
+			<metric name="avg_speed" direction="down" weight="0.3" unit="KB/s" metric_alias="网页平均下载速率" outlier="<=:0">
+				<score level="优" upper="100" lower="90" old_upper_unit="Mbps" old_lower_unit="Mbps">[768,+)</score>
+				<score level="良" upper="90" lower="80" old_upper_unit="Mbps" old_lower_unit="Mbps">[512,768]</score>
+				<score level="中" upper="80" lower="70" old_upper_unit="Mbps" old_lower_unit="Mbps">[256,512]</score>
+				<score level="差" upper="70" lower="50" old_upper_unit="Mbps" old_lower_unit="Kbps">(64,256]</score>
+				<score level="很差" upper="50" lower="0" old_upper_unit="Kbps" old_lower_unit="Kbps">(0,64]</score>
+			</metric>	
+		</criteria>
+		<criteria id="4" protocol="TCPPING" protocol_alias="TCP测试" table="gw_tcpping">
+			<metric name="rtt" direction="up" weight="0.95" unit="ms" metric_alias="双向时延" outlier="<=:0,>=:5000">
+				<score level="优" upper="100" lower="90">(0,30]</score>
+				<score level="良" upper="90" lower="80">(30,100]</score>
+				<score level="中" upper="80" lower="70">(100,500]</score>
+				<score level="差" upper="70" lower="50">(500,2000]</score>
+				<score level="很差" upper="50" lower="0">(2000,+)</score>
+			</metric>
+			<metric name="lost_rate" direction="up" weight="0.05" unit="%" metric_alias="双向丢包率" outlier=">=:100,<=:-1">
+				<score level="优" upper="100" lower="90">[0,0.01]</score>
+				<score level="良" upper="90" lower="80">(0.01,0.1]</score>
+				<score level="中" upper="80" lower="70">(0.1,0.3]</score>
+				<score level="差" upper="70" lower="50">(0.3,0.7]</score>
+				<score level="很差" upper="50" lower="0">(0.7,100]</score>
+			</metric>			
+		</criteria>
+		<criteria id="5" protocol="GAME" protocol_alias="游戏测试" table="gw_game">
+			<metric name="tcp_delay" direction="up" weight="0.4" unit="ms" metric_alias="游戏时延" outlier="<=:0,>=:5000">
+				<score level="优" upper="100" lower="90">(0,50]</score>
+				<score level="良" upper="90" lower="80">(50,150]</score>
+				<score level="中" upper="80" lower="70">(150,250]</score>
+				<score level="差" upper="70" lower="50">(250,500]</score>
+				<score level="很差" upper="50" lower="0">(500,+)</score>
+			</metric>
+			<metric name="rtt" direction="up" weight="0.3" unit="ms" metric_alias="官网PING时延" outlier="<=:0,>=:5000">
+				<score level="优" upper="100" lower="90">(0,30]</score>
+				<score level="良" upper="90" lower="80">(30,100]</score>
+				<score level="中" upper="80" lower="70">(100,500]</score>
+				<score level="差" upper="70" lower="50">(500,2000]</score>
+				<score level="很差" upper="50" lower="0">(2000,+)</score>
+			</metric>
+			<metric name="conn_cost" direction="up" weight="0.3" unit="ms" metric_alias="官网连接时延" outlier="<=:0,>=:5000">
+				<score level="优" upper="100" lower="90">(0,60]</score>
+				<score level="良" upper="90" lower="80">(60,150]</score>
+				<score level="中" upper="80" lower="70">(150,250]</score>
+				<score level="差" upper="70" lower="50">(250,400]</score>
+				<score level="很差" upper="50" lower="0">(400,+)</score>
+			</metric>
+		</criteria>
+		<criteria id="6" protocol="FLASH" protocol_alias="视频测试" table="gw_flash">
+			<metric name="conn_cost" direction="up" weight="0.15" unit="ms" metric_alias="连接时延" outlier="<=:0,>=:5000">
+				<score level="优" upper="100" lower="90">(0,60]</score>
+				<score level="良" upper="90" lower="80">(60,150]</score>
+				<score level="中" upper="80" lower="70">(150,250]</score>
+				<score level="差" upper="70" lower="50">(250,400]</score>
+				<score level="很差" upper="50" lower="0">(400,+)</score>
+			</metric>			
+			<metric name="first_byte_cost" direction="up" weight="0.15" unit="ms" metric_alias="首帧时延" outlier="<=:0,>=:10000">
+				<score level="优" upper="100" lower="90">(0,200]</score>
+				<score level="良" upper="90" lower="80">(200,400]</score>
+				<score level="中" upper="80" lower="70">(400,600]</score>
+				<score level="差" upper="70" lower="50">(600,1000]</score>
+				<score level="很差" upper="50" lower="0">(1000,+)</score>
+			</metric>
+			<metric name="pause_count" direction="up" weight="0.25" unit="次" metric_alias="缓冲次数" outlier="<=:-1,>=:10">
+				<score level="优" upper="100" lower="90">[0,1]</score>
+				<score level="良" upper="90" lower="80">(1,2]</score>
+				<score level="中" upper="80" lower="70">(2,3]</score>
+				<score level="差" upper="70" lower="50">(3,5]</score>
+				<score level="很差" upper="50" lower="0">(5,+)</score>
+			</metric>
+		   <metric name="carlton_rate" direction="up" weight="0.20" unit="%" metric_alias="卡顿率" outlier="<=:-1,>=:100">
+				<score level="优" upper="100" lower="90">[0,0.1]</score>
+				<score level="良" upper="90" lower="80">(0.1,0.2]</score>
+				<score level="中" upper="80" lower="70">(0.2,0.3]</score>
+				<score level="差" upper="70" lower="50">(0.3,0.5]</score>
+				<score level="很差" upper="50" lower="0">(0.5,+)</score>
+			</metric>		 
+		   <metric name="avg_speed" direction="down" weight="0.25" unit="KB/s" metric_alias="下载速率" outlier="<=:0">
+				<score level="优" upper="100" lower="90" old_upper_unit="Mbps" old_lower_unit="Mbps">[1024,+)</score>
+				<score level="良" upper="90" lower="80" old_upper_unit="Mbps" old_lower_unit="Mbps">[512,1024)</score>
+				<score level="中" upper="80" lower="70" old_upper_unit="Mbps" old_lower_unit="Mbps">[256,512)</score>
+				<score level="差" upper="70" lower="50" old_upper_unit="Mbps" old_lower_unit="Kbps">[64,256)</score>
+				<score level="很差" upper="50" lower="0" old_upper_unit="Kbps" old_lower_unit="Kbps">(0,64)</score>
+			</metric>
+		</criteria>
+		<criteria id="8" protocol="DNS" protocol_alias="DNS测试" table="gw_dns">
+			<metric name="time_cost" direction="up" weight="0.1" unit="ms" metric_alias="DNS解析时延" outlier="<=:0,>=:1000">
+				<score level="优" upper="100" lower="90">(0,40]</score>
+				<score level="良" upper="90" lower="80">(40,60]</score>
+				<score level="中" upper="80" lower="70">(60,100]</score>
+				<score level="差" upper="70" lower="50">(100,200]</score>
+				<score level="很差" upper="50" lower="0">(200,+)</score>
+			</metric>
+			<metric name="success_rate" direction="down" weight="0.9" unit="%" metric_alias="DNS解析成功率" outlier="<=:0">
+				<score level="优" upper="100" lower="90">(70,100]</score>
+				<score level="良" upper="90" lower="80">(30,70]</score>
+				<score level="中" upper="80" lower="70">(10,30]</score>
+				<score level="差" upper="70" lower="50">(1,10]</score>
+				<score level="很差" upper="50" lower="0">(0,1]</score>
+			</metric>			
+		</criteria>
+		<criteria id="9" protocol="POP3" protocol_alias="POP3测试" table="gw_pop3">
+			<metric name="conn_cost" direction="up" weight="0.5" unit="ms" metric_alias="服务器响应时延" outlier="<=:0,>=:5000">
+				<score level="优" upper="100" lower="90">(0,10]</score>
+				<score level="良" upper="90" lower="80">(10,100]</score>
+				<score level="中" upper="80" lower="70">(100,500]</score>
+				<score level="差" upper="70" lower="50">(500,2000]</score>
+				<score level="很差" upper="50" lower="0">(2000,+)</score>
+			</metric>
+			<metric name="avg_speed" direction="down" weight="0.5" unit="KB/s" metric_alias="POP3吞吐率" outlier="<=:0">
+				<score level="优" upper="100" lower="90">(1024,+)</score>
+				<score level="良" upper="90" lower="80">(300,1024]</score>
+				<score level="中" upper="80" lower="70">(50,300]</score>
+				<score level="差" upper="70" lower="50">(10,50]</score>
+				<score level="很差" upper="50" lower="0">(0,10]</score>
+			</metric>			
+		</criteria>
+		<criteria id="10" protocol="SMTP" protocol_alias="SMTP测试" table="gw_smtp">
+			<metric name="conn_cost" direction="up" weight="0.5" unit="ms" metric_alias="服务器响应时延" outlier="<=:0,>=:5000">
+				<score level="优" upper="100" lower="90">(0,10]</score>
+				<score level="良" upper="90" lower="80">(10,100]</score>
+				<score level="中" upper="80" lower="70">(100,500]</score>
+				<score level="差" upper="70" lower="50">(500,2000]</score>
+				<score level="很差" upper="50" lower="0">(2000,+)</score>
+			</metric>
+			<metric name="send_speed" direction="down" weight="0.5" unit="KB/s" metric_alias="SMTP吞吐率" outlier="<=:0">
+				<score level="优" upper="100" lower="90">(1024,+)</score>
+				<score level="良" upper="90" lower="80">(300,1024]</score>
+				<score level="中" upper="80" lower="70">(50,300]</score>
+				<score level="差" upper="70" lower="50">(10,50]</score>
+				<score level="很差" upper="50" lower="0">(0,10]</score>
+			</metric>			
+		</criteria>
+		<criteria id="11" protocol="WECHAT" protocol_alias="即时通讯测试" table="gw_wechat">
+			<metric name="conn_cost" direction="up" weight="0.5" unit="ms" metric_alias="连接时延" outlier="<=:0,>=:5000">
+				<score level="优" upper="100" lower="90">(0,60]</score>
+				<score level="良" upper="90" lower="80">(60,150]</score>
+				<score level="中" upper="80" lower="70">(150,250]</score>
+				<score level="差" upper="70" lower="50">(250,400]</score>
+				<score level="很差" upper="50" lower="0">(400,+)</score>
+			</metric>	
+			<metric name="response_cost" direction="up" weight="0.5" unit="ms" metric_alias="响应时延" outlier="<=:0,>=:5000">
+				<score level="优" upper="100" lower="90">(0,10]</score>
+				<score level="良" upper="90" lower="80">(10,100]</score>
+				<score level="中" upper="80" lower="70">(100,500]</score>
+				<score level="差" upper="70" lower="50">(500,2000]</score>
+				<score level="很差" upper="50" lower="0">(2000,+)</score>
+			</metric>		
+		</criteria>
+		<criteria id="12" protocol="SPEED" protocol_alias="测速" table="gw_speed">
+			<metric name="bandwidth_ratio" direction="down" weight="1" unit="%" metric_alias="带宽占比" outlier="<=:0">
+				<score level="优" upper="100" lower="90">(70,+)</score>
+				<score level="良" upper="90" lower="80">(30,70]</score>
+				<score level="中" upper="80" lower="70">(10,30]</score>
+				<score level="差" upper="70" lower="50">(1,10]</score>
+				<score level="很差" upper="50" lower="0">(0,1]</score>
+			</metric>	
+		</criteria>
+		<criteria id="13" protocol="FTP" protocol_alias="FTP测试" table="gw_ftp">
+			<metric name="download_speed" direction="down" weight="0.5" unit="Mbps" metric_alias="下载速率" outlier="<=:0">
+				<score level="优" upper="100" lower="90">[6,+)</score>
+				<score level="良" upper="90" lower="80">[4,6)</score>
+				<score level="中" upper="80" lower="70">[2,4)</score>
+				<score level="差" upper="70" lower="50">[0.5,2)</score>
+				<score level="很差" upper="50" lower="0" >(0,0.5)</score>
+			</metric>	
+			<metric name="upload_speed" direction="down" weight="0.5" unit="Mbps" metric_alias="上传速率" outlier="<=:0">
+				<score level="优" upper="100" lower="90">[6,+)</score>
+				<score level="良" upper="90" lower="80">[4,6)</score>
+				<score level="中" upper="80" lower="70">[2,4)</score>
+				<score level="差" upper="70" lower="50">[0.5,2)</score>
+				<score level="很差" upper="50" lower="0" >(0,0.5)</score>
+			</metric>	
+		</criteria>
+		<criteria id="81" protocol="HTTP_DETAIL" protocol_alias="HTTP详情结果" table="gw_http_detail">
+			<metric name="dns_cost" direction="up" weight="0.2" unit="ms" metric_alias="DNS解析时延" outlier="<=:0,>=:1000">
+				<score level="优" upper="100" lower="90">(0,40]</score>
+				<score level="良" upper="90" lower="80">(40,60]</score>
+				<score level="中" upper="80" lower="70">(60,100]</score>
+				<score level="差" upper="70" lower="50">(100,200]</score>
+				<score level="很差" upper="50" lower="0">(200,+)</score>
+			</metric>
+			<metric name="conn_cost" direction="up" weight="0.2" unit="ms" metric_alias="连接时延" outlier="<=:0,>=:5000">
+				<score level="优" upper="100" lower="90">(0,60]</score>
+				<score level="良" upper="90" lower="80">(60,150]</score>
+				<score level="中" upper="80" lower="70">(150,250]</score>
+				<score level="差" upper="70" lower="50">(250,400]</score>
+				<score level="很差" upper="50" lower="0">(400,+)</score>
+			</metric>	
+			<metric name="text_cost" direction="up" weight="0.3" unit="ms" metric_alias="文本时延" outlier="<=:0,>=:20000">
+				<score level="优" upper="100" lower="90">(0,800]</score>
+				<score level="良" upper="90" lower="80">(800,1500]</score>
+				<score level="中" upper="80" lower="70">(1500,2500]</score>
+				<score level="差" upper="70" lower="50">(2500,5000]</score>
+				<score level="很差" upper="50" lower="0">(5000,+)</score>
+			</metric>				
+			<metric name="avg_speed" direction="down" weight="0.3" unit="KB/s" metric_alias="网页平均下载速率" outlier="<=:0">
+				<score level="优" upper="100" lower="90" old_upper_unit="Mbps" old_lower_unit="Mbps">[768,+)</score>
+				<score level="良" upper="90" lower="80" old_upper_unit="Mbps" old_lower_unit="Mbps">[512,768]</score>
+				<score level="中" upper="80" lower="70" old_upper_unit="Mbps" old_lower_unit="Mbps">[256,512]</score>
+				<score level="差" upper="70" lower="50" old_upper_unit="Mbps" old_lower_unit="Kbps">(64,256]</score>
+				<score level="很差" upper="50" lower="0" old_upper_unit="Kbps" old_lower_unit="Kbps">(0,64]</score>
+			</metric>	
+		</criteria>
+		<criteria id="82" protocol="DNS_DETAIL" protocol_alias="DNS域名详情结果" table="gw_dns_detail">
+			<metric name="dns_cost" direction="up" weight="0.1" unit="ms" metric_alias="DNS解析时延" outlier="<=:0,>=:1000">
+				<score level="优" upper="100" lower="90">(0,40]</score>
+				<score level="良" upper="90" lower="80">(40,60]</score>
+				<score level="中" upper="80" lower="70">(60,100]</score>
+				<score level="差" upper="70" lower="50">(100,200]</score>
+				<score level="很差" upper="50" lower="0">(200,+)</score>
+			</metric>
+			<metric name="success_rate" direction="down" weight="0.9" unit="%" metric_alias="解析IP成功率" outlier="<=:0">
+				<score level="优" upper="100" lower="90">(70,100]</score>
+				<score level="良" upper="90" lower="80">(30,70]</score>
+				<score level="中" upper="80" lower="70">(10,30]</score>
+				<score level="差" upper="70" lower="50">(1,10]</score>
+				<score level="很差" upper="50" lower="0">(0,1]</score>
+			</metric>			
+		</criteria>
+		<criteria id="83" protocol="DNS_RESOLUTION_DETAIL" protocol_alias="DNS解析析详情" table="gw_dns_resolution_detail">
+			<metric name="time_cost" direction="up" weight="0.1" unit="ms" metric_alias="DNS解析时延" outlier="<=:0,>=:1000">
+				<score level="优" upper="100" lower="90">(0,40]</score>
+				<score level="良" upper="90" lower="80">(40,60]</score>
+				<score level="中" upper="80" lower="70">(60,100]</score>
+				<score level="差" upper="70" lower="50">(100,200]</score>
+				<score level="很差" upper="50" lower="0">(200,+)</score>
+			</metric>
+			<metric name="success_rate" direction="down" weight="0.9" unit="%" metric_alias="DNS解析成功率" outlier="<=:0">
+				<score level="优" upper="100" lower="90">(70,100]</score>
+				<score level="良" upper="90" lower="80">(30,70]</score>
+				<score level="中" upper="80" lower="70">(10,30]</score>
+				<score level="差" upper="70" lower="50">(1,10]</score>
+				<score level="很差" upper="50" lower="0">(0,1]</score>
+			</metric>			
+		</criteria>
+	</criteria_set>
+</perceived_quality>
