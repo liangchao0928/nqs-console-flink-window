@@ -10,12 +10,14 @@
     <artifactId>nqs-gen</artifactId>
 
 <dependencies>
+
+    <!--        ===========================        注释说明         ===========================       -->
     <dependency>
         <groupId>io.swagger</groupId>
         <artifactId>swagger-annotations</artifactId>
         <version>${swagger-annotations.version}</version>
     </dependency>
-    <!--        ===========================        jdbc         ===========================       -->
+    <!--        ===========================        jdbc连接         ===========================       -->
     <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
@@ -48,6 +50,12 @@
         <groupId>org.mybatis</groupId>
         <artifactId>mybatis-spring</artifactId>
         <version>2.0.3</version>
+    </dependency>
+    <!--        ===========================        代码生成器         ===========================       -->
+    <dependency>
+        <groupId>org.mybatis.generator</groupId>
+        <artifactId>mybatis-generator-core</artifactId>
+        <version>1.4.0</version>
     </dependency>
 </dependencies>
 
