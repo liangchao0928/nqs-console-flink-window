@@ -8,6 +8,7 @@ import net.ipip.ipdb.District;
 import java.io.InputStream;
 
 public class IPIPUtil {
+
 	public static final String IP_SEPERATOR = "-";
 	public static final String language = "CN";
 	private static City cityDb;
@@ -33,10 +34,10 @@ public class IPIPUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * 查询IP的归属省市运营商-数组形式返回 添加: LiuQiang - 2020年1月16日 上午11:07:35<br>
 	 * 修改: LiuQiang - 2020年1月16日 上午11:07:35<br>
-	 * 
+	 *
 	 * @param ip
 	 * @return
 	 */
@@ -56,10 +57,10 @@ public class IPIPUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * 查询IP的归属省市运营商-字符串形式返回 添加: LiuQiang - 2020年1月16日 上午11:07:35<br>
 	 * 修改: LiuQiang - 2020年1月16日 上午11:07:35<br>
-	 * 
+	 *
 	 * @param ip
 	 * @return
 	 */
@@ -75,7 +76,7 @@ public class IPIPUtil {
 
 	/**
 	 * 获取ipdb数据 与使用datx库返回格式与原来一样
-	 * 
+	 *
 	 * @time 2019-10-17
 	 * @author yxp
 	 * @param ip
@@ -111,11 +112,11 @@ public class IPIPUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * 检查是否是一个IP<br>
 	 * 添加: 张俭 - 2020年7月21日 下午6:06:12<br>
 	 * 修改: 张俭 - 2020年7月21日 下午6:06:12<br>
-	 * 
+	 *
 	 * @param ip
 	 * @return
 	 */
@@ -126,7 +127,7 @@ public class IPIPUtil {
 
 	/**
 	 * 根据ip 获取ip经纬度
-	 * 
+	 *
 	 */
 	public static String getCoordinate(String ip) {
 		try {

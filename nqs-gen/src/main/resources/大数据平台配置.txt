@@ -1,0 +1,518 @@
+===============================================================================================================
+服务器列表：	172.17.53.159~164
+租户名：		zb_zhw_yw_btpdi
+口令：			O1iHTYZ8
+数据库：		zb_zhw_yw_btpdi
+存储策略：		zb_zhw_yw_btpdi（建表时，务必指定此存储策略）
+===============================================================================================================
+use system;
+select * from clusters;
+┌─cluster─┬─shard_num─┬─shard_weight─┬─replica_num─┬─host_name───┬─host_address──┬─port─┬─is_local─┬─user────┬─default_database─┬─errors_count─┬─estimated_recovery_time─┐
+│ ZZGW    │         1 │            1 │           1 │ arm-rt-0101 │ 172.17.53.159 │ 9000 │        1 │ default │                  │            0 │                       0 │
+│ ZZGW    │         1 │            1 │           2 │ arm-rt-0102 │ 172.17.53.160 │ 9000 │        0 │ default │                  │            0 │                       0 │
+│ ZZGW    │         2 │            1 │           1 │ arm-rt-0103 │ 172.17.53.161 │ 9000 │        0 │ default │                  │            0 │                       0 │
+│ ZZGW    │         2 │            1 │           2 │ arm-rt-0104 │ 172.17.53.162 │ 9000 │        0 │ default │                  │            0 │                       0 │
+│ ZZGW    │         3 │            1 │           1 │ arm-rt-0105 │ 172.17.53.163 │ 9000 │        0 │ default │                  │            0 │                       0 │
+│ ZZGW    │         3 │            1 │           2 │ arm-rt-0106 │ 172.17.53.164 │ 9000 │        0 │ default │                  │            0 │                       0 │
+└─────────┴───────────┴──────────────┴─────────────┴─────────────┴───────────────┴──────┴──────────┴─────────┴──────────────────┴──────────────┴─────────────────────────┘
+删除表 	drop table c_p_heartbeat;
+删除分布式关联表  drop table c_p_heartbeat_all;
+登录方式
+	clickhouse-client -h 172.17.53.159 -m -u zb_zhw_yw_btpdi --password=O1iHTYZ8
+	clickhouse-client -h 172.17.53.160 -m -u zb_zhw_yw_btpdi --password=O1iHTYZ8
+	clickhouse-client -h 172.17.53.161 -m -u zb_zhw_yw_btpdi --password=O1iHTYZ8
+	clickhouse-client -h 172.17.53.162 -m -u zb_zhw_yw_btpdi --password=O1iHTYZ8
+	clickhouse-client -h 172.17.53.163 -m -u zb_zhw_yw_btpdi --password=O1iHTYZ8
+	clickhouse-client -h 172.17.53.164 -m -u zb_zhw_yw_btpdi --password=O1iHTYZ8
+use  zb_zhw_yw_btpdi;
+------------------------------------------------------ 探针心跳业务--------------------------------------------------------------------------------------------
+create table zb_zhw_yw_btpdi.c_p_heartbeat(id String,
+			  type UInt8 ,
+			  probe_type Nullable(String),
+			  probe_name Nullable(String),
+			  task_size UInt16 ,
+			  task_queue_size UInt16 ,
+			  soft_ver Nullable(String),
+			  so_ver Nullable(String),
+			  probe_id  Nullable(String),
+			  internet_ip Nullable(String),
+			  heartbeat_time UInt32,
+			  month_time Date,
+			  create_time Nullable(UInt32),
+			  create_hour Nullable(UInt32)
+	)ENGINE = ReplicatedMergeTree('/clickhouse/tables/1/c_p_heartbeat','{replica}')
+PARTITION BY  month_time
+ORDER BY (heartbeat_time)
+SETTINGS  storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE c_p_heartbeat_all on cluster ZZGW AS zb_zhw_yw_btpdi.c_p_heartbeat ENGINE = Distributed(ZZGW , zb_zhw_yw_btpdi, c_p_heartbeat, sipHash64(id )) ;
+------------------------------------------------------ 探针信息业务--------------------------------------------------------------------------------------------
+
+create table zb_zhw_yw_btpdi.c_p_pinfo(id String,
+			  access_type_info Nullable(String),
+			  neighbor_info Nullable(String),
+			  probe_id  Nullable(String),
+			  probe_info Nullable(String),
+			  sgw_info Nullable(String),
+			  status_info Nullable(String),
+			  create_time Nullable(UInt32),
+			  traffic_info Nullable(String),
+			  timesheet UInt32,
+			  month_time Date
+			  )ENGINE = ReplicatedMergeTree('/clickhouse/tables/1/c_p_pinfo','{replica}')
+PARTITION BY  month_time
+ORDER BY (timesheet)
+SETTINGS  storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE c_p_pinfo_all on cluster  ZZGW AS zb_zhw_yw_btpdi.c_p_pinfo ENGINE = Distributed(ZZGW , zb_zhw_yw_btpdi, c_p_pinfo, sipHash64(id )) ;
+
+create table zb_zhw_yw_btpdi.c_p_pinfo_real(id String,
+			  access_type_info Nullable(String),
+			  neighbor_info Nullable(String),
+			  probe_id  Nullable(String),
+			  probe_info Nullable(String),
+			  sgw_info Nullable(String),
+			  status_info Nullable(String),
+			  create_time Nullable(UInt32),
+			  traffic_info Nullable(String),
+			  timesheet UInt32,
+			  month_time Date
+			  )ENGINE = ReplicatedMergeTree('/clickhouse/tables/1/c_p_pinfo_real','{replica}')
+ORDER BY (timesheet)
+PARTITION BY  month_time
+SETTINGS  storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE c_p_pinfo_real_all on cluster  ZZGW AS zb_zhw_yw_btpdi.c_p_pinfo_real ENGINE = Distributed(ZZGW , zb_zhw_yw_btpdi, c_p_pinfo_real, sipHash64(id )) ;
+
+create table zb_zhw_yw_btpdi.c_p_traffic (id String,
+			  access_type_name Nullable(String),
+			  create_time Nullable(UInt32),
+			  down_avg Float64 ,
+			  down_max Float64 ,
+			  ip Nullable(String),
+			  probe_id  Nullable(String),
+			  traffic_type Nullable(String),
+			  up_avg Float64,
+			  up_max Float64,
+			  timesheet UInt32,
+			  month_time Date
+			  )ENGINE = ReplicatedMergeTree('/clickhouse/tables/1/c_p_traffic','{replica}')
+ORDER BY (timesheet)
+PARTITION BY  month_time
+SETTINGS  storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE c_p_traffic_all on cluster  ZZGW AS zb_zhw_yw_btpdi.c_p_traffic ENGINE = Distributed(ZZGW , zb_zhw_yw_btpdi, c_p_traffic, sipHash64(id )) ;
+
+create table zb_zhw_yw_btpdi.c_p_status (id String,
+			  cpu_rate Float64,
+			  create_time Nullable(UInt32),
+			  probe_id  Nullable(String),
+			  ram_rate Float64,
+			  run_time Nullable(String),
+			  timesheet UInt32,
+			  month_time Date
+			  )ENGINE = ReplicatedMergeTree('/clickhouse/tables/1/c_p_status','{replica}')
+ORDER BY (timesheet)
+PARTITION BY  month_time
+SETTINGS  storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE c_p_status_all on cluster  ZZGW AS zb_zhw_yw_btpdi.c_p_status ENGINE = Distributed(ZZGW , zb_zhw_yw_btpdi, c_p_status, sipHash64(id )) ;
+
+create table  zb_zhw_yw_btpdi.c_p_pon	(id String,
+			   create_time Nullable(UInt32),
+			   current  Float64,
+			  probe_id  Nullable(String),
+			  rx_power Float64,
+			  temperature Float64,
+			  tx_power Float64,
+			  voltage Float64,
+			  timesheet UInt32,
+			  month_time Date
+			  )ENGINE = ReplicatedMergeTree('/clickhouse/tables/1/c_p_pon','{replica}')
+ORDER BY (timesheet)
+PARTITION BY  month_time
+SETTINGS  storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE c_p_pon_all on cluster  ZZGW AS zb_zhw_yw_btpdi.c_p_pon ENGINE = Distributed(ZZGW , zb_zhw_yw_btpdi, c_p_pon, sipHash64(id )) ;
+
+
+------------------------------------------------------ 任务数据上报业务--------------------------------------------------------------------------------------------
+
+create table  zb_zhw_yw_btpdi.gw_dns	(id String,
+			  probe_id  Nullable(String),
+			  probe_name Nullable(String),
+			  probe_ip  Nullable(String),
+			  probe_alias	  Nullable(String),
+			  pppoe_username  Nullable(String),
+			  vendor	  Nullable(String),
+			  pc	  Nullable(String),
+			  loid Nullable(String),
+			  serial_num Nullable(String),
+			  task_param_id Nullable(String),
+			  task_param_name Nullable(String),
+			  task_type_name Nullable(String),
+			  task_id Nullable(String),
+			  task_md5 Nullable(String),
+			  access_type_name  Nullable(String),
+			  test_time UInt32,
+			  test_time_d Nullable(UInt32),
+			  test_time_h Nullable(UInt32),
+			  test_time_m Nullable(UInt32),
+			  test_time_w Nullable(UInt32),
+			  dest_id Nullable(String),
+			  dest_name Nullable(String) ,
+			  dest_addr   Nullable(String) ,
+			  province_code  Nullable(UInt32),
+			  province_name Nullable(String),
+			  city_code  Nullable(UInt32),
+			  city_name  Nullable(String) ,
+			  district_code  Nullable(UInt32),
+			  district_name Nullable(String),
+			  town_code Nullable(UInt32),
+			  town_name Nullable(String),
+			  task_from Nullable(UInt32),
+			  host_province Nullable(String),
+			  host_city Nullable(String),
+			  operator Nullable(String),
+			  net_type   Nullable(UInt32),
+			  is_alarm  Nullable(UInt32),
+			  alarm_info Nullable(String),
+			  score  Float64,
+			  time_cost Float64,
+			  success_rate   Float64,
+		      detail Nullable(String),
+			  host_ip Nullable(String),
+			  error_code  Nullable(UInt32),
+			  create_time  Nullable(UInt32),
+			  month_time Date
+			   )ENGINE = ReplicatedMergeTree('/clickhouse/tables/2/gw_dns','{replica}')
+ORDER BY (test_time)
+PARTITION BY  month_time
+SETTINGS  storage_policy = 'zb_zhw_yw_btpdi';
+
+
+create table zb_zhw_yw_btpdi.gw_ping	(id String,
+			  probe_id  Nullable(String),
+			  probe_name Nullable(String),
+			  probe_ip  Nullable(String),
+			  probe_alias	  Nullable(String),
+			  pppoe_username  Nullable(String),
+			  vendor	  Nullable(String),
+			  pc	  Nullable(String),
+			  loid Nullable(String),
+			  serial_num Nullable(String),
+			  task_param_id Nullable(String),
+			  task_param_name Nullable(String),
+			  task_type_name Nullable(String),
+			  task_id Nullable(String),
+			  task_md5 Nullable(String),
+			  access_type_name  Nullable(String) ,
+			  test_time UInt32,
+			  test_time_d Nullable(UInt32),
+			  test_time_h Nullable(UInt32),
+			  test_time_m Nullable(UInt32),
+			  test_time_w Nullable(UInt32),
+			  dest_id Nullable(String) ,
+			  dest_name Nullable(String) ,
+			  dest_addr   Nullable(String) ,
+			  province_code  Nullable(UInt32),
+			  province_name Nullable(String) ,
+			  city_code  Nullable(UInt32),
+			  city_name  Nullable(String) ,
+			  district_code  Nullable(UInt32),
+			  district_name Nullable(String),
+			  town_code Nullable(UInt32),
+			  town_name Nullable(String) ,
+			  task_from Nullable(UInt32),
+			  host_province Nullable(String),
+			  host_city Nullable(String),
+			  operator Nullable(String),
+			  net_type   Nullable(UInt32),
+			  is_alarm  Nullable(UInt32),
+			  alarm_info Nullable(String),
+			  score  Float64,
+			  rtt Float64,
+			  jitter   Float64,
+		      lost_rate Float64,
+			  host_ip Nullable(String),
+			  error_code  Nullable(UInt32),
+			  create_time  Nullable(UInt32),
+			  month_time Date
+		   )ENGINE = ReplicatedMergeTree('/clickhouse/tables/2/gw_ping','{replica}')
+ORDER BY (test_time)
+PARTITION BY  month_time
+SETTINGS  storage_policy = 'zb_zhw_yw_btpdi';
+
+create table zb_zhw_yw_btpdi.gw_http  (  id  String,
+			  probe_id  Nullable(String),
+			  probe_name Nullable(String),
+			  probe_ip  Nullable(String),
+			  probe_alias	  Nullable(String),
+			  pppoe_username  Nullable(String),
+			  vendor	  Nullable(String),
+			  pc	  Nullable(String),
+			  loid Nullable(String),
+			  serial_num Nullable(String),
+			  task_param_id Nullable(String),
+			  task_param_name Nullable(String),
+			  task_type_name Nullable(String),
+			  task_id Nullable(String),
+			  task_md5 Nullable(String),
+			  access_type_name  Nullable(String) ,
+			  test_time UInt32,
+			  test_time_d Nullable(UInt32),
+			  test_time_h Nullable(UInt32),
+			  test_time_m Nullable(UInt32),
+			  test_time_w Nullable(UInt32),
+			  dest_id Nullable(String) ,
+			  dest_name Nullable(String) ,
+			  dest_addr   Nullable(String) ,
+			  province_code  Nullable(UInt32),
+			  province_name Nullable(String) ,
+			  city_code  Nullable(UInt32),
+			  city_name  Nullable(String) ,
+			  district_code  Nullable(UInt32),
+			  district_name Nullable(String),
+			  town_code Nullable(UInt32),
+			  town_name Nullable(String) ,
+			  task_from Nullable(UInt32),
+			  host_province Nullable(String),
+			  host_city  Nullable(String),
+			  operator Nullable(String),
+			  net_type   Nullable(UInt32),
+			  is_alarm  Nullable(UInt32),
+			  alarm_info Nullable(String),
+			  real_ip   Nullable(String),
+			  host_ip   Nullable(String),
+			  jump_iplist   Nullable(String),
+			  detail   Nullable(String),
+			  tcp_cost   Float64,
+			  page_avg_speed Float64,
+			  score  Float64,
+			  elements_localnet_rate  Float64,
+			  elements_success_rate  Float64,
+			  ssl_cost Float64,
+			  dns_cost Float64,
+			  element_load_cost Float64,
+			  page_total_cost Float64,
+			  first_byte_cost Float64,
+			  first_screen_cost Float64,
+			  text_cost Float64,
+			  avg_speed Float64,
+			  page_size Float64,
+			  trans_body_cost Float64,
+			  conn_cost Float64,
+			  elements_sum  Nullable(UInt32),
+			  elements_success_sum  Nullable(UInt32),
+			  elements_fail_sum  Nullable(UInt32),
+			  http_code  Nullable(UInt32),
+			  elements_localnet_sum  Nullable(UInt32),
+			  error_code  Nullable(UInt32),
+			  create_time  Nullable(UInt32),
+			  month_time Date
+		   )ENGINE = ReplicatedMergeTree('/clickhouse/tables/2/gw_http','{replica}')
+ORDER BY (test_time)
+PARTITION BY  month_time
+SETTINGS  storage_policy = 'zb_zhw_yw_btpdi';
+
+
+create table zb_zhw_yw_btpdi.gw_game ( id  String,
+			  probe_id  Nullable(String),
+			  probe_name Nullable(String),
+			  probe_ip  Nullable(String),
+			  probe_alias  Nullable(String),
+			  pppoe_username  Nullable(String),
+			  vendor	  Nullable(String),
+			  pc	  Nullable(String),
+			  loid  Nullable(String),
+			  serial_num Nullable(String),
+			  task_param_id Nullable(String),
+			  task_param_name Nullable(String),
+			  task_type_name Nullable(String),
+			  task_id Nullable(String),
+			  task_md5 Nullable(String),
+			  access_type_name  Nullable(String) ,
+			  test_time UInt32,
+			  test_time_d Nullable(UInt32),
+			  test_time_h Nullable(UInt32),
+			  test_time_m Nullable(UInt32),
+			  test_time_w Nullable(UInt32),
+			  dest_id Nullable(String) ,
+			  dest_name Nullable(String) ,
+			  dest_addr   Nullable(String) ,
+			  province_code  Nullable(UInt32),
+			  province_name  Nullable(String) ,
+			  city_code  Nullable(UInt32),
+			  city_name  Nullable(String) ,
+			  district_code  Nullable(UInt32),
+			  district_name Nullable(String),
+			  town_code Nullable(UInt32),
+			  town_name Nullable(String) ,
+			  task_from Nullable(UInt32),
+			  host_province  Nullable(String),
+			  host_city  Nullable(String),
+			  operator Nullable(String),
+			  net_type   Nullable(UInt32),
+			  is_alarm  Nullable(UInt32),
+			  alarm_info Nullable(String),
+			  host_ip  Nullable(String),
+			  ssl_cost   Float64,
+			  conn_cost   Float64,
+			  trans_body_cost  Float64,
+			  page_size  Float64,
+			  avg_speed  Float64,
+			  rtt  Float64,
+			  jitter  Float64,
+			  lost_rate  Float64,
+			  tcp_delay  Float64,
+			  tcp_cost  Float64,
+			  score  Float64,
+			  dns_cost  Float64,
+			  error_code  Nullable(UInt32),
+			  create_time  Nullable(UInt32),
+			  month_time Date
+			)ENGINE = ReplicatedMergeTree('/clickhouse/tables/2/gw_game','{replica}')
+ORDER BY (test_time)
+PARTITION BY  month_time
+SETTINGS  storage_policy = 'zb_zhw_yw_btpdi';
+
+create table zb_zhw_yw_btpdi.gw_flash ( id  String,
+			  probe_id  Nullable(String),
+			  probe_name Nullable(String),
+			  probe_ip  Nullable(String),
+			  probe_alias	  Nullable(String),
+			  pppoe_username  Nullable(String),
+			  vendor	  Nullable(String),
+			  pc	  Nullable(String),
+			  loid  Nullable(String),
+			  serial_num Nullable(String),
+			  task_param_id Nullable(String),
+			  task_param_name Nullable(String),
+			  task_type_name Nullable(String),
+			  task_id Nullable(String),
+			  task_md5 Nullable(String),
+			  access_type_name  Nullable(String) ,
+			  test_time UInt32,
+			  test_time_d Nullable(UInt32),
+			  test_time_h Nullable(UInt32),
+			  test_time_m Nullable(UInt32),
+			  test_time_w Nullable(UInt32),
+			  dest_id Nullable(String) ,
+			  dest_name Nullable(String) ,
+			  dest_addr   Nullable(String) ,
+			  province_code  Nullable(UInt32),
+			  province_name Nullable(String) ,
+			  city_code  Nullable(UInt32),
+			  city_name  Nullable(String) ,
+			  district_code  Nullable(UInt32),
+			  district_name Nullable(String),
+			  town_code Nullable(UInt32),
+			  town_name Nullable(String) ,
+			  task_from Nullable(UInt32),
+			  host_province Nullable(String),
+			  host_city Nullable(String),
+			  operator Nullable(String),
+			  net_type   Nullable(UInt32),
+			  is_alarm  Nullable(UInt32),
+			  alarm_info Nullable(String),
+			  real_url  Nullable(String),
+			  host_ip  Nullable(String),
+			  conn_cost   Float64,
+			  dns_cost  Float64,
+			  buffer_cost  Float64,
+			  content_size  Float64,
+			  avg_speed  Float64,
+			  first_byte_cost  Float64,
+			  first_pause_cost  Float64,
+			  bitrate  Float64,
+			  play_duration  Float64,
+			  pause_cost  Float64,
+			  pause_count  Float64,
+			  carlton_rate   Float64,
+			  score  Float64,
+			  error_code  Nullable(UInt32),
+			  create_time  Nullable(UInt32),
+			  month_time Date
+			)ENGINE = ReplicatedMergeTree('/clickhouse/tables/2/gw_flash','{replica}')
+ORDER BY (test_time)
+PARTITION BY  month_time
+SETTINGS  storage_policy = 'zb_zhw_yw_btpdi';
+
+
+create table zb_zhw_yw_btpdi.gw_http_detail  (  id  String,
+			  probe_id  Nullable(String),
+			  probe_name Nullable(String),
+			  probe_ip  Nullable(String),
+			  probe_alias	  Nullable(String),
+			  pppoe_username  Nullable(String),
+			  vendor	  Nullable(String),
+			  pc	  Nullable(String),
+			  loid Nullable(String),
+			  serial_num Nullable(String),
+			  task_param_id Nullable(String),
+			  task_param_name Nullable(String),
+			  task_type_name Nullable(String),
+			  task_id Nullable(String),
+			  task_md5 Nullable(String),
+			  access_type_name  Nullable(String) ,
+			  test_time UInt32,
+			  test_time_d Nullable(UInt32),
+			  test_time_h Nullable(UInt32),
+			  test_time_m Nullable(UInt32),
+			  test_time_w Nullable(UInt32),
+			  dest_id Nullable(String) ,
+			  dest_name Nullable(String) ,
+			  dest_addr   Nullable(String) ,
+			  province_code  Nullable(UInt32),
+			  province_name Nullable(String) ,
+			  city_code  Nullable(UInt32),
+			  city_name  Nullable(String) ,
+			  district_code  Nullable(UInt32),
+			  district_name Nullable(String),
+			  town_code Nullable(UInt32),
+			  town_name Nullable(String) ,
+			  task_from Nullable(UInt32),
+			  host_province Nullable(String),
+			  host_city  Nullable(String),
+			  operator Nullable(String),
+			  net_type   Nullable(UInt32),
+			  is_alarm  Nullable(UInt32),
+			  alarm_info Nullable(String),
+			  score  Nullable(Float64),
+			  host_ip   Nullable(String),
+
+			  parent_id Nullable(String),
+			  element_name Nullable(String),
+			  element_num Nullable(UInt32),
+			  element_url  Nullable(String),
+			  dns_cost Nullable(Float64),
+			  conn_cost Nullable(Float64),
+			  element_download_cost Nullable(Float64),
+			  first_byte_cost  Nullable(Float64),
+			  element_total_cost  Nullable(Float64),
+			  thread_num Nullable(UInt32),
+			  element_status Nullable(UInt32),
+			  element_size Nullable(Float64),
+			  avg_speed  Nullable(Float64),
+			  element_http_code Nullable(UInt32),
+			  is_localnet Nullable(UInt32),
+			  tcp_cost Nullable(Float64),
+			  ssl_cost Nullable(Float64),
+
+			  error_code  Nullable(UInt32),
+			  create_time  Nullable(UInt32),
+			  month_time Date
+		   )ENGINE = ReplicatedMergeTree('/clickhouse/tables/2/gw_http_detail','{replica}')
+ORDER BY (test_time)
+PARTITION BY  month_time
+SETTINGS  storage_policy = 'zb_zhw_yw_btpdi';
+
+
+
+
+
+
+
+
+
+
