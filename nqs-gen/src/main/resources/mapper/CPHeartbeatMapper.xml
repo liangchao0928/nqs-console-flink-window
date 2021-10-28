@@ -3,121 +3,165 @@
 <mapper namespace="com.eystar.gen.mapper.CPHeartbeatMapper">
   <resultMap id="BaseResultMap" type="com.eystar.gen.entity.CPHeartbeat">
     <result column="id" jdbcType="VARCHAR" property="id" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="probe_type" jdbcType="VARCHAR" property="probeType" />
-    <result column="probe_name" jdbcType="VARCHAR" property="probeName" />
-    <result column="task_size" jdbcType="INTEGER" property="taskSize" />
-    <result column="task_queue_size" jdbcType="INTEGER" property="taskQueueSize" />
-    <result column="soft_ver" jdbcType="VARCHAR" property="softVer" />
-    <result column="so_ver" jdbcType="VARCHAR" property="soVer" />
-    <result column="probe_id" jdbcType="VARCHAR" property="probeId" />
-    <result column="internet_ip" jdbcType="VARCHAR" property="internetIp" />
     <result column="heartbeat_time" jdbcType="BIGINT" property="heartbeatTime" />
-    <result column="month_time" jdbcType="DATE" property="monthTime" />
+    <result column="internet_ip" jdbcType="VARCHAR" property="internetIp" />
+    <result column="probe_id" jdbcType="VARCHAR" property="probeId" />
+    <result column="so_ver" jdbcType="VARCHAR" property="soVer" />
+    <result column="soft_ver" jdbcType="VARCHAR" property="softVer" />
+    <result column="task_queue_size" jdbcType="BIGINT" property="taskQueueSize" />
+    <result column="task_size" jdbcType="BIGINT" property="taskSize" />
+    <result column="probe_name" jdbcType="VARCHAR" property="probeName" />
+    <result column="probe_type" jdbcType="VARCHAR" property="probeType" />
+    <result column="type" jdbcType="BIGINT" property="type" />
+    <result column="heartbeat_time_par" jdbcType="TIMESTAMP" property="heartbeatTimePar" />
+    <result column="heartbeat_time_d" jdbcType="BIGINT" property="heartbeatTimeD" />
+    <result column="heartbeat_time_h" jdbcType="BIGINT" property="heartbeatTimeH" />
+    <result column="heartbeat_time_m" jdbcType="BIGINT" property="heartbeatTimeM" />
+    <result column="heartbeat_time_w" jdbcType="BIGINT" property="heartbeatTimeW" />
     <result column="create_time" jdbcType="BIGINT" property="createTime" />
-    <result column="create_hour" jdbcType="BIGINT" property="createHour" />
   </resultMap>
 
   <insert id="insert" parameterType="com.eystar.gen.entity.CPHeartbeat">
-    insert into c_p_heartbeat (id, type, probe_type,
-      probe_name, task_size, task_queue_size,
-      soft_ver, so_ver, probe_id,
-      internet_ip, heartbeat_time, month_time,
-      create_time, create_hour)
-    values (#{id,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{probeType,jdbcType=VARCHAR},
-      #{probeName,jdbcType=VARCHAR}, #{taskSize,jdbcType=INTEGER}, #{taskQueueSize,jdbcType=INTEGER},
-      #{softVer,jdbcType=VARCHAR}, #{soVer,jdbcType=VARCHAR}, #{probeId,jdbcType=VARCHAR},
-      #{internetIp,jdbcType=VARCHAR}, #{heartbeatTime,jdbcType=BIGINT}, #{monthTime,jdbcType=DATE},
-      #{createTime,jdbcType=BIGINT}, #{createHour,jdbcType=BIGINT})
+  insert into c_p_heartbeat (id, heartbeat_time, internet_ip,
+      probe_id, so_ver, soft_ver,
+      task_queue_size, task_size, probe_name,
+      probe_type, type, heartbeat_time_par,
+      heartbeat_time_d, heartbeat_time_h, heartbeat_time_m,
+      heartbeat_time_w, create_time)
+    values (#{id,jdbcType=VARCHAR}, #{heartbeatTime,jdbcType=BIGINT}, #{internetIp,jdbcType=VARCHAR},
+      #{probeId,jdbcType=VARCHAR}, #{soVer,jdbcType=VARCHAR}, #{softVer,jdbcType=VARCHAR},
+      #{taskQueueSize,jdbcType=BIGINT}, #{taskSize,jdbcType=BIGINT}, #{probeName,jdbcType=VARCHAR},
+      #{probeType,jdbcType=VARCHAR}, #{type,jdbcType=BIGINT}, #{heartbeatTimePar,jdbcType=TIMESTAMP},
+      #{heartbeatTimeD,jdbcType=BIGINT}, #{heartbeatTimeH,jdbcType=BIGINT}, #{heartbeatTimeM,jdbcType=BIGINT},
+      #{heartbeatTimeW,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT})
   </insert>
+
+  <insert id="insertList" parameterType="com.eystar.gen.entity.CPHeartbeat">
+    insert into t_c_p_heartbeat (id, heartbeat_time, internet_ip,
+    probe_id, so_ver, soft_ver,
+    task_queue_size, task_size, probe_name,
+    probe_type, type, heartbeat_time_par,
+    heartbeat_time_d, heartbeat_time_h, heartbeat_time_m,
+    heartbeat_time_w, create_time)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id,jdbcType=VARCHAR}, #{item.heartbeatTime,jdbcType=BIGINT}, #{item.internetIp,jdbcType=VARCHAR},
+      #{item.probeId,jdbcType=VARCHAR}, #{item.soVer,jdbcType=VARCHAR}, #{item.softVer,jdbcType=VARCHAR},
+      #{item.taskQueueSize,jdbcType=BIGINT}, #{item.taskSize,jdbcType=BIGINT}, #{item.probeName,jdbcType=VARCHAR},
+      #{item.probeType,jdbcType=VARCHAR}, #{item.type,jdbcType=BIGINT}, #{item.heartbeatTimePar,jdbcType=TIMESTAMP},
+      #{item.heartbeatTimeD,jdbcType=BIGINT}, #{item.heartbeatTimeH,jdbcType=BIGINT}, #{item.heartbeatTimeM,jdbcType=BIGINT},
+      #{item.heartbeatTimeW,jdbcType=BIGINT}, #{item.createTime,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+
+
+
   <insert id="insertSelective" parameterType="com.eystar.gen.entity.CPHeartbeat">
     insert into c_p_heartbeat
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="type != null">
-        type,
-      </if>
-      <if test="probeType != null">
-        probe_type,
-      </if>
-      <if test="probeName != null">
-        probe_name,
-      </if>
-      <if test="taskSize != null">
-        task_size,
-      </if>
-      <if test="taskQueueSize != null">
-        task_queue_size,
-      </if>
-      <if test="softVer != null">
-        soft_ver,
-      </if>
-      <if test="soVer != null">
-        so_ver,
-      </if>
-      <if test="probeId != null">
-        probe_id,
+      <if test="heartbeatTime != null">
+        heartbeat_time,
       </if>
       <if test="internetIp != null">
         internet_ip,
       </if>
-      <if test="heartbeatTime != null">
-        heartbeat_time,
+      <if test="probeId != null">
+        probe_id,
       </if>
-      <if test="monthTime != null">
-        month_time,
+      <if test="soVer != null">
+        so_ver,
+      </if>
+      <if test="softVer != null">
+        soft_ver,
+      </if>
+      <if test="taskQueueSize != null">
+        task_queue_size,
+      </if>
+      <if test="taskSize != null">
+        task_size,
+      </if>
+      <if test="probeName != null">
+        probe_name,
+      </if>
+      <if test="probeType != null">
+        probe_type,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="heartbeatTimePar != null">
+        heartbeat_time_par,
+      </if>
+      <if test="heartbeatTimeD != null">
+        heartbeat_time_d,
+      </if>
+      <if test="heartbeatTimeH != null">
+        heartbeat_time_h,
+      </if>
+      <if test="heartbeatTimeM != null">
+        heartbeat_time_m,
+      </if>
+      <if test="heartbeatTimeW != null">
+        heartbeat_time_w,
       </if>
       <if test="createTime != null">
         create_time,
-      </if>
-      <if test="createHour != null">
-        create_hour,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="type != null">
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="probeType != null">
-        #{probeType,jdbcType=VARCHAR},
-      </if>
-      <if test="probeName != null">
-        #{probeName,jdbcType=VARCHAR},
-      </if>
-      <if test="taskSize != null">
-        #{taskSize,jdbcType=INTEGER},
-      </if>
-      <if test="taskQueueSize != null">
-        #{taskQueueSize,jdbcType=INTEGER},
-      </if>
-      <if test="softVer != null">
-        #{softVer,jdbcType=VARCHAR},
-      </if>
-      <if test="soVer != null">
-        #{soVer,jdbcType=VARCHAR},
-      </if>
-      <if test="probeId != null">
-        #{probeId,jdbcType=VARCHAR},
+      <if test="heartbeatTime != null">
+        #{heartbeatTime,jdbcType=BIGINT},
       </if>
       <if test="internetIp != null">
         #{internetIp,jdbcType=VARCHAR},
       </if>
-      <if test="heartbeatTime != null">
-        #{heartbeatTime,jdbcType=BIGINT},
+      <if test="probeId != null">
+        #{probeId,jdbcType=VARCHAR},
       </if>
-      <if test="monthTime != null">
-        #{monthTime,jdbcType=DATE},
+      <if test="soVer != null">
+        #{soVer,jdbcType=VARCHAR},
+      </if>
+      <if test="softVer != null">
+        #{softVer,jdbcType=VARCHAR},
+      </if>
+      <if test="taskQueueSize != null">
+        #{taskQueueSize,jdbcType=BIGINT},
+      </if>
+      <if test="taskSize != null">
+        #{taskSize,jdbcType=BIGINT},
+      </if>
+      <if test="probeName != null">
+        #{probeName,jdbcType=VARCHAR},
+      </if>
+      <if test="probeType != null">
+        #{probeType,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=BIGINT},
+      </if>
+      <if test="heartbeatTimePar != null">
+        #{heartbeatTimePar,jdbcType=TIMESTAMP},
+      </if>
+      <if test="heartbeatTimeD != null">
+        #{heartbeatTimeD,jdbcType=BIGINT},
+      </if>
+      <if test="heartbeatTimeH != null">
+        #{heartbeatTimeH,jdbcType=BIGINT},
+      </if>
+      <if test="heartbeatTimeM != null">
+        #{heartbeatTimeM,jdbcType=BIGINT},
+      </if>
+      <if test="heartbeatTimeW != null">
+        #{heartbeatTimeW,jdbcType=BIGINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=BIGINT},
-      </if>
-      <if test="createHour != null">
-        #{createHour,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>

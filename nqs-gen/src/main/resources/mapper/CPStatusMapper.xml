@@ -4,84 +4,54 @@
   <resultMap id="BaseResultMap" type="com.eystar.gen.entity.CPStatus">
     <result column="id" jdbcType="VARCHAR" property="id" />
     <result column="cpu_rate" jdbcType="DOUBLE" property="cpuRate" />
-    <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="probe_id" jdbcType="VARCHAR" property="probeId" />
     <result column="ram_rate" jdbcType="DOUBLE" property="ramRate" />
     <result column="run_time" jdbcType="VARCHAR" property="runTime" />
     <result column="timesheet" jdbcType="BIGINT" property="timesheet" />
-    <result column="month_time" jdbcType="DATE" property="monthTime" />
+    <result column="timesheet_par" jdbcType="TIMESTAMP" property="timesheetPar" />
+    <result column="timesheet_d" jdbcType="BIGINT" property="timesheetD" />
+    <result column="timesheet_h" jdbcType="BIGINT" property="timesheetH" />
+    <result column="timesheet_m" jdbcType="BIGINT" property="timesheetM" />
+    <result column="timesheet_w" jdbcType="BIGINT" property="timesheetW" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    id, cpu_rate, create_time, probe_id, ram_rate, run_time, timesheet, month_time
-  </sql>
+
+
 
 
   <insert id="insert" parameterType="com.eystar.gen.entity.CPStatus">
-    insert into c_p_status (id, cpu_rate, create_time, 
-      probe_id, ram_rate, run_time, 
-      timesheet, month_time)
-    values (#{id,jdbcType=VARCHAR}, #{cpuRate,jdbcType=DOUBLE}, #{createTime,jdbcType=BIGINT},
-      #{probeId,jdbcType=VARCHAR}, #{ramRate,jdbcType=DOUBLE}, #{runTime,jdbcType=VARCHAR}, 
-      #{timesheet,jdbcType=BIGINT}, #{monthTime,jdbcType=DATE})
+      insert into c_p_status (id, cpu_rate, probe_id,
+      ram_rate, run_time, timesheet,
+      timesheet_par, timesheet_d, timesheet_h,
+      timesheet_m, timesheet_w, create_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{cpuRate,jdbcType=DOUBLE}, #{probeId,jdbcType=VARCHAR},
+      #{ramRate,jdbcType=DOUBLE}, #{runTime,jdbcType=VARCHAR}, #{timesheet,jdbcType=BIGINT},
+      #{timesheetPar,jdbcType=TIMESTAMP}, #{timesheetD,jdbcType=BIGINT}, #{timesheetH,jdbcType=BIGINT},
+      #{timesheetM,jdbcType=BIGINT}, #{timesheetW,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}
+      )
   </insert>
+
+
+  <insert id="insertList" parameterType="com.eystar.gen.entity.CPStatus">
+      insert into t_c_p_status (id, cpu_rate, probe_id,
+      ram_rate, run_time, timesheet,
+      timesheet_par, timesheet_d, timesheet_h,
+      timesheet_m, timesheet_w, create_time
+      )
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+     (#{item.id,jdbcType=VARCHAR}, #{item.cpuRate,jdbcType=DOUBLE}, #{item.probeId,jdbcType=VARCHAR},
+      #{item.ramRate,jdbcType=DOUBLE}, #{item.runTime,jdbcType=VARCHAR}, #{item.timesheet,jdbcType=BIGINT},
+      #{item.timesheetPar,jdbcType=TIMESTAMP}, #{item.timesheetD,jdbcType=BIGINT}, #{item.timesheetH,jdbcType=BIGINT},
+      #{item.timesheetM,jdbcType=BIGINT}, #{item.timesheetW,jdbcType=BIGINT}, #{item.createTime,jdbcType=BIGINT}
+      )
+    </foreach>
+  </insert>
+
+
+
+
   <insert id="insertSelective" parameterType="com.eystar.gen.entity.CPStatus">
     insert into c_p_status
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -90,9 +60,6 @@
       </if>
       <if test="cpuRate != null">
         cpu_rate,
-      </if>
-      <if test="createTime != null">
-        create_time,
       </if>
       <if test="probeId != null">
         probe_id,
@@ -106,8 +73,23 @@
       <if test="timesheet != null">
         timesheet,
       </if>
-      <if test="monthTime != null">
-        month_time,
+      <if test="timesheetPar != null">
+        timesheet_par,
+      </if>
+      <if test="timesheetD != null">
+        timesheet_d,
+      </if>
+      <if test="timesheetH != null">
+        timesheet_h,
+      </if>
+      <if test="timesheetM != null">
+        timesheet_m,
+      </if>
+      <if test="timesheetW != null">
+        timesheet_w,
+      </if>
+      <if test="createTime != null">
+        create_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -116,9 +98,6 @@
       </if>
       <if test="cpuRate != null">
         #{cpuRate,jdbcType=DOUBLE},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=BIGINT},
       </if>
       <if test="probeId != null">
         #{probeId,jdbcType=VARCHAR},
@@ -132,8 +111,23 @@
       <if test="timesheet != null">
         #{timesheet,jdbcType=BIGINT},
       </if>
-      <if test="monthTime != null">
-        #{monthTime,jdbcType=DATE},
+      <if test="timesheetPar != null">
+        #{timesheetPar,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timesheetD != null">
+        #{timesheetD,jdbcType=BIGINT},
+      </if>
+      <if test="timesheetH != null">
+        #{timesheetH,jdbcType=BIGINT},
+      </if>
+      <if test="timesheetM != null">
+        #{timesheetM,jdbcType=BIGINT},
+      </if>
+      <if test="timesheetW != null">
+        #{timesheetW,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>

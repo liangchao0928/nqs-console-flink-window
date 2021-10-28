@@ -8,8 +8,6 @@ public class CPStatus implements Serializable {
 
     private Double cpuRate;
 
-    private Long createTime;
-
     private String probeId;
 
     private Double ramRate;
@@ -18,7 +16,17 @@ public class CPStatus implements Serializable {
 
     private Long timesheet;
 
-    private Date monthTime;
+    private Date timesheetPar;
+
+    private Long timesheetD;
+
+    private Long timesheetH;
+
+    private Long timesheetM;
+
+    private Long timesheetW;
+
+    private Long createTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -36,14 +44,6 @@ public class CPStatus implements Serializable {
 
     public void setCpuRate(Double cpuRate) {
         this.cpuRate = cpuRate;
-    }
-
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
     }
 
     public String getProbeId() {
@@ -78,12 +78,52 @@ public class CPStatus implements Serializable {
         this.timesheet = timesheet;
     }
 
-    public Date getMonthTime() {
-        return monthTime;
+    public Date getTimesheetPar() {
+        return timesheetPar;
     }
 
-    public void setMonthTime(Date monthTime) {
-        this.monthTime = monthTime;
+    public void setTimesheetPar(Date timesheetPar) {
+        this.timesheetPar = timesheetPar;
+    }
+
+    public Long getTimesheetD() {
+        return timesheetD;
+    }
+
+    public void setTimesheetD(Long timesheetD) {
+        this.timesheetD = timesheetD;
+    }
+
+    public Long getTimesheetH() {
+        return timesheetH;
+    }
+
+    public void setTimesheetH(Long timesheetH) {
+        this.timesheetH = timesheetH;
+    }
+
+    public Long getTimesheetM() {
+        return timesheetM;
+    }
+
+    public void setTimesheetM(Long timesheetM) {
+        this.timesheetM = timesheetM;
+    }
+
+    public Long getTimesheetW() {
+        return timesheetW;
+    }
+
+    public void setTimesheetW(Long timesheetW) {
+        this.timesheetW = timesheetW;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 
     @Override
@@ -94,12 +134,16 @@ public class CPStatus implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", cpuRate=").append(cpuRate);
-        sb.append(", createTime=").append(createTime);
         sb.append(", probeId=").append(probeId);
         sb.append(", ramRate=").append(ramRate);
         sb.append(", runTime=").append(runTime);
         sb.append(", timesheet=").append(timesheet);
-        sb.append(", monthTime=").append(monthTime);
+        sb.append(", timesheetPar=").append(timesheetPar);
+        sb.append(", timesheetD=").append(timesheetD);
+        sb.append(", timesheetH=").append(timesheetH);
+        sb.append(", timesheetM=").append(timesheetM);
+        sb.append(", timesheetW=").append(timesheetW);
+        sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

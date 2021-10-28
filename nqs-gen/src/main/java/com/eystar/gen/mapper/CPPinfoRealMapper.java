@@ -3,6 +3,8 @@ package com.eystar.gen.mapper;
 
 import com.eystar.gen.entity.CPPinfoReal;
 
+import java.util.List;
+
 public interface CPPinfoRealMapper {
 
 
@@ -10,5 +12,5 @@ public interface CPPinfoRealMapper {
 
     int insertSelective(CPPinfoReal record);
 
-
+    void insertList(List<CPPinfoReal> records);
 }

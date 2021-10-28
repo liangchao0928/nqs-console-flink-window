@@ -18,13 +18,21 @@ public class CPPinfo implements Serializable {
 
     private String statusInfo;
 
-    private Long createTime;
-
     private String trafficInfo;
 
     private Long timesheet;
 
-    private Date monthTime;
+    private Date timesheetPar;
+
+    private Long timesheetD;
+
+    private Long timesheetH;
+
+    private Long timesheetM;
+
+    private Long timesheetW;
+
+    private Long createTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -84,14 +92,6 @@ public class CPPinfo implements Serializable {
         this.statusInfo = statusInfo;
     }
 
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
     public String getTrafficInfo() {
         return trafficInfo;
     }
@@ -108,12 +108,52 @@ public class CPPinfo implements Serializable {
         this.timesheet = timesheet;
     }
 
-    public Date getMonthTime() {
-        return monthTime;
+    public Date getTimesheetPar() {
+        return timesheetPar;
     }
 
-    public void setMonthTime(Date monthTime) {
-        this.monthTime = monthTime;
+    public void setTimesheetPar(Date timesheetPar) {
+        this.timesheetPar = timesheetPar;
+    }
+
+    public Long getTimesheetD() {
+        return timesheetD;
+    }
+
+    public void setTimesheetD(Long timesheetD) {
+        this.timesheetD = timesheetD;
+    }
+
+    public Long getTimesheetH() {
+        return timesheetH;
+    }
+
+    public void setTimesheetH(Long timesheetH) {
+        this.timesheetH = timesheetH;
+    }
+
+    public Long getTimesheetM() {
+        return timesheetM;
+    }
+
+    public void setTimesheetM(Long timesheetM) {
+        this.timesheetM = timesheetM;
+    }
+
+    public Long getTimesheetW() {
+        return timesheetW;
+    }
+
+    public void setTimesheetW(Long timesheetW) {
+        this.timesheetW = timesheetW;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 
     @Override
@@ -129,10 +169,14 @@ public class CPPinfo implements Serializable {
         sb.append(", probeInfo=").append(probeInfo);
         sb.append(", sgwInfo=").append(sgwInfo);
         sb.append(", statusInfo=").append(statusInfo);
-        sb.append(", createTime=").append(createTime);
         sb.append(", trafficInfo=").append(trafficInfo);
         sb.append(", timesheet=").append(timesheet);
-        sb.append(", monthTime=").append(monthTime);
+        sb.append(", timesheetPar=").append(timesheetPar);
+        sb.append(", timesheetD=").append(timesheetD);
+        sb.append(", timesheetH=").append(timesheetH);
+        sb.append(", timesheetM=").append(timesheetM);
+        sb.append(", timesheetW=").append(timesheetW);
+        sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

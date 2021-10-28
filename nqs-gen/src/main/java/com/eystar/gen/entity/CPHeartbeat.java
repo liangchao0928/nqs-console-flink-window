@@ -6,31 +6,37 @@ import java.util.Date;
 public class CPHeartbeat implements Serializable {
     private String id;
 
-    private Integer type;
-
-    private String probeType;
-
-    private String probeName;
-
-    private Integer taskSize;
-
-    private Integer taskQueueSize;
-
-    private String softVer;
-
-    private String soVer;
-
-    private String probeId;
+    private Long heartbeatTime;
 
     private String internetIp;
 
-    private Long heartbeatTime;
+    private String probeId;
 
-    private Date monthTime;
+    private String soVer;
+
+    private String softVer;
+
+    private Long taskQueueSize;
+
+    private Long taskSize;
+
+    private String probeName;
+
+    private String probeType;
+
+    private Long type;
+
+    private Date heartbeatTimePar;
+
+    private Long heartbeatTimeD;
+
+    private Long heartbeatTimeH;
+
+    private Long heartbeatTimeM;
+
+    private Long heartbeatTimeW;
 
     private Long createTime;
-
-    private Long createHour;
 
     private static final long serialVersionUID = 1L;
 
@@ -42,68 +48,12 @@ public class CPHeartbeat implements Serializable {
         this.id = id;
     }
 
-    public Integer getType() {
-        return type;
+    public Long getHeartbeatTime() {
+        return heartbeatTime;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getProbeType() {
-        return probeType;
-    }
-
-    public void setProbeType(String probeType) {
-        this.probeType = probeType;
-    }
-
-    public String getProbeName() {
-        return probeName;
-    }
-
-    public void setProbeName(String probeName) {
-        this.probeName = probeName;
-    }
-
-    public Integer getTaskSize() {
-        return taskSize;
-    }
-
-    public void setTaskSize(Integer taskSize) {
-        this.taskSize = taskSize;
-    }
-
-    public Integer getTaskQueueSize() {
-        return taskQueueSize;
-    }
-
-    public void setTaskQueueSize(Integer taskQueueSize) {
-        this.taskQueueSize = taskQueueSize;
-    }
-
-    public String getSoftVer() {
-        return softVer;
-    }
-
-    public void setSoftVer(String softVer) {
-        this.softVer = softVer;
-    }
-
-    public String getSoVer() {
-        return soVer;
-    }
-
-    public void setSoVer(String soVer) {
-        this.soVer = soVer;
-    }
-
-    public String getProbeId() {
-        return probeId;
-    }
-
-    public void setProbeId(String probeId) {
-        this.probeId = probeId;
+    public void setHeartbeatTime(Long heartbeatTime) {
+        this.heartbeatTime = heartbeatTime;
     }
 
     public String getInternetIp() {
@@ -114,20 +64,108 @@ public class CPHeartbeat implements Serializable {
         this.internetIp = internetIp;
     }
 
-    public Long getHeartbeatTime() {
-        return heartbeatTime;
+    public String getProbeId() {
+        return probeId;
     }
 
-    public void setHeartbeatTime(Long heartbeatTime) {
-        this.heartbeatTime = heartbeatTime;
+    public void setProbeId(String probeId) {
+        this.probeId = probeId;
     }
 
-    public Date getMonthTime() {
-        return monthTime;
+    public String getSoVer() {
+        return soVer;
     }
 
-    public void setMonthTime(Date monthTime) {
-        this.monthTime = monthTime;
+    public void setSoVer(String soVer) {
+        this.soVer = soVer;
+    }
+
+    public String getSoftVer() {
+        return softVer;
+    }
+
+    public void setSoftVer(String softVer) {
+        this.softVer = softVer;
+    }
+
+    public Long getTaskQueueSize() {
+        return taskQueueSize;
+    }
+
+    public void setTaskQueueSize(Long taskQueueSize) {
+        this.taskQueueSize = taskQueueSize;
+    }
+
+    public Long getTaskSize() {
+        return taskSize;
+    }
+
+    public void setTaskSize(Long taskSize) {
+        this.taskSize = taskSize;
+    }
+
+    public String getProbeName() {
+        return probeName;
+    }
+
+    public void setProbeName(String probeName) {
+        this.probeName = probeName;
+    }
+
+    public String getProbeType() {
+        return probeType;
+    }
+
+    public void setProbeType(String probeType) {
+        this.probeType = probeType;
+    }
+
+    public Long getType() {
+        return type;
+    }
+
+    public void setType(Long type) {
+        this.type = type;
+    }
+
+    public Date getHeartbeatTimePar() {
+        return heartbeatTimePar;
+    }
+
+    public void setHeartbeatTimePar(Date heartbeatTimePar) {
+        this.heartbeatTimePar = heartbeatTimePar;
+    }
+
+    public Long getHeartbeatTimeD() {
+        return heartbeatTimeD;
+    }
+
+    public void setHeartbeatTimeD(Long heartbeatTimeD) {
+        this.heartbeatTimeD = heartbeatTimeD;
+    }
+
+    public Long getHeartbeatTimeH() {
+        return heartbeatTimeH;
+    }
+
+    public void setHeartbeatTimeH(Long heartbeatTimeH) {
+        this.heartbeatTimeH = heartbeatTimeH;
+    }
+
+    public Long getHeartbeatTimeM() {
+        return heartbeatTimeM;
+    }
+
+    public void setHeartbeatTimeM(Long heartbeatTimeM) {
+        this.heartbeatTimeM = heartbeatTimeM;
+    }
+
+    public Long getHeartbeatTimeW() {
+        return heartbeatTimeW;
+    }
+
+    public void setHeartbeatTimeW(Long heartbeatTimeW) {
+        this.heartbeatTimeW = heartbeatTimeW;
     }
 
     public Long getCreateTime() {
@@ -138,14 +176,6 @@ public class CPHeartbeat implements Serializable {
         this.createTime = createTime;
     }
 
-    public Long getCreateHour() {
-        return createHour;
-    }
-
-    public void setCreateHour(Long createHour) {
-        this.createHour = createHour;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -153,19 +183,22 @@ public class CPHeartbeat implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", type=").append(type);
-        sb.append(", probeType=").append(probeType);
-        sb.append(", probeName=").append(probeName);
-        sb.append(", taskSize=").append(taskSize);
-        sb.append(", taskQueueSize=").append(taskQueueSize);
-        sb.append(", softVer=").append(softVer);
-        sb.append(", soVer=").append(soVer);
-        sb.append(", probeId=").append(probeId);
-        sb.append(", internetIp=").append(internetIp);
         sb.append(", heartbeatTime=").append(heartbeatTime);
-        sb.append(", monthTime=").append(monthTime);
+        sb.append(", internetIp=").append(internetIp);
+        sb.append(", probeId=").append(probeId);
+        sb.append(", soVer=").append(soVer);
+        sb.append(", softVer=").append(softVer);
+        sb.append(", taskQueueSize=").append(taskQueueSize);
+        sb.append(", taskSize=").append(taskSize);
+        sb.append(", probeName=").append(probeName);
+        sb.append(", probeType=").append(probeType);
+        sb.append(", type=").append(type);
+        sb.append(", heartbeatTimePar=").append(heartbeatTimePar);
+        sb.append(", heartbeatTimeD=").append(heartbeatTimeD);
+        sb.append(", heartbeatTimeH=").append(heartbeatTimeH);
+        sb.append(", heartbeatTimeM=").append(heartbeatTimeM);
+        sb.append(", heartbeatTimeW=").append(heartbeatTimeW);
         sb.append(", createTime=").append(createTime);
-        sb.append(", createHour=").append(createHour);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

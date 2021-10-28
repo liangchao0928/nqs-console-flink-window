@@ -9,6 +9,8 @@ import com.eystar.gen.source.DataSourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("heartbeatService")
 public class HeartbeatServiceImpl implements HeartbeatService {
 
@@ -18,6 +20,12 @@ public class HeartbeatServiceImpl implements HeartbeatService {
     @DataSource(DataSourceType.bigdata)
     public int insert(CPHeartbeat cpHeartbeat){
         int cph= cpHeartbeatMapper.insertSelective(cpHeartbeat);
+        return cph;
+    }
+
+    @DataSource(DataSourceType.bigdata)
+    public int insertList(List<CPHeartbeat> lh) {
+        int cph= cpHeartbeatMapper.insertList(lh);
         return cph;
     }
 }

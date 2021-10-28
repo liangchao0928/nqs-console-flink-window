@@ -1,0 +1,856 @@
+
+============================================ 探针心跳业务 ================================================
+create table zb_zhw_yw_btpdi.c_p_heartbeat_shard on cluster ZZGW (
+	id String,
+	heartbeat_time Int64,
+	internet_ip Nullable(String),
+	probe_id  String,
+	so_ver Nullable(String),
+	soft_ver Nullable(String),
+	task_queue_size Int64,
+	task_size Int64,
+	probe_name Nullable(String),
+	probe_type Nullable(String),
+	type Int64,
+
+	heartbeat_time_par Datetime,
+	heartbeat_time_d Int64,
+	heartbeat_time_h Int64,
+	heartbeat_time_m Int64,
+	heartbeat_time_w Int64,
+	create_time Int64
+) ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/c_p_heartbeat_shard','{replica}',create_time)
+PARTITION BY  heartbeat_time_d
+ORDER BY (probe_id,heartbeat_time) 
+TTL heartbeat_time_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE c_p_heartbeat on cluster ZZGW AS zb_zhw_yw_btpdi.c_p_heartbeat_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, c_p_heartbeat_shard, sipHash64(probe_id));
+
+============================================ 探针信息业务 ================================================
+create table zb_zhw_yw_btpdi.c_p_pinfo_shard on cluster ZZGW (
+	id String,
+	access_type_info Nullable(String),
+	neighbor_info Nullable(String),
+	probe_id  String,
+	probe_info Nullable(String),
+	sgw_info Nullable(String),
+	status_info Nullable(String),
+	traffic_info Nullable(String),
+	timesheet Int64,
+
+	timesheet_par Datetime,
+	timesheet_d Int64,
+	timesheet_h Int64,
+	timesheet_m Int64,
+	timesheet_w Int64,
+	create_time Int64
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/c_p_pinfo_shard','{replica}',create_time)
+PARTITION BY timesheet_d
+ORDER BY (probe_id,timesheet) 
+TTL timesheet_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE c_p_pinfo on cluster ZZGW AS zb_zhw_yw_btpdi.c_p_pinfo_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, c_p_pinfo_shard, sipHash64(probe_id));
+
+------------------------------------------------------------------------ 
+create table zb_zhw_yw_btpdi.c_p_pinfo_real_shard on cluster ZZGW (
+	id String,
+	access_type_info Nullable(String),
+	neighbor_info Nullable(String),
+	probe_id  String,
+	probe_info Nullable(String),
+	sgw_info Nullable(String),
+	status_info Nullable(String),
+	traffic_info Nullable(String),
+	timesheet Int64,
+	timesheet_d Int64,
+	create_time Int64
+)ENGINE = ReplacingMergeTree(create_time)
+PARTITION BY timesheet_d
+ORDER BY (probe_id) 
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE c_p_pinfo_real on cluster ZZGW AS zb_zhw_yw_btpdi.c_p_pinfo_real_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, c_p_pinfo_real_shard, sipHash64(probe_id));
+---------------------------------------------------------------------
+
+============================================ 探针端口 ================================================
+create table zb_zhw_yw_btpdi.c_p_traffic_shard on cluster ZZGW (
+	id String,
+	access_type_name Nullable(String),
+	down_avg Float64,
+	down_max Float64,
+	ip Nullable(String),
+	probe_id  String,
+	timesheet Int64,
+	traffic_type Nullable(String),
+	up_avg Float64,
+	up_max Float64,
+
+	timesheet_par Datetime,
+	timesheet_d Int64,
+	timesheet_h Int64,
+	timesheet_m Int64,
+	timesheet_w Int64,
+	create_time Int64
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/c_p_traffic_shard','{replica}',create_time)
+ORDER BY (probe_id,timesheet) 
+PARTITION BY timesheet_d
+TTL timesheet_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE c_p_traffic on cluster ZZGW AS zb_zhw_yw_btpdi.c_p_traffic_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, c_p_traffic_shard, sipHash64(probe_id)); 
+
+============================================ 探针状态 ================================================
+create table zb_zhw_yw_btpdi.c_p_status_shard on cluster ZZGW (
+	id String,
+	cpu_rate Float64,
+	probe_id  String,
+	ram_rate Float64,
+	run_time Nullable(String),
+	timesheet Int64,
+
+	timesheet_par Datetime,
+	timesheet_d Int64,
+	timesheet_h Int64,
+	timesheet_m Int64,
+	timesheet_w Int64,
+	create_time Int64
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/c_p_status_shard','{replica}',create_time)
+ORDER BY (probe_id,timesheet) 
+PARTITION BY timesheet_d
+TTL timesheet_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+	
+CREATE TABLE c_p_status on cluster ZZGW AS zb_zhw_yw_btpdi.c_p_status_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, c_p_status_shard, sipHash64(probe_id)); 
+
+============================================ 探针PON ================================================
+create table  zb_zhw_yw_btpdi.c_p_pon_shard on cluster ZZGW (
+	id String,
+	current  Float64,
+	probe_id  String,
+	rx_power Float64,
+	temperature Float64,
+	tx_power Float64,
+	timesheet Int64,
+	voltage Float64,
+
+	timesheet_par Datetime,
+	timesheet_d Int64,
+	timesheet_h Int64,
+	timesheet_m Int64,
+	timesheet_w Int64,
+	create_time Int64
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/c_p_pon_shard','{replica}',create_time)
+ORDER BY (probe_id,timesheet) 
+PARTITION BY timesheet_d
+TTL timesheet_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';	
+
+CREATE TABLE c_p_pon on cluster ZZGW AS zb_zhw_yw_btpdi.c_p_pon_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, c_p_pon_shard, sipHash64(probe_id)); 
+
+============================================ 任务数据业务 ================================================
+create table  zb_zhw_yw_btpdi.gw_dns_shard on cluster ZZGW (
+	id String,
+	access_type_name  Nullable(String),
+	alarm_info Nullable(String),
+	city_code  Nullable(Int64),
+	city_name  Nullable(String),
+	dest_addr   Nullable(String),
+	dest_id  Nullable(String),
+	dest_name Nullable(String),
+	detail Nullable(String),
+	district_code  Nullable(Int64),
+	district_name Nullable(String),
+	error_code  Nullable(Int64),
+	host_city Nullable(String),
+	host_ip Nullable(String),
+	host_province Nullable(String),
+	is_alarm  Nullable(Int64),
+	loid Nullable(String),
+	net_type   Nullable(Int64),
+	operator Nullable(String),
+	pppoe_username  Nullable(String),
+	probe_alias	  Nullable(String),
+	probe_id  String,
+	probe_ip  Nullable(String),
+	probe_name Nullable(String),
+	province_code  Nullable(Int64),
+	province_name Nullable(String),
+	score  Float64,
+	serial_num Nullable(String),
+	success_rate   Float64,
+	task_from Nullable(Int64),
+	task_id String,
+	task_md5 Nullable(String),
+	task_param_id String,
+	task_param_name Nullable(String),
+	task_type_name Nullable(String),
+	test_time Int64,
+	test_time_d Int64,
+	test_time_h Nullable(Int64),
+	test_time_m Nullable(Int64),
+	test_time_w Nullable(Int64),
+	time_cost Float64,
+	town_code Nullable(Int64),
+	town_name Nullable(String),
+	vendor	  Nullable(String),
+	pc	  Nullable(String),
+
+	test_time_par Datetime,
+	create_time  Int64
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/gw_dns_shard','{replica}',create_time)
+ORDER BY (task_param_id,test_time,probe_id,task_id) 
+PARTITION BY test_time_d
+TTL test_time_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE gw_dns on cluster ZZGW AS zb_zhw_yw_btpdi.gw_dns_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, gw_dns_shard, sipHash64(task_param_id)); 
+
+create table  zb_zhw_yw_btpdi.gw_dns_detail_shard on cluster ZZGW (
+	id String,
+	access_type_name  Nullable(String),
+	alarm_info Nullable(String),
+	city_code  Nullable(Int64),
+	city_name  Nullable(String),
+	dest_addr   Nullable(String),
+	dest_id  Nullable(String),
+	dest_name Nullable(String),
+	detail Nullable(String),
+	district_code  Nullable(Int64),
+	district_name Nullable(String),
+	dns_cost   Float64,
+	dns_domain Nullable(String),
+	dns_ip Nullable(String),
+	error_code  Nullable(Int64),
+	host_city Nullable(String),
+	host_ip Nullable(String),
+	host_province Nullable(String),
+	is_alarm  Nullable(Int64),
+	loid Nullable(String),
+	ip_list Nullable(String),
+	net_type   Nullable(Int64),
+	operator Nullable(String),
+	parent_id Nullable(String),
+	pppoe_username  Nullable(String),
+	probe_alias	  Nullable(String),
+	probe_id  String,
+	probe_ip  Nullable(String),
+	probe_name Nullable(String),
+	province_code  Nullable(Int64),
+	province_name Nullable(String),
+	record_count   Nullable(Int64),
+	score  Float64,
+	serial_num Nullable(String),
+	success_rate   Float64,
+	task_from Nullable(Int64),
+	task_id String,
+	task_md5 Nullable(String),
+	task_param_id String,
+	task_param_name Nullable(String),
+	task_type_name Nullable(String),
+	test_time Int64,
+	test_time_d Int64,
+	test_time_h Nullable(Int64),
+	test_time_m Nullable(Int64),
+	test_time_w Nullable(Int64),
+	time_cost Float64,
+	town_code Nullable(Int64),
+	town_name Nullable(String),
+	ttl Float64,
+	vendor	  Nullable(String),
+	pc	  Nullable(String),
+
+	test_time_par Datetime,
+	create_time  Int64
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/gw_dns_detail_shard','{replica}',create_time)
+ORDER BY (task_param_id,test_time,probe_id,task_id) 
+PARTITION BY test_time_d
+TTL test_time_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE gw_dns_detail on cluster ZZGW AS zb_zhw_yw_btpdi.gw_dns_detail_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, gw_dns_detail_shard, sipHash64(task_param_id)); 
+
+create table  zb_zhw_yw_btpdi.gw_dns_resolution_shard on cluster ZZGW (
+	id String,
+	access_type_name  Nullable(String),
+	alarm_info Nullable(String),
+	city_code  Nullable(Int64),
+	city_name  Nullable(String),
+	dest_addr   Nullable(String),
+	dest_id  Nullable(String),
+	dest_name Nullable(String),
+	district_code  Nullable(Int64),
+	district_name Nullable(String),
+	error_code  Nullable(Int64),
+	host_city Nullable(String),
+	host_ip Nullable(String),
+	host_province Nullable(String),
+	is_alarm  Nullable(Int64),
+	ip_list Nullable(String),
+	loid Nullable(String),
+	net_type   Nullable(Int64),
+	operator Nullable(String),
+	pppoe_username  Nullable(String),
+	probe_alias	  Nullable(String),
+	probe_id  String,
+	probe_ip  Nullable(String),
+	probe_name Nullable(String),
+	province_code  Nullable(Int64),
+	province_name Nullable(String),
+	score  Float64,
+	serial_num Nullable(String),
+	success_rate   Float64,
+	task_from Nullable(Int64),
+	task_id String,
+	task_md5 Nullable(String),
+	task_param_id String,
+	task_param_name Nullable(String),
+	task_type_name Nullable(String),
+	test_time Int64,
+	test_time_d Int64,
+	test_time_h Nullable(Int64),
+	test_time_m Nullable(Int64),
+	test_time_w Nullable(Int64),
+	time_cost Float64,
+	town_code Nullable(Int64),
+	town_name Nullable(String),
+	vendor	  Nullable(String),
+	pc	  Nullable(String),
+
+	test_time_par Datetime,
+	create_time  Int64
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/gw_dns_resolution_shard','{replica}',create_time)
+ORDER BY (task_param_id,test_time,probe_id,task_id) 
+PARTITION BY test_time_d
+TTL test_time_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE gw_dns_resolution on cluster ZZGW AS zb_zhw_yw_btpdi.gw_dns_resolution_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, gw_dns_resolution_shard, sipHash64(task_param_id)); 
+
+create table  zb_zhw_yw_btpdi.gw_dns_resolution_detail_shard on cluster ZZGW (
+	id String,
+	access_type_name  Nullable(String),
+	alarm_info Nullable(String),
+	city_code  Nullable(Int64),
+	city_name  Nullable(String),
+	dest_addr   Nullable(String),
+	dest_id  Nullable(String),
+	dest_name Nullable(String),
+	dns_server_ip Nullable(String),
+	district_code  Nullable(Int64),
+	district_name Nullable(String),
+	error_code  Nullable(Int64),
+	host_city Nullable(String),
+	host_ip Nullable(String),
+	host_province Nullable(String),
+	is_alarm  Nullable(Int64),
+	loid Nullable(String),
+	ip_list Nullable(String),
+	net_type   Nullable(Int64),
+	operator Nullable(String),	
+	parent_id Nullable(String),
+	pppoe_username  Nullable(String),
+	probe_alias	  Nullable(String),
+	probe_id  String,
+	probe_ip  Nullable(String),
+	probe_name Nullable(String),
+	province_code  Nullable(Int64),
+	province_name Nullable(String),
+	query_count   Nullable(Int64),
+	score  Float64,
+	serial_num Nullable(String),
+	success_rate   Float64,
+	task_from Nullable(Int64),
+	task_id String,
+	task_md5 Nullable(String),
+	task_param_id String,
+	task_param_name Nullable(String),
+	task_type_name Nullable(String),
+	test_time Int64,
+	test_time_d Int64,
+	test_time_h Nullable(Int64),
+	test_time_m Nullable(Int64),
+	test_time_w Nullable(Int64),
+	time_cost Float64,
+	town_code Nullable(Int64),
+	town_name Nullable(String),
+	ttl Float64,
+	vendor	  Nullable(String),
+	pc	  Nullable(String),
+
+	test_time_par Datetime,
+	create_time  Int64
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/gw_dns_resolution_detail_shard','{replica}',create_time)
+ORDER BY (task_param_id,test_time,probe_id,task_id) 
+PARTITION BY test_time_d
+TTL test_time_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE gw_dns_resolution_detail on cluster ZZGW AS zb_zhw_yw_btpdi.gw_dns_resolution_detail_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, gw_dns_resolution_detail_shard, sipHash64(task_param_id)); 
+
+
+create table zb_zhw_yw_btpdi.gw_ping_shard on cluster ZZGW (
+	id String,
+	access_type_name  Nullable(String),
+	alarm_info Nullable(String),
+	city_code  Nullable(Int64),
+	city_name  Nullable(String),
+	dest_addr   Nullable(String),
+	dest_name Nullable(String),
+	dest_id Nullable(String),
+	district_code  Nullable(Int64),
+	district_name Nullable(String),
+	error_code Nullable(Int64),
+	host_city Nullable(String),
+	host_ip Nullable(String),
+	host_province Nullable(String),
+	is_alarm  Nullable(Int64),
+	jitter   Float64,
+	loid Nullable(String),
+	lost_rate Float64,
+	net_type   Nullable(Int64),
+	operator Nullable(String),
+	pppoe_username  Nullable(String),
+	probe_alias	  Nullable(String),
+	probe_id  String,
+	probe_ip  Nullable(String),
+	probe_name Nullable(String),
+	province_code  Nullable(Int64),
+	province_name Nullable(String),
+	score  Float64,
+	rtt Float64,
+	serial_num Nullable(String),
+	task_from Nullable(Int64),
+	task_id String,
+	task_md5 Nullable(String),
+	task_param_id String,
+	task_param_name Nullable(String),
+	task_type_name Nullable(String),
+	test_time Int64,
+	test_time_d Int64,
+	test_time_h Nullable(Int64),
+	test_time_m Nullable(Int64),
+	test_time_w Nullable(Int64),
+	town_code Nullable(Int64),
+	town_name Nullable(String),
+	vendor	  Nullable(String),
+	pc	  Nullable(String),
+
+	create_time  Int64,
+	test_time_par Datetime
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/gw_ping_shard','{replica}',create_time)
+ORDER BY (task_param_id,test_time,probe_id,task_id) 
+PARTITION BY test_time_d
+TTL test_time_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE gw_ping on cluster ZZGW AS zb_zhw_yw_btpdi.gw_ping_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, gw_ping_shard, sipHash64(task_param_id)); 
+
+create table zb_zhw_yw_btpdi.gw_http_shard on cluster ZZGW  (  
+	id  String,
+	access_type_name  Nullable(String),
+	alarm_info Nullable(String),
+	avg_speed Float64,
+	city_code  Nullable(Int64),
+	city_name  Nullable(String),
+	conn_cost Nullable(Float64),
+	dest_id Nullable(String),
+	dest_name Nullable(String),
+	dest_addr   Nullable(String),
+	detail   Nullable(String),
+	district_code  Nullable(Int64),
+	district_name Nullable(String),
+	dns_cost Nullable(Float64),
+	elements_sum  Nullable(Int64),
+	elements_success_sum  Nullable(Int64),
+	elements_fail_sum  Nullable(Int64),
+	element_load_cost Nullable(Float64),
+	elements_localnet_rate  Nullable(Float64),
+	elements_success_rate  Nullable(Float64),
+	elements_localnet_sum  Nullable(Int64),
+	error_code  Nullable(Int64),
+	first_byte_cost Nullable(Float64),
+	first_screen_cost Nullable(Float64),
+	host_province Nullable(String),
+	host_city  Nullable(String),
+	http_code  Nullable(Int64),
+	host_ip   Nullable(String),
+	is_alarm  Nullable(Int64),
+	jump_iplist   Nullable(String),
+	loid Nullable(String),
+	net_type   Nullable(Int64),
+	operator Nullable(String),
+	page_avg_speed Nullable(Float64),
+	page_total_cost Nullable(Float64),
+	page_size Nullable(Float64),
+	probe_id  String,
+	probe_name Nullable(String),
+	probe_ip  Nullable(String),
+	probe_alias	  Nullable(String),
+	pppoe_username  Nullable(String),
+	province_code  Nullable(Int64),
+	province_name Nullable(String),
+	real_ip   Nullable(String),
+	serial_num Nullable(String),
+	score  Nullable(Float64),
+	ssl_cost Nullable(Float64),
+	task_from Nullable(Int64),
+	task_param_id String,
+	task_param_name Nullable(String),
+	task_type_name Nullable(String),
+	task_id String,
+	task_md5 Nullable(String),
+	tcp_cost   Nullable(Float64),
+	test_time Int64,
+	test_time_d Int64,
+	test_time_h Nullable(Int64),
+	test_time_m Nullable(Int64),
+	test_time_w Nullable(Int64),
+	text_cost Nullable(Float64),
+	trans_body_cost Float64,
+	town_code Nullable(Int64),
+	town_name Nullable(String),
+	vendor	  Nullable(String),
+	pc	  Nullable(String),
+
+	create_time  Int64,
+	test_time_par Datetime
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/gw_http_shard','{replica}',create_time)
+ORDER BY (task_param_id,test_time,probe_id,task_id) 
+PARTITION BY test_time_d
+TTL test_time_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE gw_http on cluster ZZGW AS zb_zhw_yw_btpdi.gw_http_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, gw_http_shard, sipHash64(task_param_id)); 
+
+
+create table zb_zhw_yw_btpdi.gw_game_shard  on cluster ZZGW  ( 
+	id  String,
+	access_type_name  Nullable(String),
+	alarm_info Nullable(String),
+	avg_speed  Float64,
+	city_code  Nullable(Int64),
+	city_name  Nullable(String),
+	conn_cost   Float64,
+	district_code  Nullable(Int64),
+	district_name Nullable(String),
+	dest_id Nullable(String),
+	dest_name Nullable(String),
+	dest_addr   Nullable(String),
+	error_code  Nullable(Int64), 
+	host_province  Nullable(String),
+	host_city  Nullable(String),
+	host_ip  Nullable(String),
+	is_alarm  Nullable(Int64),
+	jitter  Float64,
+	loid  Nullable(String),
+	lost_rate  Float64,
+	net_type   Nullable(Int64),
+	operator Nullable(String),
+	page_size  Float64,
+	probe_id  String,
+	probe_name Nullable(String),
+	probe_ip  Nullable(String),
+	probe_alias  Nullable(String),
+	pppoe_username  Nullable(String),
+	province_code  Nullable(Int64),
+	province_name  Nullable(String),
+	rtt  Float64,
+	score  Float64,
+	serial_num Nullable(String),
+	task_param_id String,
+	task_param_name Nullable(String),
+	task_type_name Nullable(String),
+	task_id String,
+	task_md5 Nullable(String),
+	task_from Nullable(Int64),
+	tcp_delay  Float64,
+	test_time Int64,
+	test_time_d Int64,
+	test_time_h Nullable(Int64),
+	test_time_m Nullable(Int64),
+	test_time_w Nullable(Int64),
+	town_code Nullable(Int64),
+	town_name Nullable(String),
+	trans_body_cost  Float64,
+	ssl_cost   Float64,
+	tcp_cost  Float64,
+	dns_cost  Float64,
+	vendor	  Nullable(String),
+	pc	  Nullable(String),
+
+	create_time  Int64,
+	test_time_par Datetime
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/gw_game_shard','{replica}',create_time)
+ORDER BY (task_param_id,test_time,probe_id,task_id) 
+PARTITION BY test_time_d
+TTL test_time_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE gw_game on cluster ZZGW AS zb_zhw_yw_btpdi.gw_game_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, gw_game_shard, sipHash64(task_param_id)); 
+
+create table zb_zhw_yw_btpdi.gw_flash_shard on cluster ZZGW  ( 
+	id  String,
+	access_type_name  Nullable(String),
+	alarm_info Nullable(String),
+	avg_speed  Float64,
+	bitrate  Float64,
+	buffer_cost  Float64,
+	carlton_rate   Float64,
+	city_code  Nullable(Int64),
+	city_name  Nullable(String),
+	conn_cost   Float64,
+	content_size  Float64,
+	dest_id Nullable(String),
+	dest_name Nullable(String),
+	dest_addr   Nullable(String),
+	district_code  Nullable(Int64),
+	district_name Nullable(String),
+	dns_cost  Float64,
+	error_code  Nullable(Int64),
+	first_byte_cost  Float64,
+	first_pause_cost  Float64,
+	host_province Nullable(String),
+	host_city Nullable(String),
+	host_ip  Nullable(String),
+	is_alarm  Nullable(Int64),
+	loid  Nullable(String),
+	net_type   Nullable(Int64),
+	operator Nullable(String),
+	play_duration  Float64,
+	pause_cost  Float64,
+	pause_count Float64,
+	probe_id   String,
+	probe_name  Nullable(String),
+	probe_ip  Nullable(String),
+	probe_alias	  Nullable(String),
+	pppoe_username  Nullable(String),
+	province_code  Nullable(Int64),
+	province_name Nullable(String),
+	real_url  Nullable(String),
+	score  Float64,
+	serial_num Nullable(String),
+	task_from Nullable(Int64),
+	task_param_id String,
+	task_param_name Nullable(String),
+	task_type_name Nullable(String),
+	task_id String,
+	task_md5 Nullable(String),
+	test_time Int64,
+	test_time_d Int64,
+	test_time_h Nullable(Int64),
+	test_time_m Nullable(Int64),
+	test_time_w Nullable(Int64),
+	town_code Nullable(Int64),
+	town_name Nullable(String),
+	vendor	  Nullable(String),
+	pc	  Nullable(String),
+	media_ip	  Nullable(String),
+
+	create_time  Int64,
+	test_time_par Datetime
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/gw_flash_shard','{replica}',create_time)
+ORDER BY (task_param_id,test_time,probe_id,task_id) 
+PARTITION BY test_time_d
+TTL test_time_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE gw_flash on cluster ZZGW AS zb_zhw_yw_btpdi.gw_flash_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, gw_flash_shard, sipHash64(task_param_id)); 
+
+create table zb_zhw_yw_btpdi.gw_http_detail_shard on cluster ZZGW (  
+	id  String,
+	access_type_name  Nullable(String),
+	alarm_info Nullable(String),
+	avg_speed  Nullable(Float64),
+	city_code  Nullable(Int64),
+	city_name  Nullable(String),
+	conn_cost Nullable(Float64),
+	dest_id Nullable(String),
+	dest_name Nullable(String),
+	dest_addr   Nullable(String),
+	district_code  Nullable(Int64),
+	district_name Nullable(String),
+	dns_cost Nullable(Float64),
+	element_name Nullable(String),
+	element_num Nullable(Int64),
+	element_url  Nullable(String),
+	element_download_cost Nullable(Float64),
+	element_total_cost  Nullable(Float64),
+	element_status Nullable(Int64),
+	element_size Nullable(Float64),
+	element_http_code Nullable(Int64),
+	error_code  Nullable(Int64),
+	first_byte_cost  Nullable(Float64),
+	host_province Nullable(String),
+	host_city  Nullable(String),
+	host_ip   Nullable(String),
+	is_alarm  Nullable(Int64),
+	is_localnet Nullable(Int64),
+	loid Nullable(String),
+	net_type   Nullable(Int64),
+	operator Nullable(String),
+	parent_id Nullable(String),
+	probe_id  String,
+	probe_name Nullable(String),
+	probe_ip  Nullable(String),
+	probe_alias	  Nullable(String),
+	pppoe_username  Nullable(String),
+	province_code  Nullable(Int64),
+	province_name Nullable(String),
+	score  Nullable(Float64),
+	serial_num Nullable(String),
+	ssl_cost Nullable(Float64),
+	task_from Nullable(Int64),
+	task_param_id String,
+	task_param_name Nullable(String),
+	task_type_name Nullable(String),
+	task_id String,
+	task_md5 Nullable(String),
+	tcp_cost Nullable(Float64),
+	test_time Int64,
+	test_time_d Int64,
+	test_time_h Nullable(Int64),
+	test_time_m Nullable(Int64),
+	test_time_w Nullable(Int64),
+	thread_num Nullable(Int64),
+	town_code Nullable(Int64),
+	town_name Nullable(String),
+	vendor	  Nullable(String),
+	pc	  Nullable(String),
+	detail   Nullable(String),
+
+	create_time  Int64,
+	test_time_par Datetime
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/gw_http_detail_shard','{replica}',create_time)
+ORDER BY (task_param_id,test_time,probe_id,task_id) 
+PARTITION BY test_time_d
+TTL test_time_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE gw_http_detail on cluster ZZGW AS zb_zhw_yw_btpdi.gw_http_detail_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, gw_http_detail_shard, sipHash64(task_param_id)); 
+
+create table zb_zhw_yw_btpdi.gw_trace_shard on cluster ZZGW  ( 
+	id  String,
+	access_type_name  Nullable(String),
+	alarm_info Nullable(String),
+	city_code  Nullable(Int64),
+	city_name  Nullable(String),
+	dest_id Nullable(String),
+	dest_name Nullable(String),
+	dest_addr   Nullable(String),
+	district_code  Nullable(Int64),
+	district_name Nullable(String),
+	delay  Float64,
+	detail Nullable(String),
+	domain_detail Nullable(String),
+	error_code  Nullable(Int64),
+	hops  Nullable(Int64),
+	host_province Nullable(String),
+	host_city Nullable(String),
+	host_ip  Nullable(String),
+	is_alarm  Nullable(Int64),
+	loid  Nullable(String),
+	net_type   Nullable(Int64),
+	operator Nullable(String),
+	probe_id   String,
+	probe_name  Nullable(String),
+	probe_ip  Nullable(String),
+	probe_alias	  Nullable(String),
+	pppoe_username  Nullable(String),
+	province_code  Nullable(Int64),
+	province_name Nullable(String),
+	score  Float64,
+	serial_num Nullable(String),
+	task_from Nullable(Int64),
+	task_param_id String,
+	task_param_name Nullable(String),
+	task_type_name Nullable(String),
+	task_id String,
+	task_md5 Nullable(String),
+	test_time Int64,
+	test_time_d Int64,
+	test_time_h Nullable(Int64),
+	test_time_m Nullable(Int64),
+	test_time_w Nullable(Int64),
+	town_code Nullable(Int64),
+	town_name Nullable(String),
+	vendor	  Nullable(String),
+	pc	  Nullable(String),
+
+	create_time  Int64,
+	test_time_par Datetime
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/gw_trace_shard','{replica}',create_time)
+ORDER BY (task_param_id,test_time,probe_id,task_id) 
+PARTITION BY test_time_d
+TTL test_time_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE gw_trace on cluster ZZGW AS zb_zhw_yw_btpdi.gw_trace_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, gw_trace_shard, sipHash64(task_param_id)); 
+
+create table zb_zhw_yw_btpdi.gw_trace_detail_shard on cluster ZZGW  ( 
+	id  String,
+	access_type_name  Nullable(String),
+	alarm_info Nullable(String),
+	city_code  Nullable(Int64),
+	city_name  Nullable(String),
+	delay  Float64,
+	dest_id Nullable(String),
+	dest_name Nullable(String),
+	dest_addr   Nullable(String),
+	district_code  Nullable(Int64),
+	district_name Nullable(String),
+	detail Nullable(String),
+	error_code  Nullable(Int64),
+	hops  Float64,
+	host_province Nullable(String),
+	host_city Nullable(String),
+	host_name Nullable(String),
+	host_ip  Nullable(String),
+	is_alarm  Nullable(Int64),
+	jitter   Float64,
+	loid  Nullable(String),
+	lost_rate   Float64,
+	memo   Nullable(Int64),
+	net_type   Nullable(Int64),
+	num   Nullable(Int64),
+	operator Nullable(String),
+	parent_id   String,
+	pkt_count   Nullable(Int64),
+	probe_id   String,
+	probe_name  Nullable(String),
+	probe_ip  Nullable(String),
+	probe_alias	  Nullable(String),
+	pppoe_username  Nullable(String),
+	province_code  Nullable(Int64),
+	province_name Nullable(String),
+	ret_code  Nullable(Int64),
+	ret_type  Nullable(Int64),
+	rtt  Float64,
+	score  Float64,
+	serial_num Nullable(String),
+	task_from Nullable(Int64),
+	task_param_id String,
+	task_param_name Nullable(String),
+	task_type_name Nullable(String),
+	task_id String,
+	task_md5 Nullable(String),
+	test_time Int64,
+	test_time_d Int64,
+	test_time_h Nullable(Int64),
+	test_time_m Nullable(Int64),
+	test_time_w Nullable(Int64),
+	town_code Nullable(Int64),
+	town_name Nullable(String),
+	vendor	  Nullable(String),
+	pc	  Nullable(String),
+
+	create_time  Int64,
+	test_time_par Datetime
+)ENGINE = ReplicatedReplacingMergeTree('/clickhouse/tables/{shard}/gw_trace_detail_shard','{replica}',create_time)
+ORDER BY (task_param_id,test_time,probe_id,task_id) 
+PARTITION BY test_time_d
+TTL test_time_par + INTERVAL 3 MONTH
+SETTINGS storage_policy = 'zb_zhw_yw_btpdi';
+
+CREATE TABLE gw_trace_detail on cluster ZZGW AS zb_zhw_yw_btpdi.gw_trace_detail_shard ENGINE = Distributed(ZZGW, zb_zhw_yw_btpdi, gw_trace_detail_shard, sipHash64(task_param_id)); 

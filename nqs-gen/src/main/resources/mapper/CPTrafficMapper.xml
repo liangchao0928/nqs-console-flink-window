@@ -4,79 +4,54 @@
   <resultMap id="BaseResultMap" type="com.eystar.gen.entity.CPTraffic">
     <result column="id" jdbcType="VARCHAR" property="id" />
     <result column="access_type_name" jdbcType="VARCHAR" property="accessTypeName" />
-    <result column="create_time" jdbcType="BIGINT" property="createTime" />
     <result column="down_avg" jdbcType="DOUBLE" property="downAvg" />
     <result column="down_max" jdbcType="DOUBLE" property="downMax" />
     <result column="ip" jdbcType="VARCHAR" property="ip" />
     <result column="probe_id" jdbcType="VARCHAR" property="probeId" />
+    <result column="timesheet" jdbcType="BIGINT" property="timesheet" />
     <result column="traffic_type" jdbcType="VARCHAR" property="trafficType" />
     <result column="up_avg" jdbcType="DOUBLE" property="upAvg" />
     <result column="up_max" jdbcType="DOUBLE" property="upMax" />
-    <result column="timesheet" jdbcType="BIGINT" property="timesheet" />
-    <result column="month_time" jdbcType="DATE" property="monthTime" />
+    <result column="timesheet_par" jdbcType="TIMESTAMP" property="timesheetPar" />
+    <result column="timesheet_d" jdbcType="BIGINT" property="timesheetD" />
+    <result column="timesheet_h" jdbcType="BIGINT" property="timesheetH" />
+    <result column="timesheet_m" jdbcType="BIGINT" property="timesheetM" />
+    <result column="timesheet_w" jdbcType="BIGINT" property="timesheetW" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
 
-  <sql id="Base_Column_List">
-    id, access_type_name, create_time, down_avg, down_max, ip, probe_id, traffic_type, 
-    up_avg, up_max, timesheet, month_time
-  </sql>
 
   <insert id="insert" parameterType="com.eystar.gen.entity.CPTraffic">
-    insert into c_p_traffic (id, access_type_name, create_time, 
-      down_avg, down_max, ip, 
-      probe_id, traffic_type, up_avg, 
-      up_max, timesheet, month_time
-      )
-    values (#{id,jdbcType=VARCHAR}, #{accessTypeName,jdbcType=VARCHAR}, #{createTime,jdbcType=INTEGER}, 
-      #{downAvg,jdbcType=DOUBLE}, #{downMax,jdbcType=DOUBLE}, #{ip,jdbcType=VARCHAR}, 
-      #{probeId,jdbcType=VARCHAR}, #{trafficType,jdbcType=VARCHAR}, #{upAvg,jdbcType=DOUBLE}, 
-      #{upMax,jdbcType=DOUBLE}, #{timesheet,jdbcType=INTEGER}, #{monthTime,jdbcType=DATE}
-      )
+ insert into c_p_traffic (id, access_type_name, down_avg,
+      down_max, ip, probe_id,
+      timesheet, traffic_type, up_avg,
+      up_max, timesheet_par, timesheet_d,
+      timesheet_h, timesheet_m, timesheet_w,
+      create_time)
+    values (#{id,jdbcType=VARCHAR}, #{accessTypeName,jdbcType=VARCHAR}, #{downAvg,jdbcType=DOUBLE},
+      #{downMax,jdbcType=DOUBLE}, #{ip,jdbcType=VARCHAR}, #{probeId,jdbcType=VARCHAR},
+      #{timesheet,jdbcType=BIGINT}, #{trafficType,jdbcType=VARCHAR}, #{upAvg,jdbcType=DOUBLE},
+      #{upMax,jdbcType=DOUBLE}, #{timesheetPar,jdbcType=TIMESTAMP}, #{timesheetD,jdbcType=BIGINT},
+      #{timesheetH,jdbcType=BIGINT}, #{timesheetM,jdbcType=BIGINT}, #{timesheetW,jdbcType=BIGINT},
+      #{createTime,jdbcType=BIGINT})
   </insert>
 
 
   <insert id="insertList" parameterType="com.eystar.gen.entity.CPTraffic">
-    insert into c_p_traffic (id, access_type_name, create_time,
-      down_avg, down_max, ip,
-      probe_id, traffic_type, up_avg,
-      up_max, timesheet, month_time
-      )
+    insert into t_c_p_traffic (id, access_type_name, down_avg,
+    down_max, ip, probe_id,
+    timesheet, traffic_type, up_avg,
+    up_max, timesheet_par, timesheet_d,
+    timesheet_h, timesheet_m, timesheet_w,
+    create_time)
     values
     <foreach collection="list" item="item" index="index" separator=",">
-    (#{item.id,jdbcType=VARCHAR}, #{item.accessTypeName,jdbcType=VARCHAR}, #{item.createTime,jdbcType=INTEGER},
-      #{item.downAvg,jdbcType=DOUBLE}, #{item.downMax,jdbcType=DOUBLE}, #{item.ip,jdbcType=VARCHAR},
-      #{item.probeId,jdbcType=VARCHAR}, #{item.trafficType,jdbcType=VARCHAR}, #{item.upAvg,jdbcType=DOUBLE},
-      #{item.upMax,jdbcType=DOUBLE}, #{item.timesheet,jdbcType=INTEGER}, #{item.monthTime,jdbcType=DATE}
-      )
+      (#{item.id,jdbcType=VARCHAR}, #{item.accessTypeName,jdbcType=VARCHAR}, #{item.downAvg,jdbcType=DOUBLE},
+      #{item.downMax,jdbcType=DOUBLE}, #{item.ip,jdbcType=VARCHAR}, #{item.probeId,jdbcType=VARCHAR},
+      #{item.timesheet,jdbcType=BIGINT}, #{item.trafficType,jdbcType=VARCHAR}, #{item.upAvg,jdbcType=DOUBLE},
+      #{item.upMax,jdbcType=DOUBLE}, #{item.timesheetPar,jdbcType=TIMESTAMP}, #{item.timesheetD,jdbcType=BIGINT},
+      #{item.timesheetH,jdbcType=BIGINT}, #{item.timesheetM,jdbcType=BIGINT}, #{item.timesheetW,jdbcType=BIGINT},
+      #{item.createTime,jdbcType=BIGINT})
     </foreach>
   </insert>
 
@@ -90,9 +65,6 @@
       <if test="accessTypeName != null">
         access_type_name,
       </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
       <if test="downAvg != null">
         down_avg,
       </if>
@@ -105,6 +77,9 @@
       <if test="probeId != null">
         probe_id,
       </if>
+      <if test="timesheet != null">
+        timesheet,
+      </if>
       <if test="trafficType != null">
         traffic_type,
       </if>
@@ -114,11 +89,23 @@
       <if test="upMax != null">
         up_max,
       </if>
-      <if test="timesheet != null">
-        timesheet,
+      <if test="timesheetPar != null">
+        timesheet_par,
       </if>
-      <if test="monthTime != null">
-        month_time,
+      <if test="timesheetD != null">
+        timesheet_d,
+      </if>
+      <if test="timesheetH != null">
+        timesheet_h,
+      </if>
+      <if test="timesheetM != null">
+        timesheet_m,
+      </if>
+      <if test="timesheetW != null">
+        timesheet_w,
+      </if>
+      <if test="createTime != null">
+        create_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -127,9 +114,6 @@
       </if>
       <if test="accessTypeName != null">
         #{accessTypeName,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=INTEGER},
       </if>
       <if test="downAvg != null">
         #{downAvg,jdbcType=DOUBLE},
@@ -143,6 +127,9 @@
       <if test="probeId != null">
         #{probeId,jdbcType=VARCHAR},
       </if>
+      <if test="timesheet != null">
+        #{timesheet,jdbcType=BIGINT},
+      </if>
       <if test="trafficType != null">
         #{trafficType,jdbcType=VARCHAR},
       </if>
@@ -152,11 +139,23 @@
       <if test="upMax != null">
         #{upMax,jdbcType=DOUBLE},
       </if>
-      <if test="timesheet != null">
-        #{timesheet,jdbcType=INTEGER},
+      <if test="timesheetPar != null">
+        #{timesheetPar,jdbcType=TIMESTAMP},
       </if>
-      <if test="monthTime != null">
-        #{monthTime,jdbcType=DATE},
+      <if test="timesheetD != null">
+        #{timesheetD,jdbcType=BIGINT},
+      </if>
+      <if test="timesheetH != null">
+        #{timesheetH,jdbcType=BIGINT},
+      </if>
+      <if test="timesheetM != null">
+        #{timesheetM,jdbcType=BIGINT},
+      </if>
+      <if test="timesheetW != null">
+        #{timesheetW,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>

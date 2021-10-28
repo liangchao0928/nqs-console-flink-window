@@ -6,7 +6,10 @@ import com.alibaba.fastjson.JSONObject;
 public class HeartBeatMessage extends Message {
 
 	private String internetIp;
+
 	private JSONObject infoJson;
+
+	private JSONObject probeJson; // -- 这个是暂时使用的
 
 	public HeartBeatMessage(String msg) {
 		try {
@@ -63,5 +66,14 @@ public class HeartBeatMessage extends Message {
 	 */
 	public void setInfoJson(JSONObject infoJson) {
 		this.infoJson = infoJson;
+	}
+
+
+	public JSONObject getProbeJson() {
+		return probeJson;
+	}
+
+	public void setProbeJson(JSONObject probeJson) {
+		this.probeJson = probeJson;
 	}
 }

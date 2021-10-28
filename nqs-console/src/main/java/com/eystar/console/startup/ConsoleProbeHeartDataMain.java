@@ -3,12 +3,24 @@ package com.eystar.console.startup;
 
 import com.eystar.console.env.BaseFlink;
 import com.eystar.console.handler.message.HeartBeatMessage;
-import com.eystar.console.sink.HeartClickHouseSink;
+import com.eystar.console.handler.probe.ProbeExistProcess;
+import com.eystar.console.handler.probe.WindowHeartbeatProcessFunction;
+import com.eystar.console.handler.probe.WindowRegisterProcessFunction;
+import com.eystar.console.sink.ProbeHeartbeatSink;
+import com.eystar.console.sink.ProbeRegistSink;
+import com.eystar.console.time.TimeCountMessageTrigger;
+import com.eystar.gen.entity.CPHeartbeat;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.util.OutputTag;
+
+import java.util.List;
 
 
 public class ConsoleProbeHeartDataMain extends BaseFlink {
@@ -38,6 +50,7 @@ public class ConsoleProbeHeartDataMain extends BaseFlink {
 
         DataStream<String> stream = getKafkaSpout("heartbeat_info");
 
+
         DataStream<HeartBeatMessage> streamMessage = stream.map(new MapFunction<String, HeartBeatMessage>() {
             public HeartBeatMessage map(String msg) throws Exception {
                 HeartBeatMessage message = new HeartBeatMessage(msg);
@@ -50,7 +63,29 @@ public class ConsoleProbeHeartDataMain extends BaseFlink {
                 return !message.isBadMsg();
             }
         });
-        streamHeart.addSink(new HeartClickHouseSink());
+
+        // 4、获取需要注册的消息--注意OutputTag必须是内部类形式
+        OutputTag<HeartBeatMessage> registerTag = new OutputTag<HeartBeatMessage>("register") {
+            private static final long serialVersionUID = 1L;
+        };
+        OutputTag<HeartBeatMessage> heartbeatTag = new OutputTag<HeartBeatMessage>("heartbeat") {
+            private static final long serialVersionUID = 1L;
+        };
+        SingleOutputStreamOperator<HeartBeatMessage> processStream = streamHeart.process(new ProbeExistProcess(registerTag, heartbeatTag));
+
+        DataStream<HeartBeatMessage> registerStream = processStream.getSideOutput(registerTag);
+
+        DataStream<HeartBeatMessage> heartbeatStream = processStream.getSideOutput(heartbeatTag);
+
+
+        DataStream<List<CPHeartbeat>> heartbeatListStream = heartbeatStream.keyBy(HeartBeatMessage::isBadMsg).window(TumblingProcessingTimeWindows.of(Time.seconds(10))).trigger(new TimeCountMessageTrigger(1000)).process(new WindowHeartbeatProcessFunction());
+
+//        DataStream<List<CPHeartbeat>> registerListStream = registerStream.keyBy(HeartBeatMessage::isBadMsg).window(TumblingProcessingTimeWindows.of(Time.seconds(XxlConfClient.getInt("gw-bigdata.window.seconds")))).trigger(new TimeCountMessageTrigger(XxlConfClient.getInt("gw-bigdata.window.count"))).process(new WindowRegisterProcessFunction());
+        DataStream<List<CPHeartbeat>> registerListStream = registerStream.keyBy(HeartBeatMessage::isBadMsg).window(TumblingProcessingTimeWindows.of(Time.seconds(10))).trigger(new TimeCountMessageTrigger(1000)).process(new WindowRegisterProcessFunction());
+
+        registerListStream.addSink(new ProbeHeartbeatSink());
+        heartbeatListStream.addSink(new ProbeHeartbeatSink());
+
 
     }
 

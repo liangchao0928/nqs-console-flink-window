@@ -18,13 +18,13 @@ public class CPPinfoReal implements Serializable {
 
     private String statusInfo;
 
-    private Long createTime;
-
     private String trafficInfo;
 
     private Long timesheet;
 
-    private Date monthTime;
+    private Long createTime;
+
+    private Long timesheetD;
 
     private static final long serialVersionUID = 1L;
 
@@ -84,14 +84,6 @@ public class CPPinfoReal implements Serializable {
         this.statusInfo = statusInfo;
     }
 
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
     public String getTrafficInfo() {
         return trafficInfo;
     }
@@ -108,12 +100,20 @@ public class CPPinfoReal implements Serializable {
         this.timesheet = timesheet;
     }
 
-    public Date getMonthTime() {
-        return monthTime;
+    public Long getTimesheetD() {
+        return timesheetD;
     }
 
-    public void setMonthTime(Date monthTime) {
-        this.monthTime = monthTime;
+    public void setTimesheetD(Long timesheetD) {
+        this.timesheetD = timesheetD;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 
     @Override
@@ -129,10 +129,9 @@ public class CPPinfoReal implements Serializable {
         sb.append(", probeInfo=").append(probeInfo);
         sb.append(", sgwInfo=").append(sgwInfo);
         sb.append(", statusInfo=").append(statusInfo);
-        sb.append(", createTime=").append(createTime);
         sb.append(", trafficInfo=").append(trafficInfo);
         sb.append(", timesheet=").append(timesheet);
-        sb.append(", monthTime=").append(monthTime);
+        sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

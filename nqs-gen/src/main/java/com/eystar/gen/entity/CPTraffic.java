@@ -8,8 +8,6 @@ public class CPTraffic implements Serializable {
 
     private String accessTypeName;
 
-    private Long createTime;
-
     private Double downAvg;
 
     private Double downMax;
@@ -18,15 +16,25 @@ public class CPTraffic implements Serializable {
 
     private String probeId;
 
+    private Long timesheet;
+
     private String trafficType;
 
     private Double upAvg;
 
     private Double upMax;
 
-    private Long timesheet;
+    private Date timesheetPar;
 
-    private Date monthTime;
+    private Long timesheetD;
+
+    private Long timesheetH;
+
+    private Long timesheetM;
+
+    private Long timesheetW;
+
+    private Long createTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -44,14 +52,6 @@ public class CPTraffic implements Serializable {
 
     public void setAccessTypeName(String accessTypeName) {
         this.accessTypeName = accessTypeName;
-    }
-
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
     }
 
     public Double getDownAvg() {
@@ -86,6 +86,14 @@ public class CPTraffic implements Serializable {
         this.probeId = probeId;
     }
 
+    public Long getTimesheet() {
+        return timesheet;
+    }
+
+    public void setTimesheet(Long timesheet) {
+        this.timesheet = timesheet;
+    }
+
     public String getTrafficType() {
         return trafficType;
     }
@@ -110,20 +118,52 @@ public class CPTraffic implements Serializable {
         this.upMax = upMax;
     }
 
-    public Long getTimesheet() {
-        return timesheet;
+    public Date getTimesheetPar() {
+        return timesheetPar;
     }
 
-    public void setTimesheet(Long timesheet) {
-        this.timesheet = timesheet;
+    public void setTimesheetPar(Date timesheetPar) {
+        this.timesheetPar = timesheetPar;
     }
 
-    public Date getMonthTime() {
-        return monthTime;
+    public Long getTimesheetD() {
+        return timesheetD;
     }
 
-    public void setMonthTime(Date monthTime) {
-        this.monthTime = monthTime;
+    public void setTimesheetD(Long timesheetD) {
+        this.timesheetD = timesheetD;
+    }
+
+    public Long getTimesheetH() {
+        return timesheetH;
+    }
+
+    public void setTimesheetH(Long timesheetH) {
+        this.timesheetH = timesheetH;
+    }
+
+    public Long getTimesheetM() {
+        return timesheetM;
+    }
+
+    public void setTimesheetM(Long timesheetM) {
+        this.timesheetM = timesheetM;
+    }
+
+    public Long getTimesheetW() {
+        return timesheetW;
+    }
+
+    public void setTimesheetW(Long timesheetW) {
+        this.timesheetW = timesheetW;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 
     @Override
@@ -134,16 +174,20 @@ public class CPTraffic implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", accessTypeName=").append(accessTypeName);
-        sb.append(", createTime=").append(createTime);
         sb.append(", downAvg=").append(downAvg);
         sb.append(", downMax=").append(downMax);
         sb.append(", ip=").append(ip);
         sb.append(", probeId=").append(probeId);
+        sb.append(", timesheet=").append(timesheet);
         sb.append(", trafficType=").append(trafficType);
         sb.append(", upAvg=").append(upAvg);
         sb.append(", upMax=").append(upMax);
-        sb.append(", timesheet=").append(timesheet);
-        sb.append(", monthTime=").append(monthTime);
+        sb.append(", timesheetPar=").append(timesheetPar);
+        sb.append(", timesheetD=").append(timesheetD);
+        sb.append(", timesheetH=").append(timesheetH);
+        sb.append(", timesheetM=").append(timesheetM);
+        sb.append(", timesheetW=").append(timesheetW);
+        sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

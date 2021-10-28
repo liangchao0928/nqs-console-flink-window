@@ -113,7 +113,7 @@ public abstract class BaseFlink {
         String kafkaSecurityProtocol = properties.getProperty("kafka.security.protocol", "");
         String kafkaSaslMechanism = properties.getProperty("kafka.sasl.mechanism", "");
 
-        String id = StringUtils.join(getJobName(), "-", topic);
+        String id = StringUtils.join(getJobName(), "-", topic+"2");
         Properties props = new Properties();
         props.put("group.id", id);
         props.put("enable.auto.commit", "true");

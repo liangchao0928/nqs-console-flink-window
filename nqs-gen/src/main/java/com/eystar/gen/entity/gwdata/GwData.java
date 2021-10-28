@@ -101,7 +101,7 @@ public class GwData   implements Serializable {
     private String townName;
 
     @JSONField(name="task_from")
-    private Integer taskFrom;
+    private Long taskFrom;
 
     @JSONField(name="host_province")
     private String hostProvince;
@@ -112,10 +112,10 @@ public class GwData   implements Serializable {
     private String operator;
 
     @JSONField(name="net_type")
-    private Integer netType;
+    private Long netType;
 
     @JSONField(name="is_alarm")
-    private Integer isAlarm;
+    private Long isAlarm;
 
     @JSONField(name="alarm_info")
     private String alarmInfo;
@@ -126,75 +126,134 @@ public class GwData   implements Serializable {
 
 
     @JSONField(name="error_code")
-    private Integer errorCode;
+    private Long errorCode;
 
 
     @JSONField(name="create_time")
     private Long createTime;
 
-    @JSONField(name="month_time")
-    private Date monthTime;
+    @JSONField(name="test_time_par")
+    private Date testTimePar;
 
-    @Override
-    public String toString() {
-        return "GwData{" +
-                "id='" + id + '\'' +
-                ", accessTypeName='" + accessTypeName + '\'' +
-                ", testTime=" + testTime +
-                ", destId='" + destId + '\'' +
-                ", destAddr='" + destAddr + '\'' +
-                ", provinceCode=" + provinceCode +
-                ", provinceName='" + provinceName + '\'' +
-                ", cityCode=" + cityCode +
-                ", cityName='" + cityName + '\'' +
-                ", districtCode=" + districtCode +
-                ", districtName='" + districtName + '\'' +
-                ", probeId='" + probeId + '\'' +
-                ", townCode=" + townCode +
-                ", townName='" + townName + '\'' +
-                ", taskFrom=" + taskFrom +
-                ", testTimeH=" + testTimeH +
-                ", probeAlias='" + probeAlias + '\'' +
-                ", testTimeD=" + testTimeD +
-                ", destName='" + destName + '\'' +
-                ", probeIp='" + probeIp + '\'' +
-                ", probeName='" + probeName + '\'' +
-                ", pppoeUsername='" + pppoeUsername + '\'' +
-                ", loid='" + loid + '\'' +
-                ", hostCity='" + hostCity + '\'' +
-                ", serialNum='" + serialNum + '\'' +
-                ", taskParamId='" + taskParamId + '\'' +
-                ", testTimeW=" + testTimeW +
-                ", taskParamName='" + taskParamName + '\'' +
-                ", taskId='" + taskId + '\'' +
-                ", taskTypeName='" + taskTypeName + '\'' +
-                ", alarmInfo='" + alarmInfo + '\'' +
-                ", vendor='" + vendor + '\'' +
-                ", taskMd5='" + taskMd5 + '\'' +
-                ", hostProvince='" + hostProvince + '\'' +
-                ", pc='" + pc + '\'' +
-                ", operator='" + operator + '\'' +
-                ", netType=" + netType +
-                ", testTimeM=" + testTimeM +
-                ", isAlarm=" + isAlarm +
-                ", createTime=" + createTime +
-                ", monthTime=" + monthTime +
-                ", hostIp='" + hostIp + '\'' +
-                '}';
-    }
 
     public String getId() {
         return id;
     }
-    public Double getScore() {
-        return score;
-    }
 
-    public void setScore(Double score) {
-        this.score = score;
-    }
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getProbeId() {
+        return probeId;
+    }
+
+    public void setProbeId(String probeId) {
+        this.probeId = probeId;
+    }
+
+    public String getProbeName() {
+        return probeName;
+    }
+
+    public void setProbeName(String probeName) {
+        this.probeName = probeName;
+    }
+
+    public String getProbeIp() {
+        return probeIp;
+    }
+
+    public void setProbeIp(String probeIp) {
+        this.probeIp = probeIp;
+    }
+
+    public String getProbeAlias() {
+        return probeAlias;
+    }
+
+    public void setProbeAlias(String probeAlias) {
+        this.probeAlias = probeAlias;
+    }
+
+    public String getPppoeUsername() {
+        return pppoeUsername;
+    }
+
+    public void setPppoeUsername(String pppoeUsername) {
+        this.pppoeUsername = pppoeUsername;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
+
+    public String getPc() {
+        return pc;
+    }
+
+    public void setPc(String pc) {
+        this.pc = pc;
+    }
+
+    public String getLoid() {
+        return loid;
+    }
+
+    public void setLoid(String loid) {
+        this.loid = loid;
+    }
+
+    public String getSerialNum() {
+        return serialNum;
+    }
+
+    public void setSerialNum(String serialNum) {
+        this.serialNum = serialNum;
+    }
+
+    public String getTaskParamId() {
+        return taskParamId;
+    }
+
+    public void setTaskParamId(String taskParamId) {
+        this.taskParamId = taskParamId;
+    }
+
+    public String getTaskParamName() {
+        return taskParamName;
+    }
+
+    public void setTaskParamName(String taskParamName) {
+        this.taskParamName = taskParamName;
+    }
+
+    public String getTaskTypeName() {
+        return taskTypeName;
+    }
+
+    public void setTaskTypeName(String taskTypeName) {
+        this.taskTypeName = taskTypeName;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getTaskMd5() {
+        return taskMd5;
+    }
+
+    public void setTaskMd5(String taskMd5) {
+        this.taskMd5 = taskMd5;
     }
 
     public String getAccessTypeName() {
@@ -213,12 +272,52 @@ public class GwData   implements Serializable {
         this.testTime = testTime;
     }
 
+    public Long getTestTimeD() {
+        return testTimeD;
+    }
+
+    public void setTestTimeD(Long testTimeD) {
+        this.testTimeD = testTimeD;
+    }
+
+    public Long getTestTimeH() {
+        return testTimeH;
+    }
+
+    public void setTestTimeH(Long testTimeH) {
+        this.testTimeH = testTimeH;
+    }
+
+    public Long getTestTimeM() {
+        return testTimeM;
+    }
+
+    public void setTestTimeM(Long testTimeM) {
+        this.testTimeM = testTimeM;
+    }
+
+    public Long getTestTimeW() {
+        return testTimeW;
+    }
+
+    public void setTestTimeW(Long testTimeW) {
+        this.testTimeW = testTimeW;
+    }
+
     public String getDestId() {
         return destId;
     }
 
     public void setDestId(String destId) {
         this.destId = destId;
+    }
+
+    public String getDestName() {
+        return destName;
+    }
+
+    public void setDestName(String destName) {
+        this.destName = destName;
     }
 
     public String getDestAddr() {
@@ -277,14 +376,6 @@ public class GwData   implements Serializable {
         this.districtName = districtName;
     }
 
-    public String getProbeId() {
-        return probeId;
-    }
-
-    public void setProbeId(String probeId) {
-        this.probeId = probeId;
-    }
-
     public Long getTownCode() {
         return townCode;
     }
@@ -301,156 +392,12 @@ public class GwData   implements Serializable {
         this.townName = townName;
     }
 
-    public Integer getTaskFrom() {
+    public Long getTaskFrom() {
         return taskFrom;
     }
 
-    public void setTaskFrom(Integer taskFrom) {
+    public void setTaskFrom(Long taskFrom) {
         this.taskFrom = taskFrom;
-    }
-
-    public Long getTestTimeH() {
-        return testTimeH;
-    }
-
-    public void setTestTimeH(Long testTimeH) {
-        this.testTimeH = testTimeH;
-    }
-
-    public String getProbeAlias() {
-        return probeAlias;
-    }
-
-    public void setProbeAlias(String probeAlias) {
-        this.probeAlias = probeAlias;
-    }
-
-    public Long getTestTimeD() {
-        return testTimeD;
-    }
-
-    public void setTestTimeD(Long testTimeD) {
-        this.testTimeD = testTimeD;
-    }
-
-    public String getDestName() {
-        return destName;
-    }
-
-    public void setDestName(String destName) {
-        this.destName = destName;
-    }
-
-    public String getProbeIp() {
-        return probeIp;
-    }
-
-    public void setProbeIp(String probeIp) {
-        this.probeIp = probeIp;
-    }
-
-    public String getProbeName() {
-        return probeName;
-    }
-
-    public void setProbeName(String probeName) {
-        this.probeName = probeName;
-    }
-
-    public String getPppoeUsername() {
-        return pppoeUsername;
-    }
-
-    public void setPppoeUsername(String pppoeUsername) {
-        this.pppoeUsername = pppoeUsername;
-    }
-
-    public String getLoid() {
-        return loid;
-    }
-
-    public void setLoid(String loid) {
-        this.loid = loid;
-    }
-
-    public String getHostCity() {
-        return hostCity;
-    }
-
-    public void setHostCity(String hostCity) {
-        this.hostCity = hostCity;
-    }
-
-    public String getSerialNum() {
-        return serialNum;
-    }
-
-    public void setSerialNum(String serialNum) {
-        this.serialNum = serialNum;
-    }
-
-    public String getTaskParamId() {
-        return taskParamId;
-    }
-
-    public void setTaskParamId(String taskParamId) {
-        this.taskParamId = taskParamId;
-    }
-
-    public Long getTestTimeW() {
-        return testTimeW;
-    }
-
-    public void setTestTimeW(Long testTimeW) {
-        this.testTimeW = testTimeW;
-    }
-
-    public String getTaskParamName() {
-        return taskParamName;
-    }
-
-    public void setTaskParamName(String taskParamName) {
-        this.taskParamName = taskParamName;
-    }
-
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
-
-    public String getTaskTypeName() {
-        return taskTypeName;
-    }
-
-    public void setTaskTypeName(String taskTypeName) {
-        this.taskTypeName = taskTypeName;
-    }
-
-    public String getAlarmInfo() {
-        return alarmInfo;
-    }
-
-    public void setAlarmInfo(String alarmInfo) {
-        this.alarmInfo = alarmInfo;
-    }
-
-    public String getVendor() {
-        return vendor;
-    }
-
-    public void setVendor(String vendor) {
-        this.vendor = vendor;
-    }
-
-    public String getTaskMd5() {
-        return taskMd5;
-    }
-
-    public void setTaskMd5(String taskMd5) {
-        this.taskMd5 = taskMd5;
     }
 
     public String getHostProvince() {
@@ -461,12 +408,12 @@ public class GwData   implements Serializable {
         this.hostProvince = hostProvince;
     }
 
-    public String getPc() {
-        return pc;
+    public String getHostCity() {
+        return hostCity;
     }
 
-    public void setPc(String pc) {
-        this.pc = pc;
+    public void setHostCity(String hostCity) {
+        this.hostCity = hostCity;
     }
 
     public String getOperator() {
@@ -477,35 +424,51 @@ public class GwData   implements Serializable {
         this.operator = operator;
     }
 
-    public Integer getNetType() {
+    public Long getNetType() {
         return netType;
     }
 
-    public void setNetType(Integer netType) {
+    public void setNetType(Long netType) {
         this.netType = netType;
     }
 
-    public Long getTestTimeM() {
-        return testTimeM;
-    }
-
-    public void setTestTimeM(Long testTimeM) {
-        this.testTimeM = testTimeM;
-    }
-
-    public Integer getIsAlarm() {
+    public Long getIsAlarm() {
         return isAlarm;
     }
 
-    public void setIsAlarm(Integer isAlarm) {
+    public void setIsAlarm(Long isAlarm) {
         this.isAlarm = isAlarm;
     }
 
-    public Integer getErrorCode() {
+    public String getAlarmInfo() {
+        return alarmInfo;
+    }
+
+    public void setAlarmInfo(String alarmInfo) {
+        this.alarmInfo = alarmInfo;
+    }
+
+    public Double getScore() {
+        return score;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
+    }
+
+    public String getHostIp() {
+        return hostIp;
+    }
+
+    public void setHostIp(String hostIp) {
+        this.hostIp = hostIp;
+    }
+
+    public Long getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(Integer errorCode) {
+    public void setErrorCode(Long errorCode) {
         this.errorCode = errorCode;
     }
 
@@ -517,19 +480,11 @@ public class GwData   implements Serializable {
         this.createTime = createTime;
     }
 
-    public Date getMonthTime() {
-        return monthTime;
+    public Date getTestTimePar() {
+        return testTimePar;
     }
 
-    public void setMonthTime(Date monthTime) {
-        this.monthTime = monthTime;
-    }
-
-    public String getHostIp() {
-        return hostIp;
-    }
-
-    public void setHostIp(String hostIp) {
-        this.hostIp = hostIp;
+    public void setTestTimePar(Date testTimePar) {
+        this.testTimePar = testTimePar;
     }
 }

@@ -14,6 +14,17 @@ import java.util.List;
  * 用于生产MBG的代码
  */
 public class GeneratorMain {
+
+
+
+    /**
+     * 本方法只用作项目初始化使用，其实时间切勿启动程序
+     *
+     * 警告。方法不作为本项目代码生成
+     *
+     *部分mapper程序一被重写覆盖生成回造成项目启动报错
+     * */
+
     public static void main(String[] args) throws Exception {
         //MBG 执行过程中的警告信息
         List<String> warnings = new ArrayList<String>();

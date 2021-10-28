@@ -7,6 +7,9 @@ import com.eystar.gen.source.DataSource;
 import com.eystar.gen.source.DataSourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service("pStatusService")
 public class PStatusServiceImpl implements PStatusService {
 
@@ -17,5 +20,10 @@ public class PStatusServiceImpl implements PStatusService {
     public int insert(CPStatus cpStatus){
         int cph= cpStatusMapper.insertSelective(cpStatus);
         return cph;
+    }
+
+    @DataSource(DataSourceType.bigdata)
+    public void insertList(List<CPStatus> cpStatuss) {
+        cpStatusMapper.insertList(cpStatuss);
     }
 }

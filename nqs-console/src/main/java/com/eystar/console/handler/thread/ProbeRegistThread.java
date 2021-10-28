@@ -96,20 +96,20 @@ public class ProbeRegistThread {
 
 				// 插入探针心跳记录到bigdata
 				CPHeartbeat probeHeartBeatInfo=new CPHeartbeat();
-				probeHeartBeatInfo.setId( UUIDKit.nextShortUUID());
-				probeHeartBeatInfo.setProbeId(id);
-				probeHeartBeatInfo.setHeartbeatTime(message.getTestTime());
-				probeHeartBeatInfo.setSoftVer(infoObj.get("soft_ver") == null ? "" : infoObj.getString("soft_ver"));
-				probeHeartBeatInfo.setSoVer(infoObj.get("so_ver") == null ? "" : infoObj.getString("so_ver"));
-				probeHeartBeatInfo.setTaskQueueSize(infoObj.get("task_queue_size") == null ? 0 : infoObj.getInteger("task_queue_size"));
-				probeHeartBeatInfo.setTaskSize(infoObj.get("task_size") == null ? 0 : infoObj.getInteger("task_size"));
-				probeHeartBeatInfo.setInternetIp(message.getInternetIp());
-				probeHeartBeatInfo.setProbeName(record.getProbeName());
-				probeHeartBeatInfo.setType(0);
+//				probeHeartBeatInfo.setId( UUIDKit.nextShortUUID());
+//				probeHeartBeatInfo.setProbeId(id);
+//				probeHeartBeatInfo.setHeartbeatTime(message.getTestTime());
+//				probeHeartBeatInfo.setSoftVer(infoObj.get("soft_ver") == null ? "" : infoObj.getString("soft_ver"));
+//				probeHeartBeatInfo.setSoVer(infoObj.get("so_ver") == null ? "" : infoObj.getString("so_ver"));
+//				probeHeartBeatInfo.setTaskQueueSize(infoObj.get("task_queue_size") == null ? 0l : infoObj.getLong("task_queue_size"));
+//				probeHeartBeatInfo.setTaskSize(infoObj.get("task_size") == null ? 0l : infoObj.getLong("task_size"));
+//				probeHeartBeatInfo.setInternetIp(message.getInternetIp());
+//				probeHeartBeatInfo.setProbeName(record.getProbeName());
+//				probeHeartBeatInfo.setType(0);
 //				probeHeartBeatInfo.setType(StrUtil.isNotBlank(record.getType()+"")?Integer.valueOf( record.getType()+""):0);
-				probeHeartBeatInfo.setCreateHour(DateUtil.beginOfHour(new Date(message.getTestTime().longValue() * 1000L)).getTime());
-				probeHeartBeatInfo.setCreateTime(message.getTestTime());
-				probeHeartBeatInfo.setMonthTime( DateUtil.beginOfMonth(new Date(message.getTestTime().longValue() * 1000L)).toJdkDate());
+//				probeHeartBeatInfo.setCreateHour(DateUtil.beginOfHour(new Date(message.getTestTime().longValue() * 1000L)).getTime());
+//				probeHeartBeatInfo.setCreateTime(message.getTestTime());
+//				probeHeartBeatInfo.setMonthTime( DateUtil.beginOfMonth(new Date(message.getTestTime().longValue() * 1000L)).toJdkDate());
 
 
 

@@ -4,19 +4,16 @@ import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.eystar.common.cache.redis.util.RedisUtils;
-import com.eystar.common.util.RedisModifyHelper;
 import com.eystar.common.util.UUIDKit;
 import com.eystar.common.util.XxlConfBean;
 import com.eystar.console.env.BeanFactory;
 import com.eystar.console.handler.message.GwInfoMessage;
-import com.eystar.console.handler.probe.ProbeClickHouseHelper;
 import com.eystar.console.handler.thread.ProbeInfoThread;
 import com.eystar.console.util.InfoLoader;
 import com.eystar.gen.entity.CPPinfo;
+import com.eystar.gen.entity.CPPinfoReal;
 import com.eystar.gen.service.*;
 import com.eystar.gen.service.impl.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
@@ -26,6 +23,7 @@ import org.springframework.context.ApplicationContext;
 
 import java.util.Date;
 
+
 public class ProbeClickHouseSink extends RichSinkFunction<GwInfoMessage> {
 
     private final static Logger logger = LoggerFactory.getLogger(ProbeClickHouseSink.class);
@@ -33,13 +31,9 @@ public class ProbeClickHouseSink extends RichSinkFunction<GwInfoMessage> {
 
     private RedisUtils redisUtils;
     private PInfoService pInfoService;
-    private ProbeAccessTypeService probeAccessTypeService;
+    private PInfoRealService pInfoRealService;
     private ProbeService probeService;
-    private TrafficService trafficService;
     private XxlConfBean xxlConfBean;
-    private PPonService pPonService;
-    private PStatusService pStatusService;
-
 
 
     protected ApplicationContext beanFactory;
@@ -53,16 +47,11 @@ public class ProbeClickHouseSink extends RichSinkFunction<GwInfoMessage> {
         redisUtils = beanFactory.getBean(RedisUtils.class);
         probeService = beanFactory.getBean(ProbeServiceImpl.class);
         pInfoService = beanFactory.getBean(PInfoServiceImpl.class);
-        probeAccessTypeService = beanFactory.getBean(ProbeAccessTypeServiceImpl.class);
-        trafficService=beanFactory.getBean(TrafficServiceImpl.class);
-        pPonService = beanFactory.getBean(  PPonServiceImpl.class);
-        pStatusService = beanFactory.getBean(PStatusServiceImpl.class);
+        pInfoRealService = beanFactory.getBean(PInfoRealServiceImpl.class);
         xxlConfBean= beanFactory.getBean(XxlConfBean.class);
         //初始化工具类数据
         InfoLoader.init(redisUtils,probeService);
-        RedisModifyHelper.init(redisUtils);
         ProbeInfoThread.init(redisUtils,probeService);
-        ProbeClickHouseHelper.init(redisUtils,probeAccessTypeService,trafficService,pPonService,pStatusService);
         xxlConfBean.init();
     }
 
@@ -98,17 +87,6 @@ public class ProbeClickHouseSink extends RichSinkFunction<GwInfoMessage> {
                 probe_info.put("cpu_rate", status_info.get("cpu_rate"));
                 ProbeInfoThread.run(probe_info);
             }
-                // 保存探针端口信息到MySQL 如果探针端口没有修改过才能保存信息
-            ProbeClickHouseHelper.saveAccessTypeInfo(probeId, access_type_info, time);
-            // 保留流量信息历史记录
-            ProbeClickHouseHelper.saveTrafficInfo(probeId, traffic_info, time, "wan");
-            // 保存状态信息历史记录
-            ProbeClickHouseHelper.saveStatusInfo(probeId, status_info, time);
-            // 保存PON口历史记录
-            if (sgw_info != null) {
-                JSONObject pon_info = sgw_info.getJSONObject("pon_info");
-                ProbeClickHouseHelper.savePonInfo(probeId, probe_info == null ? null : probe_info.getString("pc"), pon_info, time);
-            }
 
             // 存储探针所有信息到BigData中
             CPPinfo pinfo = new CPPinfo();
@@ -120,17 +98,33 @@ public class ProbeClickHouseSink extends RichSinkFunction<GwInfoMessage> {
             pinfo.setTrafficInfo( traffic_info == null ? null : traffic_info.toJSONString());
             pinfo.setSgwInfo(sgw_info == null ? null : sgw_info.toJSONString());
             pinfo.setStatusInfo(status_info == null ? null : status_info.toJSONString());
-            pinfo.setMonthTime((DateUtil.beginOfMonth(new Date(time * 1000L)).toJdkDate()));
-            pinfo.setCreateTime(time);
+
+            // 封装更多时间标签
+            Date date = new Date(time * 1000);
+
+            long timesheet_d = DateUtil.beginOfDay(date).getTime() / 1000;
+
+            pinfo.setTimesheetH( DateUtil.beginOfDay(date).getTime() / 1000 + DateUtil.hour(date, true) * 3600);
+            pinfo.setTimesheetD(timesheet_d);
+            pinfo.setTimesheetW( DateUtil.beginOfWeek(date).getTime() / 1000);
+            pinfo.setTimesheetM( DateUtil.beginOfMonth(date).getTime() / 1000);
+
+            pinfo.setTimesheetPar( new Date(timesheet_d * 1000));
+            pinfo.setCreateTime( System.currentTimeMillis() / 1000);
 
             try {
-                pInfoService.insert(pinfo);
-                //TODO 因为唯有索引，更新c_p_pinfo_real的实时记录表（不存在即插入，存在即更新）
-                // 更新c_p_pinfo_real的实时记录表
-//                String delsql = "ALTER TABLE c_p_pinfo_real DELETE WHERE probe_id =='" + pinfo.getStr("probe_id") + "'";
-//                BigDataDb.use().delete(delsql);
-//                BigDataDb.use().save("c_p_pinfo_real", pinfo);
-
+//                pInfoService.insert(pinfo);
+                CPPinfoReal pinfoReal = new CPPinfoReal();
+                pinfoReal.setId( pinfo.getId());
+                pinfoReal.setProbeId(probeId);
+                pinfoReal.setTimesheet(time);
+                pinfoReal.setProbeInfo(probe_info == null ? null : probe_info.toJSONString());
+                pinfoReal.setAccessTypeInfo(access_type_info == null ? null : access_type_info.toJSONString());
+                pinfoReal.setTrafficInfo( traffic_info == null ? null : traffic_info.toJSONString());
+                pinfoReal.setSgwInfo(sgw_info == null ? null : sgw_info.toJSONString());
+                pinfoReal.setStatusInfo(status_info == null ? null : status_info.toJSONString());
+                pinfoReal.setCreateTime(pinfo.getCreateTime());
+//                pInfoRealService.insert(pinfoReal);
                 System.out.println("探针id = " + probeId + ", 插入BigData探针信息完成");
             } catch (Exception e) {
                 System.out.println("探针id = " + probeId + ", 插入BigData探针信息错误"+ e.getMessage());

@@ -6,6 +6,9 @@ import com.eystar.gen.source.DataSource;
 import com.eystar.gen.source.DataSourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service("pPonService")
 public class PPonServiceImpl implements PPonService {
 
@@ -16,5 +19,10 @@ public class PPonServiceImpl implements PPonService {
     public int insert(CPPon cpPon){
         int cph= cpPonMapper.insertSelective(cpPon);
         return cph;
+    }
+
+    @DataSource(DataSourceType.bigdata)
+    public void insertList(List<CPPon> cpPons) {
+        cpPonMapper.insertList(cpPons);
     }
 }

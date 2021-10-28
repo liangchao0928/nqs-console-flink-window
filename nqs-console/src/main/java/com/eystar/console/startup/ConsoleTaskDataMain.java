@@ -6,12 +6,20 @@ import com.alibaba.fastjson.JSONObject;
 
 import com.eystar.console.env.BaseFlink;
 import com.eystar.console.handler.message.DataMessage;
+import com.eystar.console.handler.message.SaveData;
 import com.eystar.console.handler.parser.ParserContext;
+import com.eystar.console.handler.parser.WindowDataProcessFunction;
+import com.eystar.console.sink.DataWindowSink;
 import com.eystar.console.sink.TaskDataClickHouseSink;
+import com.eystar.console.time.TimeCountMessageTrigger;
+import com.eystar.gen.entity.gwdata.GwData;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 
 
@@ -66,8 +74,15 @@ public class ConsoleTaskDataMain extends BaseFlink {
                 }
             }
         });
-
-        dataMessageStream.addSink(new TaskDataClickHouseSink());
+//---------------------------------------------------------------队列模式------------------------------------
+//        dataMessageStream.addSink(new TaskDataClickHouseSink());
+//---------------------------------------------------------------窗口模式------------------------------------
+        // 按照任务类型名称分组
+        KeyedStream<DataMessage, String> keyedStream = dataMessageStream.keyBy(message -> message.getTaskTypeName());
+        // 将10秒内或者10000条数据批量成一个窗口
+        DataStream<SaveData> windowStream = keyedStream.window(TumblingProcessingTimeWindows.of(Time.seconds(10))).trigger(new TimeCountMessageTrigger(1000)).process(new WindowDataProcessFunction());
+        // datasink
+        windowStream.addSink(new DataWindowSink());
     }
 
 }

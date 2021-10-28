@@ -67,72 +67,72 @@ public class HeartClickHouseSink extends RichSinkFunction<HeartBeatMessage> {
 
     @Override
     public void invoke(HeartBeatMessage message, Context context) throws Exception {
-        if (message.getTestTime() == 0) {
-            Long time = message.getMsgJson().getLongValue("time"); // 这个时间是探针上报的时间
-            // 如果时间是3天前的数据，可能就是探针上时间不准导致，这个时候将上报的时间改为当前时间
-				if (Math.abs(System.currentTimeMillis() / 1000 - time) > xxlConfBean.getXxlValueByLong("gw-console.probe.time.offset")) {
-                time = System.currentTimeMillis() / 1000;
-            }
-            message.setTestTime(time);
-        }
-
-        JSONObject infoObj = message.getInfoJson();
-        String probeId = message.getProbeId();
-        JSONObject probeInfo = InfoLoader.loadProbe(probeId);
-        System.out.println(probeInfo);
-    if (probeInfo == null || probeInfo.isEmpty()) {
-        ProbeRegistThread.run(message);
-       }else {
-           TPProbe probe = new TPProbe();
-            probe.setId(probeId);
-            JSONObject object = ProbeAccessTypeHelper.findDefaultAccessTypeFromRedis(probeId);
-            if (object != null && StrUtil.equals(object.getString("connect_status"), "Disconnected")) { // 说明默认口没有连接，将状态改为离线
-                probe.setStatus((short)20);
-            } else {
-                probe.setStatus((short) 10);
-            }
-            probe.setInternetIp(message.getInternetIp());
-            probe.setLastHeartbeatTime(message.getTestTime());
-            probe.setSoftVer(infoObj.get("soft_ver") == null ? "" : infoObj.getString("soft_ver"));
-            probe.setSoVer(infoObj.get("so_ver") == null ? "" : infoObj.getString("so_ver"));
-            probe.setTaskQueueSize(infoObj.get("task_queue_size") == null ? 0 : infoObj.getInteger("task_queue_size"));
-            probe.setTaskSize(infoObj.get("task_size") == null ? 0 : infoObj.getInteger("task_size"));
-
-            try {
-                probeService.updateProbe(probe);
-                System.out.println("探针ID = " + probeId + ", 心跳更新MySQL探针表完成，心跳时间 = " + message.getTestTime());
-            } catch (Exception e) {
-                System.out.println("探针ID = " + probeId + ", 心跳更新MySQL探针表错误" + e.getMessage());
-            }
-
-            probeInfo.put("last_heartbeat_time", message.getTestTime());
-            probeInfo.put("internet_ip", message.getInternetIp());
-            RedisModifyHelper.updateProbe(probeId, probeInfo.toJSONString());
-
-            CPHeartbeat probeHeartBeatInfo = new CPHeartbeat();
-            probeHeartBeatInfo.setId(UUIDKit.nextShortUUID());
-            probeHeartBeatInfo.setProbeId(probeId);
-            probeHeartBeatInfo.setProbeName(probeInfo.getString("probe_name"));
-//            probeHeartBeatInfo.setProbeType(probeInfo.getString("type"));
-            probeHeartBeatInfo.setHeartbeatTime(message.getTestTime());
-            probeHeartBeatInfo.setSoftVer(infoObj.get("soft_ver") == null ? "" : infoObj.getString("soft_ver"));
-            probeHeartBeatInfo.setSoVer(infoObj.get("so_ver") == null ? "" : infoObj.getString("so_ver"));
-            probeHeartBeatInfo.setTaskQueueSize(infoObj.get("task_queue_size") == null ? 0 : infoObj.getInteger("task_queue_size"));
-            probeHeartBeatInfo.setTaskSize(infoObj.get("task_size") == null ? 0 : infoObj.getInteger("task_size"));
-            probeHeartBeatInfo.setInternetIp(message.getInternetIp());
-            probeHeartBeatInfo.setType(probeInfo.getInteger("type"));
-            probeHeartBeatInfo.setCreateHour(DateUtil.beginOfHour(new Date(message.getTestTime().longValue() * 1000L)).getTime());
-            probeHeartBeatInfo.setCreateTime(message.getTestTime());
-            probeHeartBeatInfo.setMonthTime(DateUtil.beginOfMonth(new Date(message.getTestTime().longValue() * 1000L)).toJdkDate());
-
-        try {
-            heartbeatService.insert(probeHeartBeatInfo);
-            System.out.println("探针ID = " + probeId + ", 心跳插入BigData探针心跳信息表完成，心跳时间 = " + message.getTestTime());
-        } catch (Exception e) {
-            System.out.println("探针ID = " + probeId + ", 心跳插入BigData探针心跳信息表错误"+ e.getMessage());
-        }
-            redisUtils.del(Constants.PROBE_ACCESS_AMEND + probeId);
-        }
+//        if (message.getTestTime() == 0) {
+//            Long time = message.getMsgJson().getLongValue("time"); // 这个时间是探针上报的时间
+//            // 如果时间是3天前的数据，可能就是探针上时间不准导致，这个时候将上报的时间改为当前时间
+//				if (Math.abs(System.currentTimeMillis() / 1000 - time) > xxlConfBean.getXxlValueByLong("gw-console.probe.time.offset")) {
+//                time = System.currentTimeMillis() / 1000;
+//            }
+//            message.setTestTime(time);
+//        }
+//
+//        JSONObject infoObj = message.getInfoJson();
+//        String probeId = message.getProbeId();
+//        JSONObject probeInfo = InfoLoader.loadProbe(probeId);
+//        System.out.println(probeInfo);
+//    if (probeInfo == null || probeInfo.isEmpty()) {
+//        ProbeRegistThread.run(message);
+//       }else {
+//           TPProbe probe = new TPProbe();
+//            probe.setId(probeId);
+//            JSONObject object = ProbeAccessTypeHelper.findDefaultAccessTypeFromRedis(probeId);
+//            if (object != null && StrUtil.equals(object.getString("connect_status"), "Disconnected")) { // 说明默认口没有连接，将状态改为离线
+//                probe.setStatus((short)20);
+//            } else {
+//                probe.setStatus((short) 10);
+//            }
+//            probe.setInternetIp(message.getInternetIp());
+//            probe.setLastHeartbeatTime(message.getTestTime());
+//            probe.setSoftVer(infoObj.get("soft_ver") == null ? "" : infoObj.getString("soft_ver"));
+//            probe.setSoVer(infoObj.get("so_ver") == null ? "" : infoObj.getString("so_ver"));
+//            probe.setTaskQueueSize(infoObj.get("task_queue_size") == null ? 0 : infoObj.getInteger("task_queue_size"));
+//            probe.setTaskSize(infoObj.get("task_size") == null ? 0 : infoObj.getInteger("task_size"));
+//
+//            try {
+//                probeService.updateProbe(probe);
+//                System.out.println("探针ID = " + probeId + ", 心跳更新MySQL探针表完成，心跳时间 = " + message.getTestTime());
+//            } catch (Exception e) {
+//                System.out.println("探针ID = " + probeId + ", 心跳更新MySQL探针表错误" + e.getMessage());
+//            }
+//
+//            probeInfo.put("last_heartbeat_time", message.getTestTime());
+//            probeInfo.put("internet_ip", message.getInternetIp());
+//            RedisModifyHelper.updateProbe(probeId, probeInfo.toJSONString());
+//
+//            CPHeartbeat probeHeartBeatInfo = new CPHeartbeat();
+//            probeHeartBeatInfo.setId(UUIDKit.nextShortUUID());
+//            probeHeartBeatInfo.setProbeId(probeId);
+//            probeHeartBeatInfo.setProbeName(probeInfo.getString("probe_name"));
+////            probeHeartBeatInfo.setProbeType(probeInfo.getString("type"));
+//            probeHeartBeatInfo.setHeartbeatTime(message.getTestTime());
+//            probeHeartBeatInfo.setSoftVer(infoObj.get("soft_ver") == null ? "" : infoObj.getString("soft_ver"));
+//            probeHeartBeatInfo.setSoVer(infoObj.get("so_ver") == null ? "" : infoObj.getString("so_ver"));
+//            probeHeartBeatInfo.setTaskQueueSize(infoObj.get("task_queue_size") == null ? 0 : infoObj.getInteger("task_queue_size"));
+//            probeHeartBeatInfo.setTaskSize(infoObj.get("task_size") == null ? 0 : infoObj.getInteger("task_size"));
+//            probeHeartBeatInfo.setInternetIp(message.getInternetIp());
+//            probeHeartBeatInfo.setType(probeInfo.getInteger("type"));
+//            probeHeartBeatInfo.setCreateHour(DateUtil.beginOfHour(new Date(message.getTestTime().longValue() * 1000L)).getTime());
+//            probeHeartBeatInfo.setCreateTime(message.getTestTime());
+//            probeHeartBeatInfo.setMonthTime(DateUtil.beginOfMonth(new Date(message.getTestTime().longValue() * 1000L)).toJdkDate());
+//
+//        try {
+//            heartbeatService.insert(probeHeartBeatInfo);
+//            System.out.println("探针ID = " + probeId + ", 心跳插入BigData探针心跳信息表完成，心跳时间 = " + message.getTestTime());
+//        } catch (Exception e) {
+//            System.out.println("探针ID = " + probeId + ", 心跳插入BigData探针心跳信息表错误"+ e.getMessage());
+//        }
+//            redisUtils.del(Constants.PROBE_ACCESS_AMEND + probeId);
+//        }
     }
 
 

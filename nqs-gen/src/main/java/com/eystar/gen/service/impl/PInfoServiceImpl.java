@@ -9,6 +9,8 @@ import com.eystar.gen.source.DataSourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("pInfoService")
 public class PInfoServiceImpl implements PInfoService {
 
@@ -20,5 +22,10 @@ public class PInfoServiceImpl implements PInfoService {
     public int insert(CPPinfo cpPinfo) {
         int pi= cpPinfoMapper.insert(cpPinfo);
         return pi;
+    }
+
+    @DataSource(DataSourceType.bigdata)
+    public void insertList(List<CPPinfo> records){
+        cpPinfoMapper.insertList(records);
     }
 }

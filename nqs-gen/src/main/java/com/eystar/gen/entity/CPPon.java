@@ -6,8 +6,6 @@ import java.util.Date;
 public class CPPon implements Serializable {
     private String id;
 
-    private Long createTime;
-
     private Double current;
 
     private String probeId;
@@ -18,11 +16,21 @@ public class CPPon implements Serializable {
 
     private Double txPower;
 
-    private Double voltage;
-
     private Long timesheet;
 
-    private Date monthTime;
+    private Double voltage;
+
+    private Date timesheetPar;
+
+    private Long timesheetD;
+
+    private Long timesheetH;
+
+    private Long timesheetM;
+
+    private Long timesheetW;
+
+    private Long createTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -32,14 +40,6 @@ public class CPPon implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
     }
 
     public Double getCurrent() {
@@ -82,14 +82,6 @@ public class CPPon implements Serializable {
         this.txPower = txPower;
     }
 
-    public Double getVoltage() {
-        return voltage;
-    }
-
-    public void setVoltage(Double voltage) {
-        this.voltage = voltage;
-    }
-
     public Long getTimesheet() {
         return timesheet;
     }
@@ -98,12 +90,60 @@ public class CPPon implements Serializable {
         this.timesheet = timesheet;
     }
 
-    public Date getMonthTime() {
-        return monthTime;
+    public Double getVoltage() {
+        return voltage;
     }
 
-    public void setMonthTime(Date monthTime) {
-        this.monthTime = monthTime;
+    public void setVoltage(Double voltage) {
+        this.voltage = voltage;
+    }
+
+    public Date getTimesheetPar() {
+        return timesheetPar;
+    }
+
+    public void setTimesheetPar(Date timesheetPar) {
+        this.timesheetPar = timesheetPar;
+    }
+
+    public Long getTimesheetD() {
+        return timesheetD;
+    }
+
+    public void setTimesheetD(Long timesheetD) {
+        this.timesheetD = timesheetD;
+    }
+
+    public Long getTimesheetH() {
+        return timesheetH;
+    }
+
+    public void setTimesheetH(Long timesheetH) {
+        this.timesheetH = timesheetH;
+    }
+
+    public Long getTimesheetM() {
+        return timesheetM;
+    }
+
+    public void setTimesheetM(Long timesheetM) {
+        this.timesheetM = timesheetM;
+    }
+
+    public Long getTimesheetW() {
+        return timesheetW;
+    }
+
+    public void setTimesheetW(Long timesheetW) {
+        this.timesheetW = timesheetW;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 
     @Override
@@ -113,15 +153,19 @@ public class CPPon implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", createTime=").append(createTime);
         sb.append(", current=").append(current);
         sb.append(", probeId=").append(probeId);
         sb.append(", rxPower=").append(rxPower);
         sb.append(", temperature=").append(temperature);
         sb.append(", txPower=").append(txPower);
-        sb.append(", voltage=").append(voltage);
         sb.append(", timesheet=").append(timesheet);
-        sb.append(", monthTime=").append(monthTime);
+        sb.append(", voltage=").append(voltage);
+        sb.append(", timesheetPar=").append(timesheetPar);
+        sb.append(", timesheetD=").append(timesheetD);
+        sb.append(", timesheetH=").append(timesheetH);
+        sb.append(", timesheetM=").append(timesheetM);
+        sb.append(", timesheetW=").append(timesheetW);
+        sb.append(", createTime=").append(createTime);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
